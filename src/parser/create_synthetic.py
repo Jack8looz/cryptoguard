@@ -1,0 +1,922 @@
+import json
+import hashlib
+import os
+
+OUTPUT_FILE = os.path.expanduser("~/cryptoguard/dataset/raw/synthetic_examples.jsonl")
+
+def make_id(cwe, index, kind):
+    h = hashlib.md5(f"{cwe}{index}{kind}".encode()).hexdigest()[:8]
+    return f"synthetic_{h}"
+
+def entry(cwe, severity, index, is_vulnerable, description, code, context="android"):
+    kind = "bad" if is_vulnerable else "good"
+    return {
+        "id":            make_id(cwe, index, kind),
+        "source":        "synthetic",
+        "language":      "java",
+        "context":       context,
+        "cwe_id":        cwe,
+        "is_vulnerable": is_vulnerable,
+        "severity":      severity if is_vulnerable else "NONE",
+        "confidence":    "high",
+        "description":   description,
+        "code":          code,
+    }
+
+records = []
+
+# ===========================================================================
+# CWE-326 — Inadequate encryption strength
+# ===========================================================================
+
+CWE326 = [
+
+    # --- VULNERABLE ---
+    entry("CWE-326","HIGH",1,True,"RSA-512 key generation — completely broken",
+"""public KeyPair generateRsaKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(512); // FLAW: RSA-512 is broken
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",2,True,"RSA-1024 key generation — NIST deprecated",
+"""public KeyPair generateBackendKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(1024); // FLAW: RSA-1024 deprecated by NIST
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",3,True,"AES-64 key — below minimum",
+"""public SecretKey generateAesKey() throws Exception {
+    KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+    keyGen.init(64); // FLAW: AES-64 is not a valid or secure key size
+    return keyGen.generateKey();
+}"""),
+
+    entry("CWE-326","HIGH",4,True,"EC secp112r1 — 112-bit curve, broken",
+"""public KeyPair generateEcKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(new ECGenParameterSpec("secp112r1")); // FLAW: 112-bit EC is broken
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",5,True,"EC secp160r1 — below NIST minimum of 256",
+"""public KeyPair generatePaymentKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(new ECGenParameterSpec("secp160r1")); // FLAW: below NIST 256-bit minimum
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",6,True,"RSA-512 with SecureRandom — key size still broken",
+"""public KeyPair generateRsaKeyPair() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(512, new SecureRandom()); // FLAW: SecureRandom does not fix key size
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",7,True,"Android KeyStore RSA-1024 — weak key in hardware store",
+"""public void generateKeyStoreKey() throws Exception {
+    KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+        "payment_key",
+        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+        .setKeySize(1024) // FLAW: RSA-1024 is weak, minimum is 2048
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
+        .build();
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
+    kpg.initialize(spec);
+    kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",8,True,"RSA key size stored in weak constant",
+"""private static final int KEY_SIZE = 1024; // FLAW: constant defines weak key size
+public KeyPair generateRsaKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(KEY_SIZE);
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",9,True,"DSA-512 — broken key size",
+"""public KeyPair generateDsaKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
+    kpg.initialize(512); // FLAW: DSA-512 is broken
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",10,True,"EC-192 via secp192r1 — below NIST minimum",
+"""public KeyPair generateEcSigningKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(new ECGenParameterSpec("secp192r1")); // FLAW: 192-bit below NIST 256-bit minimum
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",11,True,"Android KeyStore EC with weak key size",
+"""public void generateEcKeyStoreKey() throws Exception {
+    KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+        "ec_payment_key",
+        KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY)
+        .setKeySize(160) // FLAW: EC-160 is below NIST minimum of 256
+        .setDigests(KeyProperties.DIGEST_SHA256)
+        .build();
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", "AndroidKeyStore");
+    kpg.initialize(spec);
+    kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",12,True,"RSA-768 — broken",
+"""public KeyPair generateRsaKey768() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(768); // FLAW: RSA-768 was factored in 2009
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",13,True,"AES-56 — matches DES key length, insecure",
+"""public SecretKey generateWeakAesKey() throws Exception {
+    KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+    keyGen.init(56); // FLAW: 56-bit AES matches DES strength — insecure
+    return keyGen.generateKey();
+}"""),
+
+    entry("CWE-326","HIGH",14,True,"RSA key for payment terminal backend — size too small",
+"""public class BackendKeyManager {
+    private static final int RSA_KEY_SIZE = 512;
+    public KeyPair createBackendKeyPair() throws Exception {
+        // FLAW: RSA-512 used for backend communication key
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        gen.initialize(RSA_KEY_SIZE, new SecureRandom());
+        return gen.generateKeyPair();
+    }
+}"""),
+
+    entry("CWE-326","HIGH",15,True,"EC with numeric 160-bit size",
+"""public KeyPair generateEcKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(160); // FLAW: EC-160 is below NIST minimum of 256 bits
+    return kpg.generateKeyPair();
+}"""),
+
+    # --- SECURE ---
+    entry("CWE-326","HIGH",1,False,"RSA-4096 key generation — recommended",
+"""public KeyPair generateRsaKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(4096, new SecureRandom()); // FIX: RSA-4096 exceeds NIST minimum
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",2,False,"RSA-2048 — NIST minimum acceptable",
+"""public KeyPair generateBackendKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+    kpg.initialize(2048, new SecureRandom()); // FIX: RSA-2048 meets NIST minimum
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",3,False,"AES-256 key — recommended strength",
+"""public SecretKey generateAesKey() throws Exception {
+    KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+    keyGen.init(256, new SecureRandom()); // FIX: AES-256 recommended
+    return keyGen.generateKey();
+}"""),
+
+    entry("CWE-326","HIGH",4,False,"EC secp384r1 — recommended curve",
+"""public KeyPair generateEcKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(new ECGenParameterSpec("secp384r1"), new SecureRandom()); // FIX: P-384 recommended
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",5,False,"EC secp256r1 — NIST minimum acceptable",
+"""public KeyPair generatePaymentKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(new ECGenParameterSpec("secp256r1"), new SecureRandom()); // FIX: P-256 meets minimum
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",6,False,"Android KeyStore RSA-4096 with OAEP padding",
+"""public void generateKeyStoreKey() throws Exception {
+    KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+        "payment_key",
+        KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+        .setKeySize(4096) // FIX: RSA-4096 strong key
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
+        .build();
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
+    kpg.initialize(spec);
+    kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",7,False,"AES-128 — minimum acceptable",
+"""public SecretKey generateAesKey() throws Exception {
+    KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+    keyGen.init(128, new SecureRandom()); // FIX: AES-128 is the minimum acceptable
+    return keyGen.generateKey();
+}"""),
+
+    entry("CWE-326","HIGH",8,False,"EC secp521r1 — strongest standard curve",
+"""public KeyPair generateStrongEcKey() throws Exception {
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC");
+    kpg.initialize(new ECGenParameterSpec("secp521r1"), new SecureRandom()); // FIX: P-521 strongest
+    return kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",9,False,"Android KeyStore EC-256 for signing",
+"""public void generateEcKeyStoreKey() throws Exception {
+    KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
+        "ec_payment_key",
+        KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY)
+        .setKeySize(256) // FIX: EC-256 meets NIST minimum
+        .setDigests(KeyProperties.DIGEST_SHA256)
+        .build();
+    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", "AndroidKeyStore");
+    kpg.initialize(spec);
+    kpg.generateKeyPair();
+}"""),
+
+    entry("CWE-326","HIGH",10,False,"RSA-2048 backend communication key",
+"""public class BackendKeyManager {
+    private static final int RSA_KEY_SIZE = 2048; // FIX: 2048 meets NIST minimum
+    public KeyPair createBackendKeyPair() throws Exception {
+        KeyPairGenerator gen = KeyPairGenerator.getInstance("RSA");
+        gen.initialize(RSA_KEY_SIZE, new SecureRandom());
+        return gen.generateKeyPair();
+    }
+}"""),
+
+]
+
+records.extend(CWE326)
+
+# ===========================================================================
+# CWE-347 — Improper verification of cryptographic signature (JWT)
+# ===========================================================================
+
+CWE347 = [
+
+    # --- VULNERABLE ---
+    entry("CWE-347","CRITICAL",1,True,"jjwt parseClaimsJwt() — no signature verification",
+"""public Claims parseToken(String token) {
+    // FLAW: parseClaimsJwt() does not verify the signature
+    return Jwts.parser()
+        .parseClaimsJwt(token)
+        .getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",2,True,"jjwt parserBuilder without signing key",
+"""public Claims validateToken(String token) {
+    // FLAW: no setSigningKey() — signature verification silently skipped
+    JwtParser parser = Jwts.parserBuilder().build();
+    return parser.parseClaimsJws(token).getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",3,True,"Auth0 JWT.decode() — only decodes, no verification",
+"""public String getUserId(String token) {
+    // FLAW: JWT.decode() does not verify the signature
+    DecodedJWT jwt = JWT.decode(token);
+    return jwt.getSubject();
+}"""),
+
+    entry("CWE-347","CRITICAL",4,True,"Auth0 Algorithm.none() — accepts unsigned tokens",
+"""public DecodedJWT verifyToken(String token) throws JWTVerificationException {
+    // FLAW: Algorithm.none() accepts tokens with no signature
+    JWTVerifier verifier = JWT.require(Algorithm.none()).build();
+    return verifier.verify(token);
+}"""),
+
+    entry("CWE-347","CRITICAL",5,True,"Manual Base64 decode without signature check",
+"""public JSONObject parseToken(String token) throws Exception {
+    // FLAW: signature is never verified — payload decoded directly
+    String[] parts = token.split("\\.");
+    String payload = new String(Base64.getDecoder().decode(parts[1]));
+    return new JSONObject(payload);
+}"""),
+
+    entry("CWE-347","CRITICAL",6,True,"SignatureException caught and ignored",
+"""public Claims processToken(String token) {
+    try {
+        return Jwts.parser()
+            .setSigningKey(secret)
+            .parseClaimsJws(token)
+            .getBody();
+    } catch (SignatureException e) {
+        // FLAW: signature failure ignored — token re-parsed without verification
+        return Jwts.parser().parseClaimsJwt(token).getBody();
+    }
+}"""),
+
+    entry("CWE-347","CRITICAL",7,True,"Payment terminal auth bypass via JWT decode",
+"""public boolean isAuthorizedTerminal(String authToken) {
+    // FLAW: no signature verification — forged token accepted
+    DecodedJWT jwt = JWT.decode(authToken);
+    String role = jwt.getClaim("role").asString();
+    return "TERMINAL_ADMIN".equals(role);
+}"""),
+
+    entry("CWE-347","CRITICAL",8,True,"jjwt parseClaimsJws without key — older API",
+"""public Claims extractClaims(String token) {
+    // FLAW: no signing key set — older jjwt API skips verification
+    return Jwts.parser()
+        .parseClaimsJws(token)
+        .getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",9,True,"algorithms=[none] in PyJWT-style pattern",
+"""// Backend service called from Android — Python-style vulnerability reproduced in Java
+// Equivalent pattern: jwt.decode(token, options={"verify_signature": False})
+public Claims decodeWithoutVerification(String token) {
+    // FLAW: explicit skip of verification for debugging — left in production
+    JwtParserBuilder builder = Jwts.parserBuilder();
+    // Verification intentionally disabled for development
+    return builder.build().parseClaimsJwt(token).getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",10,True,"JWT used for payment authorization without verification",
+"""public void processPayment(String jwtToken, PaymentRequest request) {
+    // FLAW: token decoded but signature never checked
+    String[] parts = jwtToken.split("\\.");
+    String payload = new String(Base64.getDecoder().decode(parts[1]));
+    JSONObject claims = new JSONObject(payload);
+    String userId = claims.getString("userId");
+    // Payment processed based on unverified claims
+    paymentService.authorize(userId, request);
+}"""),
+
+    entry("CWE-347","CRITICAL",11,True,"JWT expiry checked but signature not verified",
+"""public boolean isTokenValid(String token) {
+    // FLAW: expiry is checked but signature is never verified
+    // Attacker can forge a non-expired token with any claims
+    DecodedJWT jwt = JWT.decode(token);
+    return jwt.getExpiresAt().after(new Date());
+}"""),
+
+    entry("CWE-347","CRITICAL",12,True,"Empty signing key — effectively no verification",
+"""public Claims validateSession(String token) {
+    // FLAW: empty string as signing key — trivially bypassable
+    return Jwts.parser()
+        .setSigningKey("")
+        .parseClaimsJws(token)
+        .getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",13,True,"JWT role claim used for authorization without verify",
+"""public boolean hasAdminRole(String token) {
+    // FLAW: role extracted from unverified token
+    DecodedJWT decoded = JWT.decode(token);
+    List<String> roles = decoded.getClaim("roles").asList(String.class);
+    return roles != null && roles.contains("ADMIN");
+}"""),
+
+    entry("CWE-347","CRITICAL",14,True,"Catch-all exception hides verification failure",
+"""public UserInfo authenticate(String token) {
+    try {
+        return Jwts.parserBuilder()
+            .setSigningKey(signingKey)
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
+    } catch (Exception e) {
+        // FLAW: catches ALL exceptions including signature failure
+        // Falls through to decode without verification
+        return decodeUnsafe(token);
+    }
+}"""),
+
+    entry("CWE-347","CRITICAL",15,True,"JWT header algorithm accepted from token itself",
+"""public Claims parseWithHeaderAlgorithm(String token) {
+    // FLAW: algorithm read from token header — alg:none attack possible
+    String header = new String(Base64.getDecoder().decode(token.split("\\.")[0]));
+    String alg = new JSONObject(header).getString("alg");
+    // Algorithm supplied by attacker is used for verification
+    return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody();
+}"""),
+
+    # --- SECURE ---
+    entry("CWE-347","CRITICAL",1,False,"jjwt parserBuilder with signing key — correct",
+"""public Claims parseToken(String token) {
+    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString));
+    // FIX: setSigningKey() ensures signature is verified
+    return Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(token) // parseClaimsJws not parseClaimsJwt
+        .getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",2,False,"Auth0 JWT.require() with HMAC256 — correct",
+"""public DecodedJWT verifyToken(String token) throws JWTVerificationException {
+    // FIX: Algorithm.HMAC256 verifies the signature
+    JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+        .withIssuer("payment-server")
+        .build();
+    return verifier.verify(token);
+}"""),
+
+    entry("CWE-347","CRITICAL",3,False,"RSA256 public key verification",
+"""public Claims verifyWithRsa(String token) throws Exception {
+    // FIX: RSA public key used for RS256 signature verification
+    return Jwts.parserBuilder()
+        .setSigningKey(rsaPublicKey)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",4,False,"JWT with expiry validation after signature check",
+"""public Claims validateToken(String token) {
+    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString));
+    // FIX: signature verified first, then claims validated
+    Claims claims = Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+    if (claims.getExpiration().before(new Date())) {
+        throw new SecurityException("Token expired");
+    }
+    return claims;
+}"""),
+
+    entry("CWE-347","CRITICAL",5,False,"Payment authorization with full JWT verification",
+"""public void processPayment(String jwtToken, PaymentRequest request) {
+    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString));
+    // FIX: signature verified before trusting any claims
+    Claims claims = Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(jwtToken)
+        .getBody();
+    String userId = claims.getSubject();
+    paymentService.authorize(userId, request);
+}"""),
+
+    entry("CWE-347","CRITICAL",6,False,"Auth0 with issuer and audience validation",
+"""public DecodedJWT verifyTerminalToken(String token) throws JWTVerificationException {
+    // FIX: full verification including issuer and audience
+    JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+        .withIssuer("payment-auth-server")
+        .withAudience("terminal")
+        .build();
+    return verifier.verify(token);
+}"""),
+
+    entry("CWE-347","CRITICAL",7,False,"Let SignatureException propagate — do not catch silently",
+"""public Claims authenticate(String token) {
+    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString));
+    // FIX: SignatureException propagates — caller returns 401
+    // Do NOT catch SignatureException and continue
+    return Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+}"""),
+
+    entry("CWE-347","CRITICAL",8,False,"JWT admin role check after verified claims",
+"""public boolean hasAdminRole(String token) {
+    SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString));
+    // FIX: claims only trusted after signature verification
+    Claims claims = Jwts.parserBuilder()
+        .setSigningKey(key)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+    List<String> roles = claims.get("roles", List.class);
+    return roles != null && roles.contains("ADMIN");
+}"""),
+
+    entry("CWE-347","CRITICAL",9,False,"Auth0 RSA256 public key verification",
+"""public DecodedJWT verifyRsaToken(String token) throws JWTVerificationException {
+    // FIX: RSA256 with public key — private key never leaves the server
+    JWTVerifier verifier = JWT.require(Algorithm.RSA256(rsaPublicKey, null))
+        .build();
+    return verifier.verify(token);
+}"""),
+
+    entry("CWE-347","CRITICAL",10,False,"Terminal session validated with signing key",
+"""public boolean isAuthorizedTerminal(String authToken) {
+    try {
+        SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretString));
+        // FIX: signature verified — role claim trustworthy
+        Claims claims = Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .parseClaimsJws(authToken)
+            .getBody();
+        return "TERMINAL_ADMIN".equals(claims.get("role", String.class));
+    } catch (JwtException e) {
+        return false; // Invalid or tampered token
+    }
+}"""),
+
+]
+
+records.extend(CWE347)
+
+# ===========================================================================
+# CWE-916 — Use of password hash with insufficient computational effort
+# ===========================================================================
+
+CWE916 = [
+
+    # --- VULNERABLE ---
+    entry("CWE-916","CRITICAL",1,True,"SHA-256 used directly for password hashing",
+"""public String hashPassword(String password) throws Exception {
+    // FLAW: SHA-256 is too fast for password hashing
+    // Attacker can compute 23 billion SHA-256 hashes per second with a GPU
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    return Base64.getEncoder().encodeToString(md.digest(password.getBytes()));
+}"""),
+
+    entry("CWE-916","CRITICAL",2,True,"MD5 used for password storage",
+"""public String storePassword(String password) throws Exception {
+    // FLAW: MD5 is both broken (collisions) and fast (200 billion/sec)
+    MessageDigest md = MessageDigest.getInstance("MD5");
+    byte[] hash = md.digest(password.getBytes("UTF-8"));
+    return javax.xml.bind.DatatypeConverter.printHexBinary(hash);
+}"""),
+
+    entry("CWE-916","CRITICAL",3,True,"SHA-512 used in authenticate method — still wrong",
+"""public boolean authenticate(String username, String password) throws Exception {
+    // FLAW: SHA-512 is faster than SHA-256 for short inputs — still wrong for passwords
+    MessageDigest md = MessageDigest.getInstance("SHA-512");
+    String hash = Base64.getEncoder().encodeToString(md.digest(password.getBytes()));
+    return hash.equals(getUserHash(username));
+}"""),
+
+    entry("CWE-916","CRITICAL",4,True,"PBKDF2 with 1000 iterations — far below minimum",
+"""public byte[] hashPin(char[] pin, byte[] salt) throws Exception {
+    // FLAW: 1000 iterations is far below OWASP minimum of 310,000
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    PBEKeySpec spec = new PBEKeySpec(pin, salt, 1000, 256);
+    return skf.generateSecret(spec).getEncoded();
+}"""),
+
+    entry("CWE-916","CRITICAL",5,True,"SHA-1 in login verification",
+"""public boolean verifyLogin(String inputPassword, String storedHash) throws Exception {
+    // FLAW: SHA-1 is both broken and fast
+    MessageDigest md = MessageDigest.getInstance("SHA-1");
+    String inputHash = new String(Hex.encodeHex(md.digest(inputPassword.getBytes())));
+    return inputHash.equals(storedHash);
+}"""),
+
+    entry("CWE-916","CRITICAL",6,True,"PBKDF2 with 10000 iterations — below 2023 minimum",
+"""public byte[] deriveKey(char[] password, byte[] salt) throws Exception {
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    // FLAW: 10,000 iterations below OWASP 2023 minimum of 310,000
+    PBEKeySpec spec = new PBEKeySpec(password, salt, 10000, 256);
+    return skf.generateSecret(spec).getEncoded();
+}"""),
+
+    entry("CWE-916","CRITICAL",7,True,"SHA-256 in user registration without salt or slow hash",
+"""public void registerUser(String username, String password) throws Exception {
+    // FLAW: SHA-256 directly on password — no salt, not slow
+    MessageDigest md = MessageDigest.getInstance("SHA-256");
+    byte[] hash = md.digest(password.getBytes("UTF-8"));
+    userRepository.save(username, Base64.getEncoder().encodeToString(hash));
+}"""),
+
+    entry("CWE-916","CRITICAL",8,True,"Custom fast hash function for PIN storage",
+"""public String hashPin(String pin) {
+    // FLAW: custom fast hash — equivalent to SHA-256 speed problem
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        md.update(pin.getBytes());
+        return Base64.getEncoder().encodeToString(md.digest());
+    } catch (Exception e) {
+        return pin; // Worst case: returns plaintext
+    }
+}"""),
+
+    entry("CWE-916","CRITICAL",9,True,"Payment terminal PIN verification with fast hash",
+"""public class PinVerifier {
+    public boolean verifyPin(String enteredPin, String storedHash) {
+        // FLAW: SHA-256 used for PIN verification in payment terminal
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            String hash = Base64.getEncoder().encodeToString(
+                md.digest(enteredPin.getBytes("UTF-8")));
+            return hash.equals(storedHash);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}"""),
+
+    entry("CWE-916","CRITICAL",10,True,"PBKDF2 with SHA1 and low iterations",
+"""public byte[] hashPassword(char[] password, byte[] salt) throws Exception {
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+    // FLAW: SHA1 variant with only 5000 iterations — both algorithm and count are weak
+    PBEKeySpec spec = new PBEKeySpec(password, salt, 5000, 160);
+    return skf.generateSecret(spec).getEncoded();
+}"""),
+
+    entry("CWE-916","CRITICAL",11,True,"Admin password check with MD5",
+"""public boolean checkAdminPassword(String input) throws Exception {
+    // FLAW: MD5 for admin authentication — critical in payment system context
+    MessageDigest md = MessageDigest.getInstance("MD5");
+    String hash = DatatypeConverter.printHexBinary(md.digest(input.getBytes())).toLowerCase();
+    return ADMIN_PASSWORD_HASH.equals(hash);
+}"""),
+
+    entry("CWE-916","CRITICAL",12,True,"SHA-256 password check in Android login",
+"""public boolean checkPassword(String username, String inputPassword) {
+    // FLAW: fast hash in Android login activity
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] inputHash = md.digest(inputPassword.getBytes("UTF-8"));
+        byte[] storedHash = getUserHash(username);
+        return MessageDigest.isEqual(inputHash, storedHash);
+    } catch (Exception e) {
+        return false;
+    }
+}"""),
+
+    entry("CWE-916","CRITICAL",13,True,"PBKDF2 with 50000 iterations — still below minimum",
+"""public byte[] hashOperatorPin(char[] pin, byte[] salt) throws Exception {
+    // FLAW: 50,000 iterations is still below OWASP 2023 minimum of 310,000
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    PBEKeySpec spec = new PBEKeySpec(pin, salt, 50000, 256);
+    return skf.generateSecret(spec).getEncoded();
+}"""),
+
+    entry("CWE-916","CRITICAL",14,True,"Operator password hashed with SHA-256 in terminal",
+"""public class TerminalAuth {
+    public void setOperatorPassword(String password) throws Exception {
+        // FLAW: SHA-256 for operator password on payment terminal
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hash = md.digest(password.getBytes("UTF-8"));
+        secureStorage.store("operator_pwd_hash", Base64.getEncoder().encodeToString(hash));
+    }
+}"""),
+
+    entry("CWE-916","CRITICAL",15,True,"CRC32 used for password integrity — not a hash function",
+"""public long hashPassword(String password) {
+    // FLAW: CRC32 is a checksum, not a cryptographic hash
+    // Provides no password security whatsoever
+    CRC32 crc = new CRC32();
+    crc.update(password.getBytes());
+    return crc.getValue();
+}"""),
+
+    # --- SECURE ---
+    entry("CWE-916","CRITICAL",1,False,"bcrypt with cost 12 — recommended",
+"""public String hashPassword(String password) {
+    // FIX: bcrypt with cost 12 — slow by design, salt automatic
+    return BCrypt.hashpw(password, BCrypt.gensalt(12));
+}
+
+public boolean verifyPassword(String password, String hash) {
+    return BCrypt.checkpw(password, hash);
+}"""),
+
+    entry("CWE-916","CRITICAL",2,False,"Argon2 — OWASP top recommendation",
+"""public String hashPassword(String password) {
+    // FIX: Argon2 — winner of Password Hashing Competition, OWASP #1
+    Argon2 argon2 = Argon2Factory.create();
+    return argon2.hash(3, 65536, 1, password.toCharArray());
+}
+
+public boolean verifyPassword(String password, String hash) {
+    Argon2 argon2 = Argon2Factory.create();
+    return argon2.verify(hash, password.toCharArray());
+}"""),
+
+    entry("CWE-916","CRITICAL",3,False,"PBKDF2 with 310000 iterations — OWASP 2023 minimum",
+"""public byte[] hashPin(char[] pin) throws Exception {
+    // FIX: PBKDF2 with 310,000 iterations per OWASP 2023
+    byte[] salt = new byte[16];
+    new SecureRandom().nextBytes(salt);
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    PBEKeySpec spec = new PBEKeySpec(pin, salt, 310000, 256);
+    byte[] hash = skf.generateSecret(spec).getEncoded();
+    spec.clearPassword();
+    return hash;
+}"""),
+
+    entry("CWE-916","CRITICAL",4,False,"bcrypt in Android login activity",
+"""public boolean checkPassword(String username, String inputPassword) {
+    // FIX: bcrypt handles salt internally
+    String storedHash = getUserHash(username);
+    return BCrypt.checkpw(inputPassword, storedHash);
+}"""),
+
+    entry("CWE-916","CRITICAL",5,False,"Payment terminal PIN verification with bcrypt",
+"""public class PinVerifier {
+    public boolean verifyPin(String enteredPin, String storedHash) {
+        // FIX: bcrypt — slow enough to resist brute-force attacks
+        return BCrypt.checkpw(enteredPin, storedHash);
+    }
+
+    public String hashNewPin(String pin) {
+        return BCrypt.hashpw(pin, BCrypt.gensalt(12));
+    }
+}"""),
+
+    entry("CWE-916","CRITICAL",6,False,"Argon2 for operator authentication on terminal",
+"""public class TerminalAuth {
+    private final Argon2 argon2 = Argon2Factory.create();
+
+    public void setOperatorPassword(String password) {
+        // FIX: Argon2 for operator password — memory-hard, GPU-resistant
+        String hash = argon2.hash(3, 65536, 1, password.toCharArray());
+        secureStorage.store("operator_pwd_hash", hash);
+    }
+
+    public boolean verifyOperatorPassword(String input) {
+        String storedHash = secureStorage.retrieve("operator_pwd_hash");
+        return argon2.verify(storedHash, input.toCharArray());
+    }
+}"""),
+
+    entry("CWE-916","CRITICAL",7,False,"PBKDF2 with sufficient iterations and salt storage",
+"""public void registerUser(String username, char[] password) throws Exception {
+    // FIX: PBKDF2 with proper salt and iteration count
+    byte[] salt = new byte[16];
+    new SecureRandom().nextBytes(salt);
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    PBEKeySpec spec = new PBEKeySpec(password, salt, 310000, 256);
+    byte[] hash = skf.generateSecret(spec).getEncoded();
+    spec.clearPassword();
+    // Store both salt and hash — salt needed for verification
+    userRepository.save(username, hash, salt);
+}"""),
+
+    entry("CWE-916","CRITICAL",8,False,"bcrypt cost 14 for high-security admin passwords",
+"""public String hashAdminPassword(String password) {
+    // FIX: bcrypt cost 14 for admin — higher cost for privileged accounts
+    return BCrypt.hashpw(password, BCrypt.gensalt(14));
+}"""),
+
+    entry("CWE-916","CRITICAL",9,False,"Argon2id — recommended variant for password hashing",
+"""public String hashUserPassword(String password) {
+    // FIX: Argon2id — combined protection against side-channel and GPU attacks
+    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+    return argon2.hash(3, 65536, 1, password.toCharArray());
+}"""),
+
+    entry("CWE-916","CRITICAL",10,False,"PBKDF2 admin auth with 600000 iterations for higher security",
+"""public byte[] hashAdminCredential(char[] password, byte[] salt) throws Exception {
+    SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    // FIX: 600,000 iterations for admin credentials — twice the minimum
+    PBEKeySpec spec = new PBEKeySpec(password, salt, 600000, 256);
+    byte[] hash = skf.generateSecret(spec).getEncoded();
+    spec.clearPassword();
+    return hash;
+}"""),
+
+]
+
+records.extend(CWE916)
+
+# ===========================================================================
+# CWE-329 supplement — 10 synthetic examples to reach 50+ total
+# ===========================================================================
+
+CWE329_SUPPLEMENT = [
+
+    entry("CWE-329","HIGH",101,True,"Android AES-CBC with zero IV in payment activity",
+"""public byte[] encryptPaymentData(byte[] data, SecretKey key) throws Exception {
+    // FLAW: zero IV for AES-CBC in payment encryption
+    IvParameterSpec iv = new IvParameterSpec(new byte[16]);
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+    return cipher.doFinal(data);
+}"""),
+
+    entry("CWE-329","HIGH",102,True,"3DES-CBC with hardcoded IV for bank communication",
+"""public class BankProtocolEncryptor {
+    private static final byte[] BANK_IV = "12345678".getBytes(); // FLAW: hardcoded IV
+    public byte[] encryptBankMessage(byte[] message, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(BANK_IV));
+        return cipher.doFinal(message);
+    }
+}"""),
+
+    entry("CWE-329","HIGH",103,True,"IV stored as instance field and reused",
+"""public class TransactionEncryptor {
+    private IvParameterSpec iv = new IvParameterSpec(new byte[16]); // FLAW: reused
+
+    public byte[] encrypt(byte[] data, SecretKey key) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv); // Same IV for every call
+        return cipher.doFinal(data);
+    }
+}"""),
+
+    entry("CWE-329","HIGH",104,True,"Kotlin companion object IV — shared across instances",
+"""// Kotlin
+class PaymentCipher {
+    companion object {
+        private val STATIC_IV = IvParameterSpec(ByteArray(16)) // FLAW: shared
+    }
+    fun encrypt(data: ByteArray, key: SecretKey): ByteArray {
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        cipher.init(Cipher.ENCRYPT_MODE, key, STATIC_IV)
+        return cipher.doFinal(data)
+    }
+}"""),
+
+    entry("CWE-329","HIGH",105,True,"IV derived from predictable transaction ID",
+"""public byte[] encryptTransaction(byte[] txData, SecretKey key, long txId) throws Exception {
+    // FLAW: IV derived from transaction ID — predictable
+    byte[] ivBytes = ByteBuffer.allocate(16).putLong(txId).array();
+    IvParameterSpec iv = new IvParameterSpec(ivBytes);
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+    return cipher.doFinal(txData);
+}"""),
+
+    entry("CWE-329","HIGH",101,False,"AES-CBC with fresh SecureRandom IV per call",
+"""public byte[] encryptPaymentData(byte[] data, SecretKey key) throws Exception {
+    // FIX: fresh random IV generated for every encryption operation
+    byte[] ivBytes = new byte[16];
+    new SecureRandom().nextBytes(ivBytes);
+    IvParameterSpec iv = new IvParameterSpec(ivBytes);
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+    byte[] ciphertext = cipher.doFinal(data);
+    // Prepend IV to output for use during decryption
+    byte[] output = new byte[16 + ciphertext.length];
+    System.arraycopy(ivBytes, 0, output, 0, 16);
+    System.arraycopy(ciphertext, 0, output, 16, ciphertext.length);
+    return output;
+}"""),
+
+    entry("CWE-329","HIGH",102,False,"3DES-CBC bank protocol with fresh IV per transaction",
+"""public class BankProtocolEncryptor {
+    public byte[] encryptBankMessage(byte[] message, SecretKey key) throws Exception {
+        // FIX: fresh 8-byte IV for every 3DES-CBC operation
+        byte[] ivBytes = new byte[8];
+        new SecureRandom().nextBytes(ivBytes);
+        Cipher cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(ivBytes));
+        byte[] ciphertext = cipher.doFinal(message);
+        // Prepend IV so bank can decrypt
+        byte[] output = new byte[8 + ciphertext.length];
+        System.arraycopy(ivBytes, 0, output, 0, 8);
+        System.arraycopy(ciphertext, 0, output, 8, ciphertext.length);
+        return output;
+    }
+}"""),
+
+    entry("CWE-329","HIGH",103,False,"AES-GCM instead of AES-CBC — nonce handled explicitly",
+"""public byte[] encryptTransaction(byte[] data, SecretKey key) throws Exception {
+    // FIX: AES-GCM provides authenticated encryption — better than AES-CBC
+    byte[] nonce = new byte[12];
+    new SecureRandom().nextBytes(nonce);
+    GCMParameterSpec spec = new GCMParameterSpec(128, nonce);
+    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+    cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+    return cipher.doFinal(data);
+}"""),
+
+    entry("CWE-329","HIGH",104,False,"Kotlin fresh IV generated inside encrypt function",
+"""// Kotlin
+class PaymentCipher {
+    fun encrypt(data: ByteArray, key: SecretKey): ByteArray {
+        // FIX: IV generated inside function — never reused
+        val ivBytes = ByteArray(16).also { SecureRandom().nextBytes(it) }
+        val iv = IvParameterSpec(ivBytes)
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv)
+        return ivBytes + cipher.doFinal(data)
+    }
+}"""),
+
+    entry("CWE-329","HIGH",105,False,"IV extracted from received ciphertext for decryption",
+"""public byte[] decryptPaymentData(byte[] received, SecretKey key) throws Exception {
+    // FIX: IV prepended to ciphertext by sender — extract for decryption
+    byte[] ivBytes = Arrays.copyOf(received, 16);
+    byte[] ciphertext = Arrays.copyOfRange(received, 16, received.length);
+    IvParameterSpec iv = new IvParameterSpec(ivBytes);
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.DECRYPT_MODE, key, iv);
+    return cipher.doFinal(ciphertext);
+}"""),
+
+]
+
+records.extend(CWE329_SUPPLEMENT)
+
+# Write output
+with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    for r in records:
+        f.write(json.dumps(r, ensure_ascii=False) + "\n")
+
+# Print summary
+from collections import defaultdict
+stats = defaultdict(lambda: {"v": 0, "s": 0})
+for r in records:
+    if r["is_vulnerable"]:
+        stats[r["cwe_id"]]["v"] += 1
+    else:
+        stats[r["cwe_id"]]["s"] += 1
+
+print(f"\n{'CWE':<12} {'Vulnerable':>12} {'Secure':>10} {'Total':>8}")
+print("-" * 46)
+for cwe in sorted(stats):
+    v, s = stats[cwe]["v"], stats[cwe]["s"]
+    print(f"{cwe:<12} {v:>12} {s:>10} {v+s:>8}")
+print("-" * 46)
+tv = sum(s["v"] for s in stats.values())
+ts = sum(s["s"] for s in stats.values())
+print(f"{'TOTAL':<12} {tv:>12} {ts:>10} {tv+ts:>8}")
+print(f"\nWritten to: {OUTPUT_FILE}")
