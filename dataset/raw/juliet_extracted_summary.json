@@ -1,0 +1,78 @@
+{
+  "total": 1146,
+  "vulnerable": 351,
+  "secure": 795,
+  "by_folder": {
+    "CWE327_Use_Broken_Crypto": {
+      "files": 34,
+      "bad": 34,
+      "good": 60,
+      "skipped": 0,
+      "total": 94
+    },
+    "CWE321_Hard_Coded_Cryptographic_Key": {
+      "files": 60,
+      "bad": 37,
+      "good": 91,
+      "skipped": 23,
+      "total": 128
+    },
+    "CWE259_Hard_Coded_Password": {
+      "files": 180,
+      "bad": 111,
+      "good": 273,
+      "skipped": 69,
+      "total": 384
+    },
+    "CWE328_Reversible_One_Way_Hash": {
+      "files": 51,
+      "bad": 51,
+      "good": 90,
+      "skipped": 0,
+      "total": 141
+    },
+    "CWE759_Unsalted_One_Way_Hash": {
+      "files": 17,
+      "bad": 17,
+      "good": 30,
+      "skipped": 0,
+      "total": 47
+    },
+    "CWE760_Predictable_Salt_One_Way_Hash": {
+      "files": 17,
+      "bad": 17,
+      "good": 30,
+      "skipped": 0,
+      "total": 47
+    },
+    "CWE329_Not_Using_Random_IV_with_CBC_Mode": {
+      "files": 17,
+      "bad": 17,
+      "good": 30,
+      "skipped": 0,
+      "total": 47
+    },
+    "CWE338_Weak_PRNG": {
+      "files": 34,
+      "bad": 34,
+      "good": 60,
+      "skipped": 0,
+      "total": 94
+    },
+    "CWE319_Cleartext_Tx_Sensitive_Info": {
+      "files": 50,
+      "bad": 33,
+      "good": 131,
+      "skipped": 17,
+      "total": 164
+    }
+  },
+  "cwe_coverage": [
+    "CWE-327",
+    "CWE-328",
+    "CWE-311",
+    "CWE-330",
+    "CWE-798",
+    "CWE-329"
+  ]
+}
