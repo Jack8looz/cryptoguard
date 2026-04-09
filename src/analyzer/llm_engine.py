@@ -22,7 +22,6 @@ def _load_taxonomy_summary() -> str:
     if not readme.exists():
         return ""
     text = readme.read_text(encoding="utf-8")
-    # Extract the quick reference section
     start = text.find("## Quick reference")
     end   = text.find("\n---", start)
     if start == -1:
@@ -35,7 +34,6 @@ def _load_cwe_rules() -> str:
     rules = []
     for cwe_file in sorted(TAXONOMY_DIR.glob("CWE-*.md")):
         text = cwe_file.read_text(encoding="utf-8")
-        # Extract detection logic section only to keep prompt size manageable
         start = text.find("## Detection logic")
         end   = text.find("\n## ", start + 1)
         if start != -1:
@@ -66,11 +64,22 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 ## Quick reference
 {taxonomy_summary}
 
+## CWE classification rules (CRITICAL — apply before deciding any CWE)
+- Hardcoded string literal or byte array used directly as a key → CWE-798, NOT CWE-327
+- Wrong algorithm (DES, RC4, MD5 for passwords, AES/ECB) → CWE-327
+- Key derived from user input, method parameter, or config file → NOT a vulnerability
+- Key retrieved from Android KeyStore → NOT a vulnerability
+- Key generated fresh with KeyGenerator or KeyPairGenerator → NOT a vulnerability
+- Method named good1, good2, goodG2B, goodB2G → these are secure implementations, do NOT flag them
+- If a variable is initialized to empty string "" or null and then reassigned from user input or external source, it is NOT hardcoded — track the final value, not the initialization
+
 ## Prompt rules (IMPORTANT)
-1. List all JCA/crypto API usages you detect in the code first (chain-of-thought)
-2. For each API usage, identify ALL potential misuses — not just the most obvious one
-3. Base your analysis ONLY on actual code behavior — do NOT infer vulnerabilities from variable or method names alone
-4. Consider the full context: class name, method name, surrounding logic
+1. First, list every JCA/crypto API call you see in the code (chain-of-thought)
+2. For each API call, identify ALL potential misuses — not just the most obvious one
+3. Base analysis ONLY on actual code behavior — NOT on variable or method names alone
+4. If a key, IV, password, or salt comes from a parameter or external source — do NOT assume it is hardcoded
+5. Only flag what you can see directly in this snippet — do not speculate about other methods
+6. If in doubt between two CWEs, apply the CWE classification rules above to decide
 
 ## Output format
 Respond ONLY with a valid JSON array. No explanation, no markdown, no preamble.
