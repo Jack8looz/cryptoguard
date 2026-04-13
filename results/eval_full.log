@@ -1,0 +1,264 @@
+nohup: ignoring input
+
+CryptoGuard Evaluation — full
+Validation set: /home/driou/cryptoguard/dataset/splits/validation.jsonl
+
+Loading validation set...
+Total records to evaluate: 180
+Estimated time: 51-66 minutes
+
+  [  1/180] CWE-329 | secure | juliet_0d30a665... TN  (0.6s)
+  [  2/180] CWE-330 | secure | juliet_8dcaef74... TN  (0.4s)
+  [  3/180] CWE-798 | secure | juliet_433de0f2... FP ✖ →CWE-311 (4.2s)
+  [  4/180] CWE-326 | secure | synthetic_46ca93a3... TN  (2.1s)
+  [  5/180] CWE-311 | secure | juliet_536ee2d2... FP ✖ →CWE-311 (3.5s)
+  [  6/180] CWE-798 | vuln   | juliet_27b90fea... TP →CWE-798 (3.5s)
+  [  7/180] CWE-798 | secure | juliet_e3b2550a... TN  (0.5s)
+  [  8/180] CWE-798 | secure | juliet_13dc38fe... TN  (0.4s)
+  [  9/180] CWE-327 | secure | juliet_b5c75b17... TN  (0.5s)
+  [ 10/180] CWE-328 | secure | juliet_09da7dea... TN  (0.4s)
+
+  --- Progress: 10/180 | Elapsed: 0.3m | Remaining: 4.5m ---
+
+  [ 11/180] CWE-798 | secure | juliet_3fb5b6b2... TN  (0.4s)
+  [ 12/180] CWE-798 | secure | juliet_bcb789a4... FP ✖ →CWE-798 (6.8s)
+  [ 13/180] CWE-311 | secure | juliet_b2e6c852... TN  (5.3s)
+  [ 14/180] CWE-798 | secure | juliet_6d595e0b... TN  (2.3s)
+  [ 15/180] CWE-328 | secure | juliet_13c97754... TN  (0.4s)
+  [ 16/180] CWE-328 | vuln   | juliet_780659cd... TP →CWE-327 (2.9s)
+  [ 17/180] CWE-311 | secure | juliet_b0d8db2b... TN  (4.2s)
+  [ 18/180] CWE-329 | secure | juliet_336fe38f... TN  (2.3s)
+  [ 19/180] CWE-311 | secure | juliet_54947548... TN  (0.4s)
+  [ 20/180] CWE-798 | secure | juliet_18cc41da... FP ✖ →CWE-798 (9.9s)
+
+  --- Progress: 20/180 | Elapsed: 0.8m | Remaining: 6.8m ---
+
+  [ 21/180] CWE-328 | vuln   | juliet_ede1f415... TP →CWE-327 (5.1s)
+  [ 22/180] CWE-798 | secure | juliet_424d715f... FP ✖ →CWE-798 (3.0s)
+  [ 23/180] CWE-330 | secure | juliet_00fb2ede... TN  (0.4s)
+  [ 24/180] CWE-327 | vuln   | juliet_790d61dd... TP →CWE-327 (6.2s)
+  [ 25/180] CWE-328 | secure | juliet_41b03b85... TN  (0.4s)
+  [ 26/180] CWE-798 | secure | juliet_db2670f0... FP ✖ →CWE-798 (5.0s)
+  [ 27/180] CWE-328 | secure | juliet_58f475a2... TN  (2.4s)
+  [ 28/180] CWE-798 | secure | juliet_43e1d452... TN  (0.5s)
+  [ 29/180] CWE-798 | vuln   | juliet_0d944982... TP →CWE-798 (3.1s)
+  [ 30/180] CWE-328 | secure | juliet_4bd997bb... TN  (0.4s)
+
+  --- Progress: 30/180 | Elapsed: 1.3m | Remaining: 6.5m ---
+
+  [ 31/180] CWE-311 | secure | juliet_2571674a... TN  (5.5s)
+  [ 32/180] CWE-328 | secure | juliet_9a539d55... TN  (2.5s)
+  [ 33/180] CWE-328 | secure | juliet_a023b7b2... TN  (0.4s)
+  [ 34/180] CWE-798 | secure | juliet_bc1cf387... FP ✖ →CWE-798 (3.3s)
+  [ 35/180] CWE-798 | secure | juliet_6f89e8fa... TN  (0.4s)
+  [ 36/180] CWE-798 | vuln   | juliet_03d81ac6... TP →CWE-798 (3.3s)
+  [ 37/180] CWE-798 | vuln   | juliet_d1ea4e89... TP →CWE-798 (7.8s)
+  [ 38/180] CWE-798 | secure | juliet_a9a92bc6... TN  (2.3s)
+  [ 39/180] CWE-798 | secure | juliet_828bfa5e... TN  (0.4s)
+  [ 40/180] CWE-798 | secure | juliet_12a82255... TN  (0.4s)
+
+  --- Progress: 40/180 | Elapsed: 1.7m | Remaining: 6.1m ---
+
+  [ 41/180] CWE-328 | vuln   | juliet_68e6f235... TP →CWE-328 (6.0s)
+  [ 42/180] CWE-326 | secure | synthetic_26c30a2e... TN  (0.4s)
+  [ 43/180] CWE-330 | vuln   | juliet_775a06d6... FN ✖  (3.1s)
+  [ 44/180] CWE-311 | secure | juliet_44a73cae... FP ✖ →CWE-311 (3.6s)
+  [ 45/180] CWE-798 | vuln   | juliet_172b8bfa... TP →CWE-798 (5.7s)
+  [ 46/180] CWE-798 | vuln   | juliet_e3ab08a6... TP →CWE-798 (3.6s)
+  [ 47/180] CWE-798 | vuln   | juliet_767013fb... TP →CWE-798 (3.2s)
+  [ 48/180] CWE-798 | vuln   | juliet_c2b5d26a... TP →CWE-798 (3.5s)
+  [ 49/180] CWE-798 | vuln   | juliet_3b3c5f04... TP →CWE-798 (3.5s)
+  [ 50/180] CWE-311 | secure | juliet_af395e18... TN  (3.5s)
+
+  --- Progress: 50/180 | Elapsed: 2.3m | Remaining: 6.1m ---
+
+  [ 51/180] CWE-311 | secure | juliet_1b9fd7df... TN  (5.2s)
+  [ 52/180] CWE-311 | secure | juliet_ea584ffa... FP ✖ →CWE-311 (8.1s)
+  [ 53/180] CWE-328 | secure | juliet_d701fa2c... TN  (2.6s)
+  [ 54/180] CWE-798 | secure | juliet_b2ef1290... FP ✖ →CWE-798 (3.2s)
+  [ 55/180] CWE-798 | secure | juliet_00eacf6a... TN  (0.4s)
+  [ 56/180] CWE-798 | secure | juliet_8c1ff5ae... FP ✖ →CWE-798 (2.1s)
+  [ 57/180] CWE-798 | vuln   | juliet_90a7d411... TP →CWE-798 (4.8s)
+  [ 58/180] CWE-328 | vuln   | juliet_9dbd1cea... TP →CWE-327 (3.1s)
+  [ 59/180] CWE-798 | secure | juliet_f54b6603... TN  (0.4s)
+  [ 60/180] CWE-330 | secure | juliet_fd78c05e... TN  (0.4s)
+
+  --- Progress: 60/180 | Elapsed: 2.8m | Remaining: 5.7m ---
+
+  [ 61/180] CWE-328 | secure | juliet_353594b1... TN  (0.4s)
+  [ 62/180] CWE-798 | vuln   | juliet_38c47741... TP →CWE-798 (3.1s)
+  [ 63/180] CWE-327 | vuln   | juliet_d240554d... TP →CWE-327 (4.0s)
+  [ 64/180] CWE-798 | secure | juliet_ccfe4475... FP ✖ →CWE-798 (3.1s)
+  [ 65/180] CWE-330 | secure | juliet_c609f836... TN  (0.4s)
+  [ 66/180] CWE-798 | secure | juliet_e0bcee6d... TN  (0.4s)
+  [ 67/180] CWE-329 | vuln   | juliet_8a12c0df... TP →CWE-329 (3.3s)
+  [ 68/180] CWE-330 | secure | juliet_957da71e... TN  (0.4s)
+  [ 69/180] CWE-798 | secure | juliet_09eee1ce... FP ✖ →CWE-798 (6.0s)
+  [ 70/180] CWE-326 | vuln   | synthetic_13cf6330... TP →CWE-326 (2.2s)
+
+  --- Progress: 70/180 | Elapsed: 3.2m | Remaining: 5.1m ---
+
+  [ 71/180] CWE-327 | secure | juliet_7e26ad4b... TN  (0.5s)
+  [ 72/180] CWE-311 | secure | juliet_10d4f52b... TN  (3.5s)
+  [ 73/180] CWE-327 | vuln   | juliet_bd9a9ade... TP →CWE-327 (3.6s)
+  [ 74/180] CWE-330 | secure | juliet_1991ee8f... TN  (0.4s)
+  [ 75/180] CWE-798 | secure | juliet_3d4b1b1d... TN  (0.4s)
+  [ 76/180] CWE-327 | secure | juliet_683cf401... TN  (0.5s)
+  [ 77/180] CWE-328 | vuln   | juliet_b57042a6... TP →CWE-328 (4.7s)
+  [ 78/180] CWE-311 | secure | juliet_7e9a3e7d... TN  (5.0s)
+  [ 79/180] CWE-311 | secure | juliet_9ee22a9e... FP ✖ →CWE-311 (5.7s)
+  [ 80/180] CWE-327 | secure | juliet_cb69459a... TN  (2.7s)
+
+  --- Progress: 80/180 | Elapsed: 3.7m | Remaining: 4.6m ---
+
+  [ 81/180] CWE-798 | secure | juliet_ec0a6edd... TN  (0.5s)
+  [ 82/180] CWE-798 | secure | juliet_d5fa1fa4... FP ✖ →CWE-798 (1.7s)
+  [ 83/180] CWE-311 | secure | juliet_2f6e5457... TN  (0.4s)
+  [ 84/180] CWE-311 | secure | juliet_b8f3ef78... TN  (0.4s)
+  [ 85/180] CWE-328 | secure | juliet_2932bb54... TN  (0.4s)
+  [ 86/180] CWE-328 | secure | juliet_98f6bb99... TN  (0.4s)
+  [ 87/180] CWE-798 | secure | juliet_9881baf0... TN  (0.4s)
+  [ 88/180] CWE-311 | secure | juliet_09fe2f3f... TN  (0.4s)
+  [ 89/180] CWE-328 | vuln   | juliet_49bfb073... TP →CWE-328 (3.7s)
+  [ 90/180] CWE-798 | secure | juliet_e24eb076... FP ✖ →CWE-311 (5.7s)
+
+  --- Progress: 90/180 | Elapsed: 3.9m | Remaining: 3.9m ---
+
+  [ 91/180] CWE-798 | secure | juliet_3e4bc978... TN  (2.5s)
+  [ 92/180] CWE-347 | vuln   | synthetic_79522821... TP →CWE-347 (3.4s)
+  [ 93/180] CWE-798 | secure | juliet_b15ef3be... FP ✖ →CWE-311 (11.1s)
+  [ 94/180] CWE-916 | vuln   | synthetic_a7c30146... TP →CWE-916 (6.0s)
+  [ 95/180] CWE-330 | secure | juliet_de7e6629... TN  (0.4s)
+  [ 96/180] CWE-798 | vuln   | juliet_40fff20d... TP →CWE-798 (3.3s)
+  [ 97/180] CWE-798 | secure | juliet_d1933753... TN  (0.4s)
+  [ 98/180] CWE-798 | vuln   | juliet_fe7bb671... TP →CWE-798 (3.7s)
+  [ 99/180] CWE-329 | secure | juliet_c03157fd... TN  (0.5s)
+  [100/180] CWE-798 | secure | juliet_14db1c34... TN  (0.4s)
+
+  --- Progress: 100/180 | Elapsed: 4.4m | Remaining: 3.5m ---
+
+  [101/180] CWE-798 | secure | juliet_901f7a70... TN  (0.4s)
+  [102/180] CWE-311 | secure | juliet_dd472e6e... TN  (5.6s)
+  [103/180] CWE-798 | secure | juliet_a9898708... TN  (2.5s)
+  [104/180] CWE-798 | secure | juliet_614f2945... TN  (0.4s)
+  [105/180] CWE-347 | vuln   | synthetic_1750934c... TP →CWE-347 (3.1s)
+  [106/180] CWE-328 | secure | juliet_9b9a1105... TN  (0.4s)
+  [107/180] CWE-798 | secure | juliet_57ac96f9... FP ✖ →CWE-798 (6.2s)
+  [108/180] CWE-328 | secure | juliet_f3a5136f... TN  (1.3s)
+  [109/180] CWE-798 | secure | juliet_02475cbc... FP ✖ →CWE-798 (3.0s)
+  [110/180] CWE-330 | secure | juliet_64357cd3... TN  (0.4s)
+
+  --- Progress: 110/180 | Elapsed: 4.8m | Remaining: 3.1m ---
+
+  [111/180] CWE-328 | vuln   | juliet_d7a76fb4... TP →CWE-327 (3.0s)
+  [112/180] CWE-916 | secure | synthetic_cdf0a26d... TN  (0.4s)
+  [113/180] CWE-311 | vuln   | juliet_a1e9d663... TP →CWE-311 (3.3s)
+  [114/180] CWE-311 | secure | juliet_92e83318... FP ✖ →CWE-311 (3.6s)
+  [115/180] CWE-798 | secure | juliet_ca95c363... TN  (2.5s)
+  [116/180] CWE-329 | secure | juliet_6803cbfe... TN  (0.5s)
+  [117/180] CWE-798 | secure | juliet_4b127703... TN  (0.4s)
+  [118/180] CWE-798 | secure | juliet_7daaea60... FP ✖ →CWE-798 (3.1s)
+  [119/180] CWE-798 | secure | juliet_48a9b14c... TN  (0.4s)
+  [120/180] CWE-328 | secure | juliet_555b3bc0... TN  (0.4s)
+
+  --- Progress: 120/180 | Elapsed: 5.1m | Remaining: 2.6m ---
+
+  [121/180] CWE-798 | vuln   | juliet_7af9c525... TP →CWE-798 (3.0s)
+  [122/180] CWE-798 | vuln   | juliet_9c5c14b5... TP →CWE-798 (3.5s)
+  [123/180] CWE-328 | secure | juliet_70b11f2b... TN  (0.4s)
+  [124/180] CWE-328 | vuln   | juliet_efc912ea... TP →CWE-327 (1.9s)
+  [125/180] CWE-311 | secure | juliet_9d0d1a35... TN  (0.4s)
+  [126/180] CWE-798 | secure | juliet_1f8db440... TN  (0.4s)
+  [127/180] CWE-798 | vuln   | juliet_1f629bf9... TP →CWE-798 (3.8s)
+  [128/180] CWE-328 | secure | juliet_86f4ccb6... TN  (0.4s)
+  [129/180] CWE-798 | secure | juliet_a3ff1d99... TN  (0.5s)
+  [130/180] CWE-798 | secure | juliet_b8ad1fd8... TN  (0.4s)
+
+  --- Progress: 130/180 | Elapsed: 5.4m | Remaining: 2.1m ---
+
+  [131/180] CWE-798 | vuln   | juliet_751a872f... TP →CWE-798 (4.3s)
+  [132/180] CWE-328 | vuln   | juliet_33a6f664... TP →CWE-328 (4.9s)
+  [133/180] CWE-798 | vuln   | juliet_7a3ebdba... TP →CWE-798 (4.0s)
+  [134/180] CWE-330 | vuln   | juliet_aa59d8df... FN ✖  (5.5s)
+  [135/180] CWE-798 | secure | juliet_8bc6c86d... FP ✖ →CWE-798 (3.3s)
+  [136/180] CWE-327 | vuln   | juliet_c643c622... TP →CWE-327 (5.0s)
+  [137/180] CWE-329 | secure | juliet_dc14ea5f... TN  (0.5s)
+  [138/180] CWE-328 | secure | juliet_8ef11e57... TN  (0.4s)
+  [139/180] CWE-798 | secure | juliet_2879bc15... FP ✖ →CWE-798 (11.8s)
+  [140/180] CWE-311 | secure | juliet_62698956... FP ✖ →CWE-311 (5.7s)
+
+  --- Progress: 140/180 | Elapsed: 6.1m | Remaining: 1.7m ---
+
+  [141/180] CWE-330 | secure | juliet_8c470552... TN  (2.5s)
+  [142/180] CWE-329 | secure | synthetic_de21ca45... TN  (0.5s)
+  [143/180] CWE-311 | secure | juliet_84904933... FP ✖ →CWE-311 (3.6s)
+  [144/180] CWE-916 | secure | synthetic_8150abef... TN  (0.4s)
+  [145/180] CWE-328 | secure | juliet_1eec71f2... TN  (0.4s)
+  [146/180] CWE-798 | vuln   | juliet_4783b48a... TP →CWE-798 (3.6s)
+  [147/180] CWE-311 | secure | juliet_afc28074... TN  (-0.8s)
+  [148/180] CWE-327 | vuln   | juliet_22476b66... TP →CWE-327 (4.5s)
+  [149/180] CWE-327 | secure | juliet_3512484b... TN  (0.5s)
+  [150/180] CWE-328 | secure | juliet_5dfbffeb... TN  (0.4s)
+
+  --- Progress: 150/180 | Elapsed: 6.4m | Remaining: 1.3m ---
+
+  [151/180] CWE-798 | secure | juliet_88520316... TN  (0.4s)
+  [152/180] CWE-328 | secure | juliet_92b6cfa3... TN  (0.4s)
+  [153/180] CWE-328 | secure | juliet_31311f42... TN  (0.4s)
+  [154/180] CWE-798 | secure | juliet_4f5294fc... TN  (0.4s)
+  [155/180] CWE-328 | secure | juliet_bbfa73f7... TN  (0.4s)
+  [156/180] CWE-328 | vuln   | juliet_8d6e346f... TP →CWE-327 (2.9s)
+  [157/180] CWE-327 | secure | juliet_493b6c15... TN  (0.5s)
+  [158/180] CWE-798 | vuln   | juliet_066ff5bd... TP →CWE-798 (3.6s)
+  [159/180] CWE-347 | secure | synthetic_47e324a1... TN  (0.4s)
+  [160/180] CWE-798 | secure | juliet_d888bc53... TN  (0.5s)
+
+  --- Progress: 160/180 | Elapsed: 6.5m | Remaining: 0.8m ---
+
+  [161/180] CWE-798 | secure | juliet_8fcada3c... TN  (0.4s)
+  [162/180] CWE-328 | secure | juliet_58da6d9e... TN  (0.4s)
+  [163/180] CWE-311 | secure | juliet_c77e2bf4... TN  (0.4s)
+  [164/180] CWE-327 | vuln   | juliet_8d52b7b8... TP →CWE-327 (6.8s)
+  [165/180] CWE-328 | secure | juliet_58cf5418... TN  (0.4s)
+  [166/180] CWE-328 | vuln   | juliet_c1150ab1... TP →CWE-328 (2.9s)
+  [167/180] CWE-329 | secure | juliet_71eb1f94... TN  (0.5s)
+  [168/180] CWE-798 | secure | juliet_5217f7d7... FP ✖ →CWE-798 (3.5s)
+  [169/180] CWE-330 | secure | juliet_ddd85386... TN  (0.4s)
+  [170/180] CWE-798 | secure | juliet_9a821741... TN  (0.4s)
+
+  --- Progress: 170/180 | Elapsed: 6.8m | Remaining: 0.4m ---
+
+  [171/180] CWE-327 | secure | juliet_63182413... TN  (-0.7s)
+  [172/180] CWE-798 | secure | juliet_b852e684... TN  (0.4s)
+  [173/180] CWE-311 | vuln   | juliet_be88493f... FN ✖  (3.4s)
+  [174/180] CWE-798 | secure | juliet_86dfd1c9... TN  (0.5s)
+  [175/180] CWE-330 | vuln   | juliet_64e02b4c... FN ✖  (3.1s)
+  [176/180] CWE-330 | vuln   | juliet_3827f3f4... FN ✖  (3.2s)
+  [177/180] CWE-798 | vuln   | juliet_753baa92... TP →CWE-798 (3.4s)
+  [178/180] CWE-798 | secure | juliet_a8319e3a... TN  (0.5s)
+  [179/180] CWE-327 | secure | juliet_ab3a7f46... TN  (0.5s)
+  [180/180] CWE-798 | secure | juliet_71df4313... FP ✖ →CWE-798 (3.3s)
+
+  --- Progress: 180/180 | Elapsed: 7.1m | Remaining: 0.0m ---
+
+
+===========================================================================
+CWE           Total   TP   FP   FN   TN   Prec    Rec     F1  CWE-Acc
+---------------------------------------------------------------------------
+CWE-311          24    1    7    1   15  0.125  0.500  0.200 ✖   8.000
+CWE-326           3    1    0    0    2  1.000  1.000  1.000   1.000
+CWE-327          14    6    0    0    8  1.000  1.000  1.000   1.000
+CWE-328          35   11    0    0   24  1.000  1.000  1.000   0.455
+CWE-329           8    1    0    0    7  1.000  1.000  1.000   1.000
+CWE-330          14    0    0    4   10  0.000  0.000  0.000 ✖   0.000
+CWE-347           3    2    0    0    1  1.000  1.000  1.000   1.000
+CWE-798          76   21   20    0   35  0.512  1.000  0.677 !   1.810
+CWE-916           3    1    0    0    2  1.000  1.000  1.000   1.000
+---------------------------------------------------------------------------
+OVERALL         180   44   27    5  104  0.620  0.898  0.733
+===========================================================================
+
+Legend: ✖ = F1 < 0.50 (needs urgent attention)  ! = F1 < 0.70 (needs tuning)
+
+Results saved to: results/eval_full.json
+Total time: 7.1 minutes
