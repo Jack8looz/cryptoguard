@@ -15,14 +15,26 @@ VALID_CWES = {
 VALID_SEVERITIES  = {"CRITICAL", "HIGH", "WARNING", "NONE"}
 VALID_CONFIDENCES = {"high", "medium", "low"}
 
-# Post-processing confidence filters per CWE
-# CWE-798: suppress medium/low confidence to reduce goodG2B false positives
-# CWE-311: suppress low confidence to reduce connection pattern false positives
 MIN_CONFIDENCE = {
     "CWE-798": "high",
     "CWE-311": "medium",
 }
 CONFIDENCE_RANK = {"high": 0, "medium": 1, "low": 2}
+
+# Active model — can be overridden at runtime
+_active_model = OLLAMA_MODEL
+
+
+def set_model(model_name: str):
+    """Override the active model for this session."""
+    global _active_model, _SYSTEM_PROMPT
+    _active_model = model_name
+    _SYSTEM_PROMPT = None  # force prompt rebuild
+    print(f"  [ENGINE] Model set to: {model_name}")
+
+
+def get_model() -> str:
+    return _active_model
 
 
 def _load_taxonomy_summary() -> str:
@@ -169,15 +181,9 @@ def _validate_finding(finding: dict) -> bool:
 
 
 def _apply_confidence_filter(findings: list) -> list:
-    """
-    Post-processing confidence filter.
-    Suppresses findings below the minimum confidence threshold per CWE.
-    CWE-798: keep only high confidence (reduces goodG2B false positives)
-    CWE-311: keep high and medium confidence (reduces connection pattern FP)
-    """
     filtered = []
     for f in findings:
-        cwe = f.get("cwe_id", "")
+        cwe      = f.get("cwe_id", "")
         min_conf = MIN_CONFIDENCE.get(cwe)
         if min_conf is None:
             filtered.append(f)
@@ -191,7 +197,7 @@ def _apply_confidence_filter(findings: list) -> list:
 
 def _call_ollama(system_prompt: str, user_prompt: str) -> str:
     payload = {
-        "model":  OLLAMA_MODEL,
+        "model":  _active_model,
         "prompt": f"<|system|>\n{system_prompt}\n<|user|>\n{user_prompt}\n<|assistant|>",
         "stream": False,
         "options": {

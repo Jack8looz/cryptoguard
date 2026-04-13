@@ -10,7 +10,7 @@ from typing import List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.analyzer.llm_engine import analyze_snippet
+from src.analyzer.llm_engine import analyze_snippet, set_model, get_model
 from src.parser.code_parser import CodeSnippet
 
 VALIDATION_PATH = Path(__file__).parent.parent.parent / "dataset" / "splits" / "validation.jsonl"
@@ -45,23 +45,19 @@ def load_validation_set(sample_per_cwe: Optional[int] = None) -> List[dict]:
     if sample_per_cwe is None:
         return records
 
-    # Stratified sampling — maintain vulnerable/secure ratio per CWE
     by_cwe = defaultdict(list)
     for r in records:
         by_cwe[r["cwe_id"]].append(r)
 
     sampled = []
     for cwe, items in sorted(by_cwe.items()):
-        n = min(sample_per_cwe, len(items))
-        vuln   = [x for x in items if x["is_vulnerable"]]
-        secure = [x for x in items if not x["is_vulnerable"]]
-
-        # Maintain approximate ratio
+        n        = min(sample_per_cwe, len(items))
+        vuln     = [x for x in items if x["is_vulnerable"]]
+        secure   = [x for x in items if not x["is_vulnerable"]]
         n_vuln   = max(1, round(n * len(vuln) / len(items)))
         n_secure = max(1, n - n_vuln)
         n_vuln   = min(n_vuln,   len(vuln))
         n_secure = min(n_secure, len(secure))
-
         random.seed(42)
         sampled.extend(random.sample(vuln,   n_vuln))
         sampled.extend(random.sample(secure, n_secure))
@@ -138,8 +134,10 @@ def compute_metrics(results: List[EvalResult], cwe: str) -> dict:
     }
 
 
-def print_metrics_table(all_metrics: List[dict]):
+def print_metrics_table(all_metrics: List[dict], model_name: str = ""):
+    label = f" [{model_name}]" if model_name else ""
     print(f"\n{'='*75}")
+    print(f"  Results{label}")
     print(f"{'CWE':<12} {'Total':>6} {'TP':>4} {'FP':>4} {'FN':>4} {'TN':>4} "
           f"{'Prec':>6} {'Rec':>6} {'F1':>6} {'CWE-Acc':>8}")
     print(f"{'-'*75}")
@@ -155,7 +153,7 @@ def print_metrics_table(all_metrics: List[dict]):
         total_tp += m["tp"]; total_fp += m["fp"]
         total_fn += m["fn"]; total_tn += m["tn"]
 
-    total   = total_tp + total_fp + total_fn + total_tn
+    total     = total_tp + total_fp + total_fn + total_tn
     overall_p = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0
     overall_r = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0
     overall_f1= 2 * overall_p * overall_r / (overall_p + overall_r) if (overall_p + overall_r) > 0 else 0
@@ -164,20 +162,25 @@ def print_metrics_table(all_metrics: List[dict]):
           f"{total_fn:>4} {total_tn:>4} {overall_p:>6.3f} "
           f"{overall_r:>6.3f} {overall_f1:>6.3f}")
     print(f"{'='*75}")
-    print(f"\nLegend: ✖ = F1 < 0.50 (needs urgent attention)  ! = F1 < 0.70 (needs tuning)")
+    print(f"\nLegend: ✖ = F1 < 0.50  ! = F1 < 0.70")
 
 
 def run_evaluation(sample_per_cwe: Optional[int] = None,
-                   output_file: Optional[str] = None):
-    mode = f"sampled ({sample_per_cwe} per CWE)" if sample_per_cwe else "full"
-    print(f"\nCryptoGuard Evaluation — {mode}")
+                   output_file: Optional[str] = None,
+                   model: Optional[str] = None):
+
+    if model:
+        set_model(model)
+
+    active = get_model()
+    mode   = f"sampled ({sample_per_cwe} per CWE)" if sample_per_cwe else "full"
+    print(f"\nCryptoGuard Evaluation — {mode} — model: {active}")
     print(f"Validation set: {VALIDATION_PATH}")
 
     print(f"\nLoading validation set...")
     records = load_validation_set(sample_per_cwe)
     print(f"Total records to evaluate: {len(records)}")
 
-    # Estimate time
     est_min = len(records) * 17 / 60
     print(f"Estimated time: {est_min:.0f}-{est_min*1.3:.0f} minutes\n")
 
@@ -193,7 +196,6 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
         result = evaluate_record(record)
         results.append(result)
 
-        # Print inline result
         if result.is_vulnerable and result.predicted_vuln:
             status = "TP"
         elif result.is_vulnerable and not result.predicted_vuln:
@@ -206,7 +208,6 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
         cwe_note = f"→{result.predicted_cwe}" if result.predicted_vuln else ""
         print(f"{status} {cwe_note} ({result.elapsed:.1f}s)")
 
-        # Progress estimate
         if i % 10 == 0:
             elapsed   = time.time() - t_start
             remaining = (elapsed / i) * (total - i)
@@ -214,20 +215,20 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
                   f"Elapsed: {elapsed/60:.1f}m | "
                   f"Remaining: {remaining/60:.1f}m ---\n")
 
-    # Compute metrics per CWE
     all_metrics = [compute_metrics(results, cwe) for cwe in VALID_CWES]
-    print_metrics_table([m for m in all_metrics if m])
+    print_metrics_table([m for m in all_metrics if m], model_name=active)
 
-    # Save results
     RESULTS_DIR.mkdir(exist_ok=True)
-    tag = f"sample{sample_per_cwe}" if sample_per_cwe else "full"
-    out = output_file or str(RESULTS_DIR / f"eval_{tag}.json")
+    model_tag = active.replace(":", "_").replace(".", "_")
+    tag       = f"sample{sample_per_cwe}" if sample_per_cwe else "full"
+    out       = output_file or str(RESULTS_DIR / f"eval_{model_tag}_{tag}.json")
 
     output_data = {
-        "mode":     mode,
-        "total":    len(records),
-        "metrics":  [m for m in all_metrics if m],
-        "results":  [
+        "mode":    mode,
+        "model":   active,
+        "total":   len(records),
+        "metrics": [m for m in all_metrics if m],
+        "results": [
             {
                 "id":            r.record_id,
                 "cwe_id":        r.cwe_id,
@@ -254,5 +255,9 @@ if __name__ == "__main__":
                         help="Number of examples per CWE (default: all)")
     parser.add_argument("--output", "-o", type=str, default=None,
                         help="Output JSON file path")
+    parser.add_argument("--model",  "-m", type=str, default=None,
+                        help="Ollama model name (default: qwen2.5-coder:7b)")
     args = parser.parse_args()
-    run_evaluation(sample_per_cwe=args.sample, output_file=args.output)
+    run_evaluation(sample_per_cwe=args.sample,
+                   output_file=args.output,
+                   model=args.model)
