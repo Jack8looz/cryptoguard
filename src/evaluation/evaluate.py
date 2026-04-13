@@ -32,6 +32,7 @@ class EvalResult:
     confidence:     Optional[str]
     correct_cwe:    bool
     elapsed:        float
+    error:          Optional[str] = None
 
 
 def load_validation_set(sample_per_cwe: Optional[int] = None) -> List[dict]:
@@ -79,11 +80,18 @@ def record_to_snippet(record: dict) -> CodeSnippet:
 
 
 def evaluate_record(record: dict) -> EvalResult:
-    snippet  = record_to_snippet(record)
-    t0       = time.time()
-    findings = analyze_snippet(snippet)
-    elapsed  = time.time() - t0
+    snippet = record_to_snippet(record)
+    t0      = time.time()
+    error   = None
 
+    try:
+        findings = analyze_snippet(snippet)
+    except RuntimeError as e:
+        # Timeout or connection error — treat as no findings, log the error
+        findings = []
+        error    = str(e)
+
+    elapsed        = time.time() - t0
     predicted_vuln = len(findings) > 0
     predicted_cwe  = findings[0].get("cwe_id") if findings else None
     confidence     = findings[0].get("confidence") if findings else None
@@ -98,6 +106,7 @@ def evaluate_record(record: dict) -> EvalResult:
         confidence     = confidence,
         correct_cwe    = correct_cwe,
         elapsed        = elapsed,
+        error          = error,
     )
 
 
@@ -121,6 +130,8 @@ def compute_metrics(results: List[EvalResult], cwe: str) -> dict:
     correct_cwe_count = sum(1 for r in cwe_results if r.predicted_vuln and r.correct_cwe)
     cwe_accuracy      = correct_cwe_count / tp if tp > 0 else 0.0
 
+    errors = sum(1 for r in cwe_results if r.error)
+
     return {
         "cwe":          cwe,
         "total":        len(cwe_results),
@@ -131,6 +142,7 @@ def compute_metrics(results: List[EvalResult], cwe: str) -> dict:
         "recall":       round(recall, 3),
         "f1":           round(f1, 3),
         "cwe_accuracy": round(cwe_accuracy, 3),
+        "errors":       errors,
     }
 
 
@@ -139,19 +151,21 @@ def print_metrics_table(all_metrics: List[dict], model_name: str = ""):
     print(f"\n{'='*75}")
     print(f"  Results{label}")
     print(f"{'CWE':<12} {'Total':>6} {'TP':>4} {'FP':>4} {'FN':>4} {'TN':>4} "
-          f"{'Prec':>6} {'Rec':>6} {'F1':>6} {'CWE-Acc':>8}")
+          f"{'Prec':>6} {'Rec':>6} {'F1':>6} {'Err':>4}")
     print(f"{'-'*75}")
-    total_tp = total_fp = total_fn = total_tn = 0
+    total_tp = total_fp = total_fn = total_tn = total_err = 0
     for m in all_metrics:
         if not m:
             continue
         f1_str = f"{m['f1']:.3f}"
         flag   = " ✖" if m["f1"] < 0.5 else (" !" if m["f1"] < 0.7 else "")
+        err    = m.get("errors", 0)
         print(f"{m['cwe']:<12} {m['total']:>6} {m['tp']:>4} {m['fp']:>4} "
               f"{m['fn']:>4} {m['tn']:>4} {m['precision']:>6.3f} "
-              f"{m['recall']:>6.3f} {f1_str:>6}{flag}  {m['cwe_accuracy']:>6.3f}")
-        total_tp += m["tp"]; total_fp += m["fp"]
-        total_fn += m["fn"]; total_tn += m["tn"]
+              f"{m['recall']:>6.3f} {f1_str:>6}{flag}  {err:>3}")
+        total_tp  += m["tp"]; total_fp += m["fp"]
+        total_fn  += m["fn"]; total_tn += m["tn"]
+        total_err += err
 
     total     = total_tp + total_fp + total_fn + total_tn
     overall_p = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0
@@ -160,9 +174,9 @@ def print_metrics_table(all_metrics: List[dict], model_name: str = ""):
     print(f"{'-'*75}")
     print(f"{'OVERALL':<12} {total:>6} {total_tp:>4} {total_fp:>4} "
           f"{total_fn:>4} {total_tn:>4} {overall_p:>6.3f} "
-          f"{overall_r:>6.3f} {overall_f1:>6.3f}")
+          f"{overall_r:>6.3f} {overall_f1:>6.3f}   {total_err:>2}")
     print(f"{'='*75}")
-    print(f"\nLegend: ✖ = F1 < 0.50  ! = F1 < 0.70")
+    print(f"\nLegend: ✖ = F1 < 0.50  ! = F1 < 0.70  Err = timeout/connection errors")
 
 
 def run_evaluation(sample_per_cwe: Optional[int] = None,
@@ -196,7 +210,9 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
         result = evaluate_record(record)
         results.append(result)
 
-        if result.is_vulnerable and result.predicted_vuln:
+        if result.error:
+            status = "ERR"
+        elif result.is_vulnerable and result.predicted_vuln:
             status = "TP"
         elif result.is_vulnerable and not result.predicted_vuln:
             status = "FN ✖"
@@ -206,14 +222,17 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
             status = "TN"
 
         cwe_note = f"→{result.predicted_cwe}" if result.predicted_vuln else ""
-        print(f"{status} {cwe_note} ({result.elapsed:.1f}s)")
+        err_note = f" [ERR: {result.error[:30]}]" if result.error else ""
+        print(f"{status} {cwe_note} ({result.elapsed:.1f}s){err_note}")
 
         if i % 10 == 0:
             elapsed   = time.time() - t_start
             remaining = (elapsed / i) * (total - i)
+            errors    = sum(1 for r in results if r.error)
             print(f"\n  --- Progress: {i}/{total} | "
                   f"Elapsed: {elapsed/60:.1f}m | "
-                  f"Remaining: {remaining/60:.1f}m ---\n")
+                  f"Remaining: {remaining/60:.1f}m | "
+                  f"Errors: {errors} ---\n")
 
     all_metrics = [compute_metrics(results, cwe) for cwe in VALID_CWES]
     print_metrics_table([m for m in all_metrics if m], model_name=active)
@@ -237,13 +256,17 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
                 "predicted_cwe": r.predicted_cwe,
                 "confidence":    r.confidence,
                 "elapsed":       round(r.elapsed, 2),
+                "error":         r.error,
             }
             for r in results
         ]
     }
     with open(out, "w") as f:
         json.dump(output_data, f, indent=2)
+
+    total_errors = sum(1 for r in results if r.error)
     print(f"\nResults saved to: {out}")
+    print(f"Total errors (timeouts): {total_errors}")
     total_time = time.time() - t_start
     print(f"Total time: {total_time/60:.1f} minutes")
 

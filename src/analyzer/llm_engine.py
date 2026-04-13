@@ -4,9 +4,9 @@ import requests
 from pathlib import Path
 from src.parser.code_parser import CodeSnippet
 
-OLLAMA_URL   = "http://localhost:11434/api/generate"
-OLLAMA_MODEL = "qwen2.5-coder:7b"
-TAXONOMY_DIR = Path(__file__).parent.parent.parent / "docs" / "taxonomy"
+OLLAMA_URL_GENERATE = "http://localhost:11434/api/generate"
+OLLAMA_MODEL        = "qwen2.5-coder:7b"
+TAXONOMY_DIR        = Path(__file__).parent.parent.parent / "docs" / "taxonomy"
 
 VALID_CWES = {
     "CWE-311", "CWE-326", "CWE-327", "CWE-328",
@@ -21,15 +21,13 @@ MIN_CONFIDENCE = {
 }
 CONFIDENCE_RANK = {"high": 0, "medium": 1, "low": 2}
 
-# Active model — can be overridden at runtime
 _active_model = OLLAMA_MODEL
 
 
 def set_model(model_name: str):
-    """Override the active model for this session."""
     global _active_model, _SYSTEM_PROMPT
-    _active_model = model_name
-    _SYSTEM_PROMPT = None  # force prompt rebuild
+    _active_model  = model_name
+    _SYSTEM_PROMPT = None
     print(f"  [ENGINE] Model set to: {model_name}")
 
 
@@ -37,11 +35,15 @@ def get_model() -> str:
     return _active_model
 
 
+def _is_phi3() -> bool:
+    return "phi3" in _active_model.lower() or "phi-3" in _active_model.lower()
+
+
 def _load_taxonomy_summary() -> str:
     readme = TAXONOMY_DIR / "README.md"
     if not readme.exists():
         return ""
-    text = readme.read_text(encoding="utf-8")
+    text  = readme.read_text(encoding="utf-8")
     start = text.find("## Quick reference")
     end   = text.find("\n---", start)
     if start == -1:
@@ -52,7 +54,7 @@ def _load_taxonomy_summary() -> str:
 def _load_cwe_rules() -> str:
     rules = []
     for cwe_file in sorted(TAXONOMY_DIR.glob("CWE-*.md")):
-        text = cwe_file.read_text(encoding="utf-8")
+        text  = cwe_file.read_text(encoding="utf-8")
         start = text.find("## Detection logic")
         end   = text.find("\n## ", start + 1)
         if start != -1:
@@ -61,7 +63,8 @@ def _load_cwe_rules() -> str:
     return "\n\n".join(rules)
 
 
-def _build_system_prompt() -> str:
+def _build_system_prompt_full() -> str:
+    """Full system prompt for Qwen — includes complete taxonomy detection logic."""
     taxonomy_summary = _load_taxonomy_summary()
     cwe_rules        = _load_cwe_rules()
 
@@ -96,32 +99,35 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 - If comment says "FIX:" or "it was not sent over the network" -> this is a secure pattern, do NOT flag
 
 ### CWE-327 -- Wrong algorithm
-- Wrong algorithm (DES, 3DES outside bank class, RC4, MD5 for passwords, AES/ECB) -> CWE-327
+- Wrong algorithm (DES, 3DES outside bank class, RC4, AES/ECB, MD5 for passwords) -> CWE-327
 - AES without mode specified on Android defaults to ECB -> CWE-327
 
-### CWE-330 -- Weak randomness (BLOCKLIST -- flag unconditionally)
-- java.util.Random is on the BLOCKLIST for security use -- flag EVERY occurrence, no exceptions
-- new Random() used for ANY purpose in a security method -> CWE-330, always
-- Math.random() used for security purposes -> CWE-330
-- SecureRandom is the ONLY safe choice for security-related random values
-- If you see new Random() followed by nextInt(), nextLong(), or nextBytes() -> CWE-330, unconditionally
-- Even if a comment says FLAW or POTENTIAL FLAW near Random() -- flag it as CWE-330
+### CWE-330 -- Weak randomness
+- new Random() or Math.random() for any security purpose -> CWE-330, always
+- SecureRandom is the only safe choice
 
-### CWE-311 -- Missing encryption (flag the SINK, not the source)
-- The vulnerability is in the SINK (where sensitive data is sent), not in the source of the data
-- DriverManager.getConnection(url, user, password) where password comes from external source (badSource, readLine, method parameter from untrusted input) -> CWE-311
-- If password in getConnection() is a hardcoded literal like "Password1234!" -> CWE-798, NOT CWE-311
-- If comment says "FIX:" or "not sent over the network" -> this is intentionally local, do NOT flag as CWE-311
-- Methods named goodG2B, goodG2B1, goodG2B2, goodB2G -> do NOT flag, these are secure Juliet patterns
-- Sensitive data (password, PIN, key, token, card number) passed to a logging call -> CWE-311/CWE-312
-- HTTP URL (not HTTPS) used to transmit sensitive data -> CWE-311/CWE-319
-- SharedPreferences.putString() with a sensitive value and no prior encryption call -> CWE-311/CWE-312
+### CWE-311 -- Missing encryption
+- DriverManager.getConnection() with password from external source -> CWE-311
+- Hardcoded password in getConnection() -> CWE-798 not CWE-311
+- Comment says "FIX:" or "not sent over the network" -> do NOT flag
+- goodG2B, goodG2B1, goodG2B2, goodB2G methods -> do NOT flag
 
-### CWE-328 -- Weak hash / missing salt
-- SHA-256, SHA-1, MD5 applied to a password variable -> CWE-328 (missing salt) or CWE-916 (fast hash)
-- If the issue is no salt -> CWE-328
-- If the issue is fast algorithm for passwords -> CWE-916
-- Do not report CWE-327 for password hashing issues -- use CWE-328 or CWE-916
+### CWE-328 -- Weak hash
+- SHA-1, MD5, SHA-256 on password without salt -> CWE-328
+- Fast hash for passwords -> CWE-916
+- Do NOT use CWE-327 for hashing issues
+
+### CWE-329 -- Predictable IV
+- Hardcoded or zeroed IvParameterSpec in CBC mode -> CWE-329
+
+### CWE-326 -- Inadequate key size
+- RSA < 2048 bits, EC < 256 bits, AES < 128 bits -> CWE-326
+
+### CWE-347 -- Improper JWT verification
+- parseClaimsJwt() instead of parseClaimsJws() -> CWE-347
+
+### CWE-916 -- Insufficient password hashing
+- Fast algorithm (SHA-256, MD5) for password storage -> CWE-916
 
 ## Prompt rules (IMPORTANT)
 1. First, list every JCA/crypto API call you see in the code (chain-of-thought)
@@ -133,11 +139,12 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 7. new Random() in any security context is ALWAYS CWE-330 -- flag it, no exceptions
 8. DriverManager.getConnection() with password from external source -> CWE-311. If password is a hardcoded literal or comment says FIX -> do NOT flag CWE-311
 9. Focus on the SINK -- where does the sensitive data end up? That determines the CWE
-10. For password hashing issues: missing salt -> CWE-328, fast algorithm -> CWE-916, wrong algorithm -> CWE-327. Do NOT use CWE-327 for hashing without salt
+10. For password hashing issues: missing salt -> CWE-328, fast algorithm -> CWE-916, wrong algorithm -> CWE-327
 11. If a comment says "FIX:" anywhere in the method -> this is a secure implementation, treat it as not vulnerable
 
 ## Output format
-Respond ONLY with a valid JSON array. No explanation, no markdown, no preamble.
+Respond ONLY with a valid JSON array. No explanation, no markdown, no preamble, no postamble.
+Start your response with [ and end with ].
 Each finding must follow this exact schema:
 {{
   "cwe_id": "CWE-XXX",
@@ -150,7 +157,28 @@ Each finding must follow this exact schema:
 
 If no vulnerability is found, return an empty array: []
 Return a JSON array even if there is only one finding.
+IMPORTANT: Your entire response must be valid JSON. Do not write anything before [ or after ].
 """
+
+
+def _build_system_prompt_compact() -> str:
+    """
+    Minimal system prompt for Phi3-3.8B.
+    No taxonomy tables — only essential detection rules.
+    Kept under 500 tokens to leave sufficient context for code + response.
+    """
+    return """You are a security expert. Detect cryptographic vulnerabilities in Java/Kotlin code.
+Rules: DES/3DES/RC4/AES-ECB -> CWE-327 CRITICAL. Hardcoded key/password literal -> CWE-798 CRITICAL. new Random() for security -> CWE-330 HIGH. Hardcoded IV in CBC -> CWE-329 HIGH. RSA<2048/AES<128 -> CWE-326 HIGH. SHA-1/MD5/SHA-256 on password without salt -> CWE-328 HIGH. Fast hash for password storage -> CWE-916 HIGH. parseClaimsJwt() -> CWE-347 HIGH. DriverManager.getConnection() with external password -> CWE-311 HIGH.
+Safe: KeyGenerator, SecureRandom, Android KeyStore, AES/GCM, bcrypt, PBKDF2, parseClaimsJws().
+Do NOT flag: good1/good2/goodG2B/goodG2B1/goodG2B2/goodB2G methods. Comment says "FIX:" -> secure. Variable init to "" then overwritten by readLine() -> NOT hardcoded. Hardcoded password in getConnection() -> CWE-798 not CWE-311.
+Respond ONLY with JSON array: [{"cwe_id":"CWE-XXX","severity":"CRITICAL|HIGH|WARNING","confidence":"high|medium|low","explanation":"...","fix_code":"...","line_hint":1}]
+If no vulnerability: []"""
+
+
+def _build_system_prompt() -> str:
+    if _is_phi3():
+        return _build_system_prompt_compact()
+    return _build_system_prompt_full()
 
 
 def _build_user_prompt(snippet: CodeSnippet) -> str:
@@ -160,12 +188,29 @@ Method: {snippet.method_name}
 Language: {snippet.language}
 Lines: {snippet.start_line}-{snippet.end_line}
 
-Analyze the following code:
+Analyze the following code and respond ONLY with a JSON array:
 
 ```{snippet.language}
 {snippet.code}
 ```
+
+Remember: respond ONLY with [ ... ] JSON array, nothing else.
 """
+
+
+def _build_phi3_prompt(system_prompt: str, user_prompt: str) -> str:
+    """
+    Phi3 generate API format.
+    Inject '[' at end so model continues the JSON array directly.
+    """
+    return (
+        f"<|user|>\n"
+        f"{system_prompt}\n\n"
+        f"{user_prompt}\n"
+        f"<|end|>\n"
+        f"<|assistant|>\n"
+        f"["
+    )
 
 
 def _validate_finding(finding: dict) -> bool:
@@ -196,39 +241,87 @@ def _apply_confidence_filter(findings: list) -> list:
 
 
 def _call_ollama(system_prompt: str, user_prompt: str) -> str:
-    payload = {
-        "model":  _active_model,
-        "prompt": f"<|system|>\n{system_prompt}\n<|user|>\n{user_prompt}\n<|assistant|>",
-        "stream": False,
-        "options": {
-            "temperature": 0.0,
-            "top_p":       0.9,
-            "top_k":       20,
+    options = {"temperature": 0.0, "top_p": 0.9, "top_k": 20}
+
+    if _is_phi3():
+        # Phi3 — generate API with native instruct template + injected '['
+        prompt = _build_phi3_prompt(system_prompt, user_prompt)
+        payload = {
+            "model":   _active_model,
+            "prompt":  prompt,
+            "stream":  False,
+            "options": options,
         }
-    }
-    try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=120)
-        response.raise_for_status()
-        return response.json().get("response", "")
-    except requests.exceptions.ConnectionError:
-        raise RuntimeError("Ollama is not running. Start it with: ollama serve")
-    except requests.exceptions.Timeout:
-        raise RuntimeError("Ollama timed out -- model may be loading, try again")
+        try:
+            response = requests.post(OLLAMA_URL_GENERATE, json=payload, timeout=120)
+            response.raise_for_status()
+            raw = response.json().get("response", "").strip()
+            # Prepend '[' only if the model did not already include it
+            if not raw.startswith("["):
+                raw = "[" + raw
+            return raw
+        except requests.exceptions.ConnectionError:
+            raise RuntimeError("Ollama is not running. Start it with: ollama serve")
+        except requests.exceptions.Timeout:
+            raise RuntimeError("Ollama timed out -- model may be loading, try again")
+    else:
+        # Qwen and all other models — generate API with Qwen chat template
+        prompt = f"<|system|>\n{system_prompt}\n<|user|>\n{user_prompt}\n<|assistant|>"
+        payload = {
+            "model":   _active_model,
+            "prompt":  prompt,
+            "stream":  False,
+            "options": options,
+        }
+        try:
+            response = requests.post(OLLAMA_URL_GENERATE, json=payload, timeout=120)
+            response.raise_for_status()
+            return response.json().get("response", "")
+        except requests.exceptions.ConnectionError:
+            raise RuntimeError("Ollama is not running. Start it with: ollama serve")
+        except requests.exceptions.Timeout:
+            raise RuntimeError("Ollama timed out -- model may be loading, try again")
+
+
+def _find_matching_bracket(s: str, start: int) -> int:
+    """Find the index of the closing ] that matches the [ at start."""
+    depth = 0
+    for i in range(start, len(s)):
+        if s[i] == "[":
+            depth += 1
+        elif s[i] == "]":
+            depth -= 1
+            if depth == 0:
+                return i
+    return -1
 
 
 def _parse_response(raw: str) -> list:
     raw = raw.strip()
     if raw.startswith("```"):
         lines = raw.split("\n")
-        raw = "\n".join(lines[1:-1]) if lines[-1].strip() == "```" else "\n".join(lines[1:])
+        raw   = "\n".join(lines[1:-1]) if lines[-1].strip() == "```" else "\n".join(lines[1:])
     start = raw.find("[")
-    end   = raw.rfind("]")
-    if start == -1 or end == -1:
+    if start == -1:
+        return []
+    end = _find_matching_bracket(raw, start)
+    if end == -1:
+        # Fallback: use rfind
+        end = raw.rfind("]")
+    if end == -1:
         return []
     try:
         findings = json.loads(raw[start:end + 1])
     except json.JSONDecodeError:
-        return []
+        partial = raw[start:end + 1]
+        last    = partial.rfind("}")
+        if last != -1:
+            try:
+                findings = json.loads(partial[:last + 1] + "]")
+            except json.JSONDecodeError:
+                return []
+        else:
+            return []
     if not isinstance(findings, list):
         return []
     return [f for f in findings if _validate_finding(f)]
@@ -254,7 +347,7 @@ def analyze_snippet(snippet: CodeSnippet) -> list:
 
 def analyze_file(file_path: str) -> list:
     from src.parser.code_parser import extract_snippets_from_file
-    snippets = extract_snippets_from_file(file_path)
+    snippets     = extract_snippets_from_file(file_path)
     all_findings = []
     for snippet in snippets:
         findings = analyze_snippet(snippet)
@@ -264,9 +357,9 @@ def analyze_file(file_path: str) -> list:
 
 def analyze_directory(dir_path: str) -> list:
     from src.parser.code_parser import extract_snippets_from_dir
-    snippets = extract_snippets_from_dir(dir_path)
+    snippets     = extract_snippets_from_dir(dir_path)
     all_findings = []
-    total = len(snippets)
+    total        = len(snippets)
     for i, snippet in enumerate(snippets, 1):
         print(f"  [{i}/{total}] Analyzing {snippet.context}.{snippet.method_name}...")
         findings = analyze_snippet(snippet)
