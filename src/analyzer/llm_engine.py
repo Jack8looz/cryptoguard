@@ -71,7 +71,7 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 - Key retrieved from Android KeyStore → NOT a vulnerability
 - Key generated fresh with KeyGenerator or KeyPairGenerator → NOT a vulnerability
 - Method named good1, good2, goodG2B, goodB2G → these are secure implementations, do NOT flag them
-- If a variable is initialized to empty string "" or null and then reassigned from user input or external source, it is NOT hardcoded — track the final value, not the initialization
+- If a value comes from a variable passed as a parameter, assume it is NOT hardcoded
 
 ## Prompt rules (IMPORTANT)
 1. First, list every JCA/crypto API call you see in the code (chain-of-thought)
