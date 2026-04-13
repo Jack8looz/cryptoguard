@@ -1,0 +1,1079 @@
+{
+  "mode": "sampled (20 per CWE)",
+  "total": 105,
+  "metrics": [
+    {
+      "cwe": "CWE-311",
+      "total": 20,
+      "vulnerable": 2,
+      "secure": 18,
+      "tp": 1,
+      "fp": 5,
+      "fn": 1,
+      "tn": 13,
+      "precision": 0.167,
+      "recall": 0.5,
+      "f1": 0.25,
+      "cwe_accuracy": 6.0
+    },
+    {
+      "cwe": "CWE-326",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-327",
+      "total": 14,
+      "vulnerable": 6,
+      "secure": 8,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "tn": 8,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-328",
+      "total": 20,
+      "vulnerable": 6,
+      "secure": 14,
+      "tp": 6,
+      "fp": 0,
+      "fn": 0,
+      "tn": 14,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 0.333
+    },
+    {
+      "cwe": "CWE-329",
+      "total": 8,
+      "vulnerable": 1,
+      "secure": 7,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-330",
+      "total": 14,
+      "vulnerable": 4,
+      "secure": 10,
+      "tp": 0,
+      "fp": 0,
+      "fn": 4,
+      "tn": 10,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "cwe_accuracy": 0.0
+    },
+    {
+      "cwe": "CWE-347",
+      "total": 3,
+      "vulnerable": 2,
+      "secure": 1,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "tn": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-798",
+      "total": 20,
+      "vulnerable": 6,
+      "secure": 14,
+      "tp": 6,
+      "fp": 4,
+      "fn": 0,
+      "tn": 10,
+      "precision": 0.6,
+      "recall": 1.0,
+      "f1": 0.75,
+      "cwe_accuracy": 1.667
+    },
+    {
+      "cwe": "CWE-916",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    }
+  ],
+  "results": [
+    {
+      "id": "juliet_a1e9d663",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-311",
+      "confidence": "high",
+      "elapsed": 7.97
+    },
+    {
+      "id": "juliet_be88493f",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.32
+    },
+    {
+      "id": "juliet_ea584ffa",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-311",
+      "confidence": "high",
+      "elapsed": 3.48
+    },
+    {
+      "id": "juliet_1b9fd7df",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 4.88
+    },
+    {
+      "id": "juliet_afc28074",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.22
+    },
+    {
+      "id": "juliet_2571674a",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 5.31
+    },
+    {
+      "id": "juliet_54947548",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.28
+    },
+    {
+      "id": "juliet_b0d8db2b",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 5.26
+    },
+    {
+      "id": "juliet_b8f3ef78",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.29
+    },
+    {
+      "id": "juliet_536ee2d2",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-311",
+      "confidence": "high",
+      "elapsed": 2.24
+    },
+    {
+      "id": "juliet_09fe2f3f",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.36
+    },
+    {
+      "id": "juliet_b2e6c852",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 5.31
+    },
+    {
+      "id": "juliet_9d0d1a35",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.2
+    },
+    {
+      "id": "juliet_9ee22a9e",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-311",
+      "confidence": "high",
+      "elapsed": 5.47
+    },
+    {
+      "id": "juliet_c77e2bf4",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.35
+    },
+    {
+      "id": "juliet_dd472e6e",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 5.4
+    },
+    {
+      "id": "juliet_7e9a3e7d",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 5.04
+    },
+    {
+      "id": "juliet_44a73cae",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-311",
+      "confidence": "high",
+      "elapsed": 4.29
+    },
+    {
+      "id": "juliet_af395e18",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 5.51
+    },
+    {
+      "id": "juliet_62698956",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-311",
+      "confidence": "high",
+      "elapsed": 3.52
+    },
+    {
+      "id": "synthetic_13cf6330",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-326",
+      "confidence": "high",
+      "elapsed": 5.31
+    },
+    {
+      "id": "synthetic_46ca93a3",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.38
+    },
+    {
+      "id": "synthetic_26c30a2e",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.38
+    },
+    {
+      "id": "juliet_8d52b7b8",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 3.76
+    },
+    {
+      "id": "juliet_790d61dd",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 6.13
+    },
+    {
+      "id": "juliet_22476b66",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 4.51
+    },
+    {
+      "id": "juliet_bd9a9ade",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 2.34
+    },
+    {
+      "id": "juliet_d240554d",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 4.91
+    },
+    {
+      "id": "juliet_c643c622",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 6.12
+    },
+    {
+      "id": "juliet_cb69459a",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.55
+    },
+    {
+      "id": "juliet_7e26ad4b",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.48
+    },
+    {
+      "id": "juliet_493b6c15",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_b5c75b17",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_3512484b",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_683cf401",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_63182413",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.48
+    },
+    {
+      "id": "juliet_ab3a7f46",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.48
+    },
+    {
+      "id": "juliet_c1150ab1",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-328",
+      "confidence": "high",
+      "elapsed": 2.88
+    },
+    {
+      "id": "juliet_ede1f415",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 3.15
+    },
+    {
+      "id": "juliet_780659cd",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 2.92
+    },
+    {
+      "id": "juliet_b57042a6",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-328",
+      "confidence": "high",
+      "elapsed": 6.15
+    },
+    {
+      "id": "juliet_8d6e346f",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 1.76
+    },
+    {
+      "id": "juliet_d7a76fb4",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 2.91
+    },
+    {
+      "id": "juliet_4bd997bb",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.4
+    },
+    {
+      "id": "juliet_58f475a2",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_bbfa73f7",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_1eec71f2",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.41
+    },
+    {
+      "id": "juliet_41b03b85",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.44
+    },
+    {
+      "id": "juliet_5dfbffeb",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.44
+    },
+    {
+      "id": "juliet_555b3bc0",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.44
+    },
+    {
+      "id": "juliet_13c97754",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.42
+    },
+    {
+      "id": "juliet_09da7dea",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_8ef11e57",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.4
+    },
+    {
+      "id": "juliet_58da6d9e",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.41
+    },
+    {
+      "id": "juliet_31311f42",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_353594b1",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_2932bb54",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_8a12c0df",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-329",
+      "confidence": "high",
+      "elapsed": 3.28
+    },
+    {
+      "id": "juliet_0d30a665",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.49
+    },
+    {
+      "id": "synthetic_de21ca45",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_c03157fd",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.51
+    },
+    {
+      "id": "juliet_336fe38f",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.49
+    },
+    {
+      "id": "juliet_71eb1f94",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_dc14ea5f",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.48
+    },
+    {
+      "id": "juliet_6803cbfe",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "juliet_775a06d6",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.09
+    },
+    {
+      "id": "juliet_3827f3f4",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.22
+    },
+    {
+      "id": "juliet_aa59d8df",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.3
+    },
+    {
+      "id": "juliet_64e02b4c",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.09
+    },
+    {
+      "id": "juliet_c609f836",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.42
+    },
+    {
+      "id": "juliet_fd78c05e",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_00fb2ede",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.38
+    },
+    {
+      "id": "juliet_1991ee8f",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.38
+    },
+    {
+      "id": "juliet_de7e6629",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.41
+    },
+    {
+      "id": "juliet_957da71e",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.4
+    },
+    {
+      "id": "juliet_8dcaef74",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": -0.84
+    },
+    {
+      "id": "juliet_8c470552",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.38
+    },
+    {
+      "id": "juliet_64357cd3",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_ddd85386",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.38
+    },
+    {
+      "id": "synthetic_79522821",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-347",
+      "confidence": "high",
+      "elapsed": 3.43
+    },
+    {
+      "id": "synthetic_1750934c",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-347",
+      "confidence": "high",
+      "elapsed": 3.02
+    },
+    {
+      "id": "synthetic_47e324a1",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_753baa92",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 3.35
+    },
+    {
+      "id": "juliet_d1ea4e89",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 8.97
+    },
+    {
+      "id": "juliet_27b90fea",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 5.63
+    },
+    {
+      "id": "juliet_3b3c5f04",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 3.51
+    },
+    {
+      "id": "juliet_c2b5d26a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 2.28
+    },
+    {
+      "id": "juliet_751a872f",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 4.21
+    },
+    {
+      "id": "juliet_db2670f0",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 6.15
+    },
+    {
+      "id": "juliet_d888bc53",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.65
+    },
+    {
+      "id": "juliet_18cc41da",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 6.02
+    },
+    {
+      "id": "juliet_8bc6c86d",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 5.39
+    },
+    {
+      "id": "juliet_a8319e3a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.46
+    },
+    {
+      "id": "juliet_57ac96f9",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 5.97
+    },
+    {
+      "id": "juliet_6d595e0b",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.36
+    },
+    {
+      "id": "juliet_4b127703",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": -0.81
+    },
+    {
+      "id": "juliet_3e4bc978",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.36
+    },
+    {
+      "id": "juliet_13dc38fe",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.36
+    },
+    {
+      "id": "juliet_e3b2550a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.49
+    },
+    {
+      "id": "juliet_8fcada3c",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_828bfa5e",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_12a82255",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "synthetic_a7c30146",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-916",
+      "confidence": "high",
+      "elapsed": 4.08
+    },
+    {
+      "id": "synthetic_cdf0a26d",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "synthetic_8150abef",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.42
+    }
+  ]
+}
