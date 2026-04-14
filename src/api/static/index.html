@@ -493,10 +493,10 @@ async function loadScans() {
 
 function updateStats(scans) {
   let critical = 0, high = 0;
-  scans.forEach(s => { critical += s.critical || 0; });
+  scans.forEach(s => { critical += s.critical || 0; high += s.high || 0; });
   document.getElementById('stat-scans').textContent    = scans.length;
   document.getElementById('stat-critical').textContent = critical || '0';
-  document.getElementById('stat-high').textContent     = '—';
+  document.getElementById('stat-high').textContent     = high || '0';
 }
 
 function renderScanList(scans, containerId) {

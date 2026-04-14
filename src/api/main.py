@@ -201,6 +201,7 @@ async def list_scans():
             "created_at":     s.get("created_at", 0),
             "findings_count": len(s.get("findings", [])),
             "critical":       sum(1 for f in s.get("findings", []) if f.get("severity") == "CRITICAL"),
+            "high":           sum(1 for f in s.get("findings", []) if f.get("severity") == "HIGH"),
         }
         for s in scans[:20]
     ]
