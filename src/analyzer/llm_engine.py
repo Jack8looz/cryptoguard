@@ -21,7 +21,17 @@ MIN_CONFIDENCE = {
 }
 CONFIDENCE_RANK = {"high": 0, "medium": 1, "low": 2}
 
-_active_model = OLLAMA_MODEL
+# Hybrid routing — CWEs where Phi3 outperforms Qwen based on validation results
+PHI3_CWES = {"CWE-330", "CWE-311"}
+
+# Signals that trigger Phi3 routing
+PHI3_SIGNALS = {
+    "CWE-330": ["new Random()", "Math.random()", "java.util.Random"],
+    "CWE-311": ["DriverManager", "getConnection", "getConnection("],
+}
+
+_active_model  = OLLAMA_MODEL
+_hybrid_mode   = False
 
 
 def set_model(model_name: str):
@@ -35,8 +45,31 @@ def get_model() -> str:
     return _active_model
 
 
-def _is_phi3() -> bool:
-    return "phi3" in _active_model.lower() or "phi-3" in _active_model.lower()
+def set_hybrid(enabled: bool):
+    global _hybrid_mode, _SYSTEM_PROMPT
+    _hybrid_mode   = enabled
+    _SYSTEM_PROMPT = None
+    print(f"  [ENGINE] Hybrid mode: {'ON' if enabled else 'OFF'}")
+
+
+def get_hybrid() -> bool:
+    return _hybrid_mode
+
+
+def _is_phi3(model: str = None) -> bool:
+    m = model or _active_model
+    return "phi3" in m.lower() or "phi-3" in m.lower()
+
+
+def _detect_phi3_cwes(code: str) -> set:
+    """Detect which CWEs in code should be routed to Phi3."""
+    triggered = set()
+    for cwe, signals in PHI3_SIGNALS.items():
+        for signal in signals:
+            if signal in code:
+                triggered.add(cwe)
+                break
+    return triggered
 
 
 def _load_taxonomy_summary() -> str:
@@ -64,7 +97,6 @@ def _load_cwe_rules() -> str:
 
 
 def _build_system_prompt_full() -> str:
-    """Full system prompt for Qwen — includes complete taxonomy detection logic."""
     taxonomy_summary = _load_taxonomy_summary()
     cwe_rules        = _load_cwe_rules()
 
@@ -162,11 +194,7 @@ IMPORTANT: Your entire response must be valid JSON. Do not write anything before
 
 
 def _build_system_prompt_compact() -> str:
-    """
-    Minimal system prompt for Phi3-3.8B.
-    No taxonomy tables — only essential detection rules.
-    Kept under 500 tokens to leave sufficient context for code + response.
-    """
+    """Minimal system prompt for Phi3-3.8B — under 500 tokens."""
     return """You are a security expert. Detect cryptographic vulnerabilities in Java/Kotlin code.
 Rules: DES/3DES/RC4/AES-ECB -> CWE-327 CRITICAL. Hardcoded key/password literal -> CWE-798 CRITICAL. new Random() for security -> CWE-330 HIGH. Hardcoded IV in CBC -> CWE-329 HIGH. RSA<2048/AES<128 -> CWE-326 HIGH. SHA-1/MD5/SHA-256 on password without salt -> CWE-328 HIGH. Fast hash for password storage -> CWE-916 HIGH. parseClaimsJwt() -> CWE-347 HIGH. DriverManager.getConnection() with external password -> CWE-311 HIGH.
 Safe: KeyGenerator, SecureRandom, Android KeyStore, AES/GCM, bcrypt, PBKDF2, parseClaimsJws().
@@ -175,8 +203,9 @@ Respond ONLY with JSON array: [{"cwe_id":"CWE-XXX","severity":"CRITICAL|HIGH|WAR
 If no vulnerability: []"""
 
 
-def _build_system_prompt() -> str:
-    if _is_phi3():
+def _build_system_prompt(model: str = None) -> str:
+    m = model or _active_model
+    if _is_phi3(m):
         return _build_system_prompt_compact()
     return _build_system_prompt_full()
 
@@ -199,10 +228,6 @@ Remember: respond ONLY with [ ... ] JSON array, nothing else.
 
 
 def _build_phi3_prompt(system_prompt: str, user_prompt: str) -> str:
-    """
-    Phi3 generate API format.
-    Inject '[' at end so model continues the JSON array directly.
-    """
     return (
         f"<|user|>\n"
         f"{system_prompt}\n\n"
@@ -240,51 +265,7 @@ def _apply_confidence_filter(findings: list) -> list:
     return filtered
 
 
-def _call_ollama(system_prompt: str, user_prompt: str) -> str:
-    options = {"temperature": 0.0, "top_p": 0.9, "top_k": 20}
-
-    if _is_phi3():
-        # Phi3 — generate API with native instruct template + injected '['
-        prompt = _build_phi3_prompt(system_prompt, user_prompt)
-        payload = {
-            "model":   _active_model,
-            "prompt":  prompt,
-            "stream":  False,
-            "options": options,
-        }
-        try:
-            response = requests.post(OLLAMA_URL_GENERATE, json=payload, timeout=120)
-            response.raise_for_status()
-            raw = response.json().get("response", "").strip()
-            # Prepend '[' only if the model did not already include it
-            if not raw.startswith("["):
-                raw = "[" + raw
-            return raw
-        except requests.exceptions.ConnectionError:
-            raise RuntimeError("Ollama is not running. Start it with: ollama serve")
-        except requests.exceptions.Timeout:
-            raise RuntimeError("Ollama timed out -- model may be loading, try again")
-    else:
-        # Qwen and all other models — generate API with Qwen chat template
-        prompt = f"<|system|>\n{system_prompt}\n<|user|>\n{user_prompt}\n<|assistant|>"
-        payload = {
-            "model":   _active_model,
-            "prompt":  prompt,
-            "stream":  False,
-            "options": options,
-        }
-        try:
-            response = requests.post(OLLAMA_URL_GENERATE, json=payload, timeout=120)
-            response.raise_for_status()
-            return response.json().get("response", "")
-        except requests.exceptions.ConnectionError:
-            raise RuntimeError("Ollama is not running. Start it with: ollama serve")
-        except requests.exceptions.Timeout:
-            raise RuntimeError("Ollama timed out -- model may be loading, try again")
-
-
 def _find_matching_bracket(s: str, start: int) -> int:
-    """Find the index of the closing ] that matches the [ at start."""
     depth = 0
     for i in range(start, len(s)):
         if s[i] == "[":
@@ -294,6 +275,51 @@ def _find_matching_bracket(s: str, start: int) -> int:
             if depth == 0:
                 return i
     return -1
+
+
+def _call_model(model: str, system_prompt: str, user_prompt: str) -> str:
+    options = {"temperature": 0.0, "top_p": 0.9, "top_k": 20}
+    timeout = 120
+
+    if _is_phi3(model):
+        prompt = _build_phi3_prompt(system_prompt, user_prompt)
+        payload = {
+            "model":   model,
+            "prompt":  prompt,
+            "stream":  False,
+            "options": options,
+        }
+        try:
+            response = requests.post(OLLAMA_URL_GENERATE, json=payload, timeout=timeout)
+            response.raise_for_status()
+            raw = response.json().get("response", "").strip()
+            if not raw.startswith("["):
+                raw = "[" + raw
+            return raw
+        except requests.exceptions.ConnectionError:
+            raise RuntimeError("Ollama is not running. Start it with: ollama serve")
+        except requests.exceptions.Timeout:
+            raise RuntimeError("Ollama timed out -- model may be loading, try again")
+    else:
+        prompt = f"<|system|>\n{system_prompt}\n<|user|>\n{user_prompt}\n<|assistant|>"
+        payload = {
+            "model":   model,
+            "prompt":  prompt,
+            "stream":  False,
+            "options": options,
+        }
+        try:
+            response = requests.post(OLLAMA_URL_GENERATE, json=payload, timeout=timeout)
+            response.raise_for_status()
+            return response.json().get("response", "")
+        except requests.exceptions.ConnectionError:
+            raise RuntimeError("Ollama is not running. Start it with: ollama serve")
+        except requests.exceptions.Timeout:
+            raise RuntimeError("Ollama timed out -- model may be loading, try again")
+
+
+def _call_ollama(system_prompt: str, user_prompt: str) -> str:
+    return _call_model(_active_model, system_prompt, user_prompt)
 
 
 def _parse_response(raw: str) -> list:
@@ -306,7 +332,6 @@ def _parse_response(raw: str) -> list:
         return []
     end = _find_matching_bracket(raw, start)
     if end == -1:
-        # Fallback: use rfind
         end = raw.rfind("]")
     if end == -1:
         return []
@@ -327,10 +352,76 @@ def _parse_response(raw: str) -> list:
     return [f for f in findings if _validate_finding(f)]
 
 
-_SYSTEM_PROMPT = None
+_SYSTEM_PROMPT      = None
+_PHI3_SYSTEM_PROMPT = None
+
+
+def _get_system_prompt(model: str) -> str:
+    global _SYSTEM_PROMPT, _PHI3_SYSTEM_PROMPT
+    if _is_phi3(model):
+        if _PHI3_SYSTEM_PROMPT is None:
+            _PHI3_SYSTEM_PROMPT = _build_system_prompt_compact()
+        return _PHI3_SYSTEM_PROMPT
+    else:
+        if _SYSTEM_PROMPT is None:
+            _SYSTEM_PROMPT = _build_system_prompt_full()
+        return _SYSTEM_PROMPT
+
+
+def _run_model(model: str, snippet: CodeSnippet) -> list:
+    """Run a specific model on a snippet and return validated findings."""
+    sys_prompt  = _get_system_prompt(model)
+    user_prompt = _build_user_prompt(snippet)
+    raw         = _call_model(model, sys_prompt, user_prompt)
+    findings    = _parse_response(raw)
+    findings    = _apply_confidence_filter(findings)
+    for f in findings:
+        f["file"]       = snippet.file_path
+        f["start_line"] = snippet.start_line
+        f["method"]     = snippet.method_name
+        f["model"]      = model
+    return findings
+
+
+def _merge_findings(qwen_findings: list, phi3_findings: list,
+                    phi3_cwes: set) -> list:
+    """
+    Merge findings from both models.
+    - For CWEs routed to Phi3: use Phi3 findings only
+    - For all other CWEs: use Qwen findings only
+    - No duplicates
+    """
+    merged = []
+    seen_cwes = set()
+
+    # Add Phi3 findings for Phi3-routed CWEs
+    for f in phi3_findings:
+        if f.get("cwe_id") in phi3_cwes:
+            merged.append(f)
+            seen_cwes.add(f.get("cwe_id"))
+
+    # Add Qwen findings for non-Phi3 CWEs
+    for f in qwen_findings:
+        cwe = f.get("cwe_id")
+        if cwe not in phi3_cwes:
+            merged.append(f)
+
+    return merged
 
 
 def analyze_snippet(snippet: CodeSnippet) -> list:
+    """
+    Analyze a code snippet for cryptographic vulnerabilities.
+    In hybrid mode: routes CWE-330 and CWE-311 to Phi3, everything else to Qwen.
+    In standard mode: uses the active model only.
+    """
+    if _hybrid_mode:
+        return _analyze_snippet_hybrid(snippet)
+    else:
+        return _analyze_snippet_single(snippet)
+
+
+def _analyze_snippet_single(snippet: CodeSnippet) -> list:
     global _SYSTEM_PROMPT
     if _SYSTEM_PROMPT is None:
         _SYSTEM_PROMPT = _build_system_prompt()
@@ -343,6 +434,30 @@ def analyze_snippet(snippet: CodeSnippet) -> list:
         f["start_line"] = snippet.start_line
         f["method"]     = snippet.method_name
     return findings
+
+
+def _analyze_snippet_hybrid(snippet: CodeSnippet) -> list:
+    """
+    Hybrid analysis: route to the best model per CWE category.
+    CWE-330 and CWE-311 -> Phi3 (empirically better)
+    Everything else -> Qwen (empirically better)
+    """
+    # Detect which Phi3 CWEs are relevant for this snippet
+    phi3_cwes = _detect_phi3_cwes(snippet.code)
+
+    if not phi3_cwes:
+        # No Phi3 signals — run Qwen only
+        return _run_model("qwen2.5-coder:7b", snippet)
+
+    # Run Qwen for all CWEs
+    qwen_findings = _run_model("qwen2.5-coder:7b", snippet)
+
+    # Run Phi3 only for snippets containing relevant signals
+    phi3_findings = _run_model("phi3:3.8b", snippet)
+
+    # Merge: Phi3 results for Phi3 CWEs, Qwen results for everything else
+    merged = _merge_findings(qwen_findings, phi3_findings, phi3_cwes)
+    return merged
 
 
 def analyze_file(file_path: str) -> list:

@@ -10,7 +10,7 @@ from typing import List, Optional
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.analyzer.llm_engine import analyze_snippet, set_model, get_model
+from src.analyzer.llm_engine import analyze_snippet, set_model, set_hybrid, get_model
 from src.parser.code_parser import CodeSnippet
 
 VALIDATION_PATH = Path(__file__).parent.parent.parent / "dataset" / "splits" / "validation.jsonl"
@@ -181,9 +181,12 @@ def print_metrics_table(all_metrics: List[dict], model_name: str = ""):
 
 def run_evaluation(sample_per_cwe: Optional[int] = None,
                    output_file: Optional[str] = None,
-                   model: Optional[str] = None):
+                   model: Optional[str] = None,
+                   hybrid: bool = False):
 
-    if model:
+    if hybrid:
+        set_hybrid(True)
+    elif model:
         set_model(model)
 
     active = get_model()
@@ -280,7 +283,10 @@ if __name__ == "__main__":
                         help="Output JSON file path")
     parser.add_argument("--model",  "-m", type=str, default=None,
                         help="Ollama model name (default: qwen2.5-coder:7b)")
+    parser.add_argument("--hybrid", action="store_true", default=False,
+                        help="Enable hybrid mode: Qwen for most CWEs, Phi3 for CWE-330 and CWE-311")
     args = parser.parse_args()
     run_evaluation(sample_per_cwe=args.sample,
                    output_file=args.output,
-                   model=args.model)
+                   model=args.model,
+                   hybrid=args.hybrid)
