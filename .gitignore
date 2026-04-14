@@ -1,9 +1,21 @@
-.env
+# Python
 __pycache__/
 *.pyc
-*.pyo
-.pytest_cache/
 venv/
-*.egg-info/
-dist/
-.DS_Store
+
+# Large data files
+dataset/raw/
+dataset/splits/test.jsonl
+tools/
+
+# Runtime files
+logs/dashboard.log
+results/cryptoguard.db
+results/scans/
+results/eval_hybrid_test.log
+results/mobsf_run.log
+results/spotbugs_run.log
+
+# Temp
+*.tgz
+*.zip
