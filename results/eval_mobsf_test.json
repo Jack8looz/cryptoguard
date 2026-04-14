@@ -1,0 +1,1539 @@
+{
+  "tool": "mobsf",
+  "version": "4.4.5",
+  "total": 180,
+  "metrics": [
+    {
+      "cwe": "CWE-311",
+      "tp": 0,
+      "fp": 0,
+      "fn": 4,
+      "tn": 20,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "cwe": "CWE-326",
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "tn": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "cwe": "CWE-327",
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "cwe": "CWE-328",
+      "tp": 8,
+      "fp": 7,
+      "fn": 4,
+      "tn": 16,
+      "precision": 0.533,
+      "recall": 0.667,
+      "f1": 0.593
+    },
+    {
+      "cwe": "CWE-329",
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "tn": 5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "cwe": "CWE-330",
+      "tp": 4,
+      "fp": 0,
+      "fn": 0,
+      "tn": 10,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    {
+      "cwe": "CWE-347",
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "tn": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "cwe": "CWE-798",
+      "tp": 0,
+      "fp": 0,
+      "fn": 18,
+      "tn": 58,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "cwe": "CWE-916",
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "tn": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  ],
+  "results": [
+    {
+      "id": "juliet_b07e2502",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_4f6465aa",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_c98e1126",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_ec3f7bc8",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_0126a015",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_a78bace6",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_29e587c4",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_ba8e7193",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_7cca8063",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_043a0580",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_2e23ce2b",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b8864b93",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_7351b757",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_47895823",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_6edd090e",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_ad5539ca",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_7cbd3a72",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_49fff486",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-329"
+    },
+    {
+      "id": "juliet_15f625aa",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_fb7fb0dc",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_4f946b07",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b4a54495",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_4d7200df",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "synthetic_d8c0fac8",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_f7dc32b2",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_467c1cdd",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_c2105b64",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-330"
+    },
+    {
+      "id": "juliet_490e617f",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_e5f4d5c6",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_f71c7aa8",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_3ea2e0bc",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_8bfdc924",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "CWE-330"
+    },
+    {
+      "id": "juliet_8a6ab411",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_bac16d9d",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_127a5c68",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_4a6103ff",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_350cdb94",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_df7357c7",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_4e787233",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_a36afa4e",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_df317297",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b33d2102",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328,CWE-330"
+    },
+    {
+      "id": "synthetic_d5fab310",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_3db239bd",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b2ebaf10",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-327"
+    },
+    {
+      "id": "juliet_16a169a1",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_bec7e0a9",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b021017f",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_ad3d300c",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "synthetic_a96fb15b",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_5fc5fbd7",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_56c3aca2",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_211b13a8",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_5f042fab",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_3a149958",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "synthetic_a7a7e9a0",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_dea8e153",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_4a443185",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_81c36f8e",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_c2ccab83",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_212e2d98",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-330"
+    },
+    {
+      "id": "juliet_0b39c4fb",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_e9aac733",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_c301f0e6",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_8bbb3e0b",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_6daa1fde",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_6fa1d26e",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_c7dbada6",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_2e11ecc3",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_f1e60dee",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_ee3ecf5e",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_36d8f049",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_697fefbe",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_787955fe",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_00bb2432",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_2523138c",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_a5e7ba66",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-330"
+    },
+    {
+      "id": "juliet_e1b2d143",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_e20b487a",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_017e52fb",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_2463dda9",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_0c85d858",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_2b74dd6e",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_880f3246",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_cf36e573",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-327"
+    },
+    {
+      "id": "juliet_fdaa0e94",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_8bdfcbc0",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_e4a5672e",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_b0d129fd",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_3116b5b8",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_bef48fab",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_4dbb8df8",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b9a3a7bb",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_8237b19d",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_baa93541",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_00cbd9c9",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_50990643",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_b9573ec3",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_61bfcdd5",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_0e64e032",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_26f00148",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_a7a1f705",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_e7ecc9f8",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_0a54360c",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_efce2f15",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_1db1bacd",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_3393133c",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_99946103",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "synthetic_b38bd8f8",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_b35d5e3e",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_2070b287",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b0674cd8",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b2db4128",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_f0e2b164",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_04d4021f",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_632bf4a9",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_a0688ef3",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "CWE-330"
+    },
+    {
+      "id": "juliet_bb9f9c32",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_21ba6a71",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_eb6dfa4f",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_cd7d6bd2",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_db8267f9",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_6bb15529",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-329"
+    },
+    {
+      "id": "juliet_b8941379",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_3c6dca4e",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_f8ed65bd",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_a4d24fdf",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_aa9fa0ec",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_fc90b345",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_3d6c37c2",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_48c468aa",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_9f3df9b3",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_3372a455",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_a0bdffcb",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_76c99d7a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_ad03a90b",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_da06dc02",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_be057f85",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_8f1d79dd",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_1db6ef7d",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_78fdd700",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_8dea8e12",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_0fea1d05",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-327"
+    },
+    {
+      "id": "juliet_5d0998f6",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_23412e66",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_01c0a701",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_34efb056",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_87eb2759",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_10397d0c",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_1befc6e8",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "synthetic_c01f2566",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_b09896ef",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-330"
+    },
+    {
+      "id": "juliet_ee6809c0",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_0bce612f",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_19f04d32",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_2db937d9",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_76e28fd2",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "synthetic_d47b992e",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_e4bf82ff",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_4377bbe0",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_2648e67a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_657c500b",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-329"
+    },
+    {
+      "id": "juliet_7df61de1",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_80a761cc",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_fcd83edb",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_66c5878c",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_745057bd",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_d8f43666",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_c08e25c1",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_f503915a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_c83cb556",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_89e8079b",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_41feb2d4",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": true,
+      "status": "FP",
+      "detail": "CWE-328"
+    },
+    {
+      "id": "juliet_1f5dd199",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_b4ec830c",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "none"
+    },
+    {
+      "id": "synthetic_e8d90444",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_523d249e",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "none"
+    },
+    {
+      "id": "juliet_0207a26e",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "status": "TN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "synthetic_330e69bf",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": true,
+      "predicted": false,
+      "status": "FN",
+      "detail": "unsupported"
+    },
+    {
+      "id": "juliet_9513b30a",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "status": "TP",
+      "detail": "CWE-327"
+    }
+  ]
+}
