@@ -1,0 +1,85 @@
+# CryptoGuard Security Scan — Add this to your Android project's .gitlab-ci.yml
+# Replace CRYPTOGUARD_URL with your deployed CryptoGuard server address
+
+cryptoguard-scan:
+  stage: test
+  image: python:3.12-slim
+  variables:
+    CRYPTOGUARD_URL: "http://cryptoguard.your-company.internal:8080"
+    SCAN_SEVERITY: "CRITICAL"
+  before_script:
+    - pip install requests --quiet
+  script:
+    # Run CryptoGuard via API
+    - |
+      python3 - << 'EOF'
+      import requests, json, time, sys, os
+
+      url    = os.environ['CRYPTOGUARD_URL']
+      branch = os.environ.get('CI_COMMIT_BRANCH', 'unknown')
+      project= os.environ.get('CI_PROJECT_NAME', 'unknown')
+      commit = os.environ.get('CI_COMMIT_SHORT_SHA', 'unknown')
+      pipeline = os.environ.get('CI_PIPELINE_ID', 'unknown')
+
+      # Upload source directory as zip
+      import zipfile, io
+      buf = io.BytesIO()
+      with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as zf:
+          for root, dirs, files in os.walk('src'):
+              for f in files:
+                  if f.endswith(('.java', '.kt')):
+                      path = os.path.join(root, f)
+                      zf.write(path)
+      buf.seek(0)
+
+      print(f"Uploading source to CryptoGuard at {url}...")
+      r = requests.post(f"{url}/api/scan?hybrid=true",
+                        files={"file": ("source.zip", buf, "application/zip")},
+                        timeout=30)
+      scan_id = r.json()["scan_id"]
+      print(f"Scan ID: {scan_id}")
+
+      # Poll until complete
+      for _ in range(120):
+          time.sleep(5)
+          status = requests.get(f"{url}/api/scan/{scan_id}").json()
+          print(f"Progress: {status['analyzed']}/{status['total_snippets']} snippets, {len(status['findings'])} findings")
+          if status['status'] in ('complete', 'failed'):
+              break
+
+      findings = status.get('findings', [])
+
+      # Save results
+      with open('cryptoguard-results.json', 'w') as f:
+          json.dump(findings, f, indent=2)
+
+      # Push results to dashboard
+      requests.post(f"{url}/api/results", json={
+          "scan_id":        pipeline,
+          "filename":       project,
+          "findings":       findings,
+          "gitlab_project": project,
+          "gitlab_branch":  branch,
+          "gitlab_commit":  commit,
+          "source":         "gitlab-ci",
+      }, timeout=10)
+
+      # Count critical findings
+      critical = [f for f in findings if f.get('severity') == 'CRITICAL']
+      print(f"\nResults: {len(findings)} total findings, {len(critical)} CRITICAL")
+
+      if critical:
+          print("\nCRITICAL vulnerabilities found:")
+          for f in critical:
+              print(f"  [{f['cwe_id']}] {f['method']} — {f['explanation'][:80]}")
+          sys.exit(1)  # Fail pipeline
+
+      print("No critical findings. Pipeline passed.")
+      EOF
+  artifacts:
+    reports:
+      sast: cryptoguard-results.json
+    paths:
+      - cryptoguard-results.json
+    expire_in: 30 days
+  allow_failure: false

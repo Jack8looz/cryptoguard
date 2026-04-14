@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  cryptoguard:
+    build: .
+    ports:
+      - "8080:8080"
+      - "11434:11434"
+    volumes:
+      - cryptoguard-models:/root/.ollama
+      - cryptoguard-results:/app/results
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  cryptoguard-models:
+  cryptoguard-results:

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoGuard — Security Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0a0e17;
+  --surface:  #111827;
+  --surface2: #1a2235;
+  --border:   rgba(255,255,255,0.07);
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+  --accent:   #3b82f6;
+  --green:    #22c55e;
+  --amber:    #f59e0b;
+  --red:      #ef4444;
+  --purple:   #a855f7;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Syne', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+
+/* ── GRID NOISE BACKGROUND ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* ── LAYOUT ── */
+.shell { position: relative; z-index: 1; display: flex; min-height: 100vh; }
+.sidebar { width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px 0; }
+.main { flex: 1; overflow: auto; }
+
+/* ── SIDEBAR ── */
+.logo { padding: 0 20px 28px; border-bottom: 1px solid var(--border); }
+.logo-mark { display: flex; align-items: center; gap: 10px; }
+.logo-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.logo-text { font-size: 16px; font-weight: 800; letter-spacing: -0.5px; }
+.logo-sub { font-size: 10px; color: var(--muted); font-family: var(--mono); margin-top: 2px; letter-spacing: 1px; text-transform: uppercase; }
+.nav { padding: 20px 12px; flex: 1; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); transition: all 0.15s; margin-bottom: 2px; }
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: rgba(59,130,246,0.15); color: var(--accent); }
+.nav-item .icon { width: 16px; text-align: center; }
+.sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
+.version-tag { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+/* ── HEADER ── */
+.page-header { padding: 28px 32px 0; display: flex; align-items: center; justify-content: space-between; }
+.page-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+.page-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.header-actions { display: flex; gap: 10px; }
+.btn { padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: var(--sans); cursor: pointer; border: none; transition: all 0.15s; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: #2563eb; }
+.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── CONTENT ── */
+.content { padding: 24px 32px 40px; }
+
+/* ── STAT CARDS ── */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
+.stat-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+.stat-card.critical::after { background: var(--red); }
+.stat-card.high::after { background: var(--amber); }
+.stat-card.scans::after { background: var(--accent); }
+.stat-card.coverage::after { background: var(--green); }
+.stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-family: var(--mono); }
+.stat-value { font-size: 36px; font-weight: 800; margin: 8px 0 4px; letter-spacing: -1px; }
+.stat-value.red { color: var(--red); }
+.stat-value.amber { color: var(--amber); }
+.stat-value.blue { color: var(--accent); }
+.stat-value.green { color: var(--green); }
+.stat-change { font-size: 12px; color: var(--muted); }
+
+/* ── UPLOAD ZONE ── */
+.upload-zone { background: var(--surface); border: 2px dashed var(--border); border-radius: 16px; padding: 48px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 24px; }
+.upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: rgba(59,130,246,0.05); }
+.upload-icon { font-size: 40px; margin-bottom: 16px; }
+.upload-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.upload-sub { font-size: 13px; color: var(--muted); }
+.upload-types { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.type-tag { padding: 4px 10px; background: var(--surface2); border-radius: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+#file-input { display: none; }
+
+/* ── PROGRESS ── */
+.progress-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; display: none; }
+.progress-card.visible { display: block; }
+.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.progress-title { font-size: 14px; font-weight: 700; }
+.progress-pct { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+.progress-bar { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--purple)); border-radius: 3px; transition: width 0.3s; width: 0%; }
+.progress-stats { display: flex; gap: 24px; margin-top: 12px; }
+.progress-stat { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.progress-stat span { color: var(--text); font-weight: 600; }
+
+/* ── SCAN LIST ── */
+.section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 14px; font-family: var(--mono); }
+.scan-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.scan-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: all 0.15s; }
+.scan-row:hover { border-color: rgba(59,130,246,0.3); background: var(--surface2); }
+.scan-row.active-scan { border-color: var(--accent); }
+.scan-name { flex: 1; font-size: 13px; font-weight: 600; font-family: var(--mono); }
+.scan-time { font-size: 11px; color: var(--muted); }
+.scan-badges { display: flex; gap: 6px; }
+.badge { padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 700; font-family: var(--mono); }
+.badge-critical { background: rgba(239,68,68,0.15); color: var(--red); }
+.badge-high { background: rgba(245,158,11,0.15); color: var(--amber); }
+.badge-ok { background: rgba(34,197,94,0.15); color: var(--green); }
+.badge-pending { background: rgba(59,130,246,0.15); color: var(--accent); }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-complete { background: var(--green); }
+.dot-running { background: var(--accent); animation: pulse 1s infinite; }
+.dot-pending { background: var(--muted); }
+.dot-failed { background: var(--red); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── FINDINGS ── */
+.findings-panel { display: none; }
+.findings-panel.visible { display: block; }
+.findings-toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.filter-btn { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--muted); transition: all 0.15s; font-family: var(--sans); }
+.filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.1); }
+.filter-btn.f-critical.active { border-color: var(--red); color: var(--red); background: rgba(239,68,68,0.1); }
+.filter-btn.f-high.active { border-color: var(--amber); color: var(--amber); background: rgba(245,158,11,0.1); }
+.findings-count { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: auto; }
+
+.finding-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; transition: border-color 0.15s; }
+.finding-card:hover { border-color: rgba(255,255,255,0.12); }
+.finding-card.sev-CRITICAL { border-left: 3px solid var(--red); }
+.finding-card.sev-HIGH { border-left: 3px solid var(--amber); }
+.finding-card.sev-WARNING { border-left: 3px solid var(--accent); }
+.finding-header { padding: 14px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.sev-pill { padding: 3px 10px; border-radius: 5px; font-size: 11px; font-weight: 800; font-family: var(--mono); letter-spacing: 0.5px; }
+.sev-CRITICAL { background: rgba(239,68,68,0.15); color: var(--red); }
+.sev-HIGH { background: rgba(245,158,11,0.15); color: var(--amber); }
+.sev-WARNING { background: rgba(59,130,246,0.15); color: var(--accent); }
+.cwe-tag { font-family: var(--mono); font-size: 12px; color: var(--purple); font-weight: 600; }
+.finding-method { font-family: var(--mono); font-size: 12px; color: var(--muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+.conf-medium { background: var(--amber); }
+.conf-low { background: var(--muted); }
+.toggle-icon { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+.finding-body { padding: 0 18px 16px; display: none; }
+.finding-body.open { display: block; }
+.finding-section { margin-bottom: 14px; }
+.finding-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-family: var(--mono); margin-bottom: 6px; }
+.finding-explanation { font-size: 13px; line-height: 1.6; color: var(--text); }
+.code-block { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--mono); font-size: 12px; color: #e6edf3; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; word-break: break-all; }
+.code-block.fix { border-color: rgba(34,197,94,0.2); background: rgba(34,197,94,0.03); color: #7ee787; }
+.file-path { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+
+/* ── CWE CHART ── */
+.cwe-chart { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.cwe-bars { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.cwe-row { display: flex; align-items: center; gap: 12px; }
+.cwe-label { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 72px; flex-shrink: 0; }
+.cwe-bar-wrap { flex: 1; height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; }
+.cwe-bar { height: 100%; border-radius: 4px; transition: width 0.6s cubic-bezier(0.4,0,0.2,1); }
+.cwe-count { font-family: var(--mono); font-size: 11px; color: var(--text); width: 24px; text-align: right; flex-shrink: 0; }
+
+/* ── EMPTY STATE ── */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-text { font-size: 15px; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; font-size: 13px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { border-color: var(--green); }
+.toast.error { border-color: var(--red); }
+
+/* ── HYBRID TOGGLE ── */
+.hybrid-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.toggle { position: relative; width: 40px; height: 22px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: var(--surface2); border-radius: 11px; cursor: pointer; transition: 0.2s; border: 1px solid var(--border); }
+.toggle-slider:before { content: ''; position: absolute; width: 16px; height: 16px; left: 2px; top: 2px; background: var(--muted); border-radius: 50%; transition: 0.2s; }
+.toggle input:checked + .toggle-slider { background: rgba(59,130,246,0.3); border-color: var(--accent); }
+.toggle input:checked + .toggle-slider:before { transform: translateX(18px); background: var(--accent); }
+.toggle-label { font-size: 13px; color: var(--muted); }
+.toggle-label strong { color: var(--text); }
+
+/* ── GITLAB SECTION ── */
+.gitlab-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+.gitlab-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.gitlab-badge { padding: 2px 8px; background: rgba(252,109,38,0.15); color: #fc6d26; border-radius: 5px; font-size: 10px; font-weight: 700; font-family: var(--mono); }
+.gitlab-snippet { background: #0d1117; border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-family: var(--mono); font-size: 11px; color: #e6edf3; line-height: 1.7; overflow-x: auto; }
+.copy-btn { float: right; padding: 4px 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; font-size: 11px; cursor: pointer; color: var(--muted); font-family: var(--sans); transition: all 0.15s; }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🔐</div>
+      <div>
+        <div class="logo-text">CryptoGuard</div>
+        <div class="logo-sub">v1.0 — Hybrid</div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="nav-item active" onclick="showView('dashboard')" id="nav-dashboard">
+      <span class="icon">⬡</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showView('scan')" id="nav-scan">
+      <span class="icon">⊕</span> New Scan
+    </div>
+    <div class="nav-item" onclick="showView('history')" id="nav-history">
+      <span class="icon">◷</span> History
+    </div>
+    <div class="nav-item" onclick="showView('gitlab')" id="nav-gitlab">
+      <span class="icon">⎇</span> GitLab CI
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="version-tag">CryptoGuard v1.0.0<br>9 CWEs · Hybrid Engine</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- DASHBOARD VIEW -->
+  <div id="view-dashboard">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Security Overview</div>
+        <div class="page-sub">Cryptographic vulnerability scan results</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="loadScans()">↻ Refresh</button>
+        <button class="btn btn-primary" onclick="showView('scan')">+ New Scan</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="stats-row">
+        <div class="stat-card critical">
+          <div class="stat-label">Critical</div>
+          <div class="stat-value red" id="stat-critical">—</div>
+          <div class="stat-change">findings total</div>
+        </div>
+        <div class="stat-card high">
+          <div class="stat-label">High</div>
+          <div class="stat-value amber" id="stat-high">—</div>
+          <div class="stat-change">findings total</div>
+        </div>
+        <div class="stat-card scans">
+          <div class="stat-label">Total Scans</div>
+          <div class="stat-value blue" id="stat-scans">—</div>
+          <div class="stat-change">all time</div>
+        </div>
+        <div class="stat-card coverage">
+          <div class="stat-label">CWEs Covered</div>
+          <div class="stat-value green">9/9</div>
+          <div class="stat-change">taxonomy</div>
+        </div>
+      </div>
+
+      <div class="section-title">Recent Scans</div>
+      <div class="scan-list" id="scan-list">
+        <div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No scans yet. Run a new scan to get started.</div></div>
+      </div>
+
+      <div class="findings-panel" id="findings-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="section-title" style="margin:0" id="findings-title">Findings</div>
+          <button class="btn btn-ghost" style="font-size:12px" onclick="exportJSON()">↓ Export JSON</button>
+        </div>
+        <div id="cwe-chart" class="cwe-chart" style="display:none">
+          <div class="section-title" style="margin:0 0 4px">CWE Distribution</div>
+          <div class="cwe-bars" id="cwe-bars"></div>
+        </div>
+        <div class="findings-toolbar">
+          <button class="filter-btn active" onclick="filterFindings('ALL',this)">All</button>
+          <button class="filter-btn f-critical" onclick="filterFindings('CRITICAL',this)">Critical</button>
+          <button class="filter-btn f-high" onclick="filterFindings('HIGH',this)">High</button>
+          <button class="filter-btn" onclick="filterFindings('WARNING',this)">Warning</button>
+          <div class="findings-count" id="findings-count"></div>
+        </div>
+        <div id="findings-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCAN VIEW -->
+  <div id="view-scan" style="display:none">
+    <div class="page-header">
+      <div>
+        <div class="page-title">New Scan</div>
+        <div class="page-sub">Upload Java or Kotlin source files</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondrop="handleDrop(event)" ondragleave="this.classList.remove('drag')">
+        <input type="file" id="file-input" accept=".java,.kt,.zip" onchange="handleFileSelect(event)">
+        <div class="upload-icon">📁</div>
+        <div class="upload-title">Drop files here or click to browse</div>
+        <div class="upload-sub">Analyze Java and Kotlin source files for cryptographic vulnerabilities</div>
+        <div class="upload-types">
+          <span class="type-tag">.java</span>
+          <span class="type-tag">.kt</span>
+          <span class="type-tag">.zip</span>
+        </div>
+      </div>
+
+      <div class="hybrid-row">
+        <label class="toggle">
+          <input type="checkbox" id="hybrid-toggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <div class="toggle-label"><strong>Hybrid mode</strong> — Qwen2.5-Coder 7B + Phi3-3.8B (best accuracy, F1=0.828)</div>
+      </div>
+
+      <div class="progress-card" id="progress-card">
+        <div class="progress-header">
+          <div class="progress-title" id="progress-title">Analyzing...</div>
+          <div class="progress-pct" id="progress-pct">0%</div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-stats">
+          <div class="progress-stat">Snippets: <span id="prog-snippets">0 / 0</span></div>
+          <div class="progress-stat">Findings: <span id="prog-findings">0</span></div>
+          <div class="progress-stat">Status: <span id="prog-status">Pending</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY VIEW -->
+  <div id="view-history" style="display:none">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Scan History</div>
+        <div class="page-sub">All previous scans</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="loadScans()">↻ Refresh</button>
+      </div>
+    </div>
+    <div class="content">
+      <div class="scan-list" id="history-list">
+        <div class="empty-state"><div class="empty-icon">◷</div><div class="empty-text">No scan history yet.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GITLAB VIEW -->
+  <div id="view-gitlab" style="display:none">
+    <div class="page-header">
+      <div>
+        <div class="page-title">GitLab CI Integration</div>
+        <div class="page-sub">Add CryptoGuard to your Android project pipeline</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="gitlab-card">
+        <div class="gitlab-title">
+          <span>Step 1 — Add job to .gitlab-ci.yml</span>
+          <span class="gitlab-badge">GITLAB CI</span>
+        </div>
+        <div style="position:relative">
+          <button class="copy-btn" onclick="copyCode('gitlab-snippet')">Copy</button>
+          <pre class="gitlab-snippet" id="gitlab-snippet">cryptoguard:
+  stage: test
+  image: python:3.12-slim
+  variables:
+    CRYPTOGUARD_URL: "http://your-cryptoguard-server:8080"
+  script:
+    - pip install cryptoguard-cli  # or mount as volume
+    - cryptoguard analyze --dir src/ --severity CRITICAL --output results.json
+    - |
+      curl -s -X POST $CRYPTOGUARD_URL/api/results \
+        -H "Content-Type: application/json" \
+        -d "{
+          \"scan_id\": \"$CI_PIPELINE_ID\",
+          \"filename\": \"$CI_PROJECT_NAME\",
+          \"findings\": $(cat results.json),
+          \"gitlab_project\": \"$CI_PROJECT_NAME\",
+          \"gitlab_branch\": \"$CI_COMMIT_BRANCH\",
+          \"gitlab_commit\": \"$CI_COMMIT_SHORT_SHA\"
+        }"
+  artifacts:
+    reports:
+      sast: results.json
+    paths:
+      - results.json
+    expire_in: 30 days
+  allow_failure: false  # fails pipeline on CRITICAL findings</pre>
+        </div>
+      </div>
+
+      <div class="gitlab-card">
+        <div class="gitlab-title">Step 2 — Run with Docker</div>
+        <div style="position:relative">
+          <button class="copy-btn" onclick="copyCode('docker-snippet')">Copy</button>
+          <pre class="gitlab-snippet" id="docker-snippet"># Build and run CryptoGuard
+docker build -t cryptoguard .
+docker run -d \
+  --gpus all \
+  -p 8080:8080 \
+  --name cryptoguard \
+  cryptoguard
+
+# Or without GPU (slower inference)
+docker run -d \
+  -p 8080:8080 \
+  --name cryptoguard \
+  cryptoguard</pre>
+        </div>
+      </div>
+
+      <div class="gitlab-card">
+        <div class="gitlab-title">Step 3 — How it works</div>
+        <div style="font-size:13px;line-height:1.8;color:var(--muted)">
+          <p>1. Developer pushes code → GitLab pipeline triggers</p>
+          <p>2. CryptoGuard job runs <code style="font-family:var(--mono);color:var(--accent)">cryptoguard analyze</code> on the source directory</p>
+          <p>3. If CRITICAL findings exist → pipeline fails, merge blocked</p>
+          <p>4. Results POST to this dashboard automatically</p>
+          <p>5. Security analyst reviews findings here, approves or dismisses</p>
+          <br>
+          <p style="color:var(--text)">The dashboard receives results from any source — manual uploads, CI/CD pipelines, or the REST API. All findings are stored and searchable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '';  // same origin
+let currentScanId = null;
+let allFindings   = [];
+let activeFilter  = 'ALL';
+let pollInterval  = null;
+
+// ── VIEW ROUTING ──────────────────────────────────────────────────────────────
+function showView(view) {
+  ['dashboard','scan','history','gitlab'].forEach(v => {
+    document.getElementById(`view-${v}`).style.display = v === view ? '' : 'none';
+    document.getElementById(`nav-${v}`)?.classList.toggle('active', v === view);
+  });
+  if (view === 'dashboard' || view === 'history') loadScans();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast show ${type}`;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+// ── SCAN LIST ─────────────────────────────────────────────────────────────────
+async function loadScans() {
+  try {
+    const res  = await fetch(`${API}/api/scans`);
+    const data = await res.json();
+    renderScanList(data, 'scan-list');
+    renderScanList(data, 'history-list');
+    updateStats(data);
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+function updateStats(scans) {
+  let critical = 0, high = 0;
+  scans.forEach(s => { critical += s.critical || 0; });
+  document.getElementById('stat-scans').textContent    = scans.length;
+  document.getElementById('stat-critical').textContent = critical || '0';
+  document.getElementById('stat-high').textContent     = '—';
+}
+
+function renderScanList(scans, containerId) {
+  const el = document.getElementById(containerId);
+  if (!scans.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No scans yet.</div></div>';
+    return;
+  }
+  el.innerHTML = scans.map(s => {
+    const date  = new Date(s.created_at * 1000).toLocaleString();
+    const dotCls = {complete:'dot-complete',running:'dot-running',pending:'dot-pending',failed:'dot-failed'}[s.status] || 'dot-pending';
+    const badge  = s.critical > 0
+      ? `<span class="badge badge-critical">⚠ ${s.critical} CRITICAL</span>`
+      : s.findings_count > 0
+        ? `<span class="badge badge-high">${s.findings_count} findings</span>`
+        : `<span class="badge badge-ok">✓ Clean</span>`;
+    const running = s.status === 'running' ? '<span class="badge badge-pending">scanning…</span>' : '';
+    return `<div class="scan-row" onclick="openScan('${s.id}')">
+      <div class="status-dot ${dotCls}"></div>
+      <div class="scan-name">${s.filename}</div>
+      <div class="scan-time">${date}</div>
+      <div class="scan-badges">${running}${badge}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── OPEN SCAN ─────────────────────────────────────────────────────────────────
+async function openScan(scanId) {
+  showView('dashboard');
+  currentScanId = scanId;
+  try {
+    const res  = await fetch(`${API}/api/scan/${scanId}`);
+    const scan = await res.json();
+    allFindings = scan.findings || [];
+    renderFindings(allFindings);
+    renderCweChart(allFindings);
+    document.getElementById('findings-title').textContent =
+      `Findings — ${scan.filename} (${allFindings.length} total)`;
+  } catch(e) {
+    toast('Failed to load scan', 'error');
+  }
+}
+
+// ── FINDINGS ──────────────────────────────────────────────────────────────────
+function filterFindings(sev, btn) {
+  activeFilter = sev;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = sev === 'ALL' ? allFindings : allFindings.filter(f => f.severity === sev);
+  renderFindings(filtered);
+}
+
+function renderFindings(findings) {
+  const panel = document.getElementById('findings-panel');
+  const list  = document.getElementById('findings-list');
+  panel.classList.toggle('visible', true);
+  document.getElementById('findings-count').textContent = `${findings.length} findings`;
+
+  if (!findings.length) {
+    list.innerHTML = '<div class="empty-state" style="padding:40px"><div class="empty-icon">✅</div><div class="empty-text">No findings for this filter.</div></div>';
+    return;
+  }
+
+  const ORDER = {CRITICAL:0, HIGH:1, WARNING:2, NONE:3};
+  const sorted = [...findings].sort((a,b) => (ORDER[a.severity]||3) - (ORDER[b.severity]||3));
+
+  list.innerHTML = sorted.map((f, i) => {
+    const conf = f.confidence || 'high';
+    const confClass = conf === 'medium' ? 'conf-medium' : conf === 'low' ? 'conf-low' : '';
+    const method = f.method || f.file?.split('/').pop() || 'unknown';
+    const line   = f.start_line ? `:${f.start_line}` : '';
+    const file   = f.file ? f.file.split('/').slice(-2).join('/') : '';
+    return `
+    <div class="finding-card sev-${f.severity}" id="fc-${i}">
+      <div class="finding-header" onclick="toggleFinding(${i})">
+        <span class="sev-pill sev-${f.severity}">${f.severity}</span>
+        <span class="cwe-tag">${f.cwe_id}</span>
+        <span class="finding-method">${method}${line}</span>
+        <div class="conf-dot ${confClass}" title="Confidence: ${conf}"></div>
+        <span class="toggle-icon" id="ti-${i}">▼</span>
+      </div>
+      <div class="finding-body" id="fb-${i}">
+        ${file ? `<div class="file-path">📄 ${file}</div>` : ''}
+        <div class="finding-section">
+          <div class="finding-section-label">Explanation</div>
+          <div class="finding-explanation">${f.explanation || '—'}</div>
+        </div>
+        ${f.fix_code ? `
+        <div class="finding-section">
+          <div class="finding-section-label">Suggested Fix</div>
+          <div class="code-block fix">${escHtml(f.fix_code)}</div>
+        </div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleFinding(i) {
+  const body = document.getElementById(`fb-${i}`);
+  const icon = document.getElementById(`ti-${i}`);
+  const open = body.classList.toggle('open');
+  icon.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── CWE CHART ─────────────────────────────────────────────────────────────────
+function renderCweChart(findings) {
+  const chart = document.getElementById('cwe-chart');
+  const bars  = document.getElementById('cwe-bars');
+  if (!findings.length) { chart.style.display = 'none'; return; }
+  chart.style.display = '';
+
+  const counts = {};
+  findings.forEach(f => { counts[f.cwe_id] = (counts[f.cwe_id]||0) + 1; });
+  const max   = Math.max(...Object.values(counts));
+  const cwes  = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const COLORS = {
+    'CWE-327':'#ef4444','CWE-798':'#f59e0b','CWE-328':'#a855f7',
+    'CWE-329':'#3b82f6','CWE-330':'#22c55e','CWE-311':'#ec4899',
+    'CWE-347':'#14b8a6','CWE-326':'#f97316','CWE-916':'#6366f1',
+  };
+
+  bars.innerHTML = cwes.map(([cwe, count]) => `
+    <div class="cwe-row">
+      <div class="cwe-label">${cwe}</div>
+      <div class="cwe-bar-wrap">
+        <div class="cwe-bar" style="width:${(count/max*100).toFixed(0)}%;background:${COLORS[cwe]||'#64748b'}"></div>
+      </div>
+      <div class="cwe-count">${count}</div>
+    </div>`).join('');
+}
+
+// ── FILE UPLOAD ───────────────────────────────────────────────────────────────
+function handleDrag(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.add('drag');
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) uploadFile(file);
+}
+function handleFileSelect(e) {
+  const file = e.target.files[0];
+  if (file) uploadFile(file);
+}
+
+async function uploadFile(file) {
+  const hybrid = document.getElementById('hybrid-toggle').checked;
+  const form   = new FormData();
+  form.append('file', file);
+
+  try {
+    const res  = await fetch(`${API}/api/scan?hybrid=${hybrid}`, {method:'POST', body:form});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Upload failed');
+
+    currentScanId = data.scan_id;
+    toast(`Scan started: ${file.name}`, 'success');
+    showProgressCard(file.name);
+    pollScan(data.scan_id);
+  } catch(e) {
+    toast(`Error: ${e.message}`, 'error');
+  }
+}
+
+function showProgressCard(filename) {
+  const card = document.getElementById('progress-card');
+  card.classList.add('visible');
+  document.getElementById('progress-title').textContent = `Scanning ${filename}…`;
+  document.getElementById('progress-pct').textContent   = '0%';
+  document.getElementById('progress-fill').style.width  = '0%';
+  document.getElementById('prog-snippets').textContent  = '0 / 0';
+  document.getElementById('prog-findings').textContent  = '0';
+  document.getElementById('prog-status').textContent    = 'Starting…';
+}
+
+function pollScan(scanId) {
+  if (pollInterval) clearInterval(pollInterval);
+  const es = new EventSource(`${API}/api/scan/${scanId}/stream`);
+  es.onmessage = (e) => {
+    const d   = JSON.parse(e.data);
+    const pct = d.total_snippets > 0 ? Math.round(d.analyzed/d.total_snippets*100) : 0;
+    document.getElementById('progress-pct').textContent   = `${pct}%`;
+    document.getElementById('progress-fill').style.width  = `${pct}%`;
+    document.getElementById('prog-snippets').textContent  = `${d.analyzed} / ${d.total_snippets}`;
+    document.getElementById('prog-findings').textContent  = d.findings_count;
+    document.getElementById('prog-status').textContent    = d.status;
+
+    if (d.status === 'complete') {
+      es.close();
+      toast('Scan complete!', 'success');
+      showView('dashboard');
+      openScan(scanId);
+      loadScans();
+    } else if (d.status === 'failed') {
+      es.close();
+      toast('Scan failed', 'error');
+    }
+  };
+  es.onerror = () => es.close();
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function exportJSON() {
+  if (!allFindings.length) { toast('No findings to export', ''); return; }
+  const blob = new Blob([JSON.stringify(allFindings, null, 2)], {type:'application/json'});
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `cryptoguard-${currentScanId || 'findings'}.json`;
+  a.click();
+}
+
+// ── COPY CODE ─────────────────────────────────────────────────────────────────
+function copyCode(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent);
+  toast('Copied to clipboard', 'success');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadScans();
+</script>
+</body>
+</html>
