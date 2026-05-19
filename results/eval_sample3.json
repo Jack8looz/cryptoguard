@@ -1,0 +1,377 @@
+{
+  "mode": "sampled (3 per CWE)",
+  "total": 27,
+  "metrics": [
+    {
+      "cwe": "CWE-311",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "tn": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "cwe_accuracy": 0.0
+    },
+    {
+      "cwe": "CWE-326",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-327",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-328",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-329",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-330",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 0,
+      "fp": 0,
+      "fn": 1,
+      "tn": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "cwe_accuracy": 0.0
+    },
+    {
+      "cwe": "CWE-347",
+      "total": 3,
+      "vulnerable": 2,
+      "secure": 1,
+      "tp": 2,
+      "fp": 0,
+      "fn": 0,
+      "tn": 1,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    },
+    {
+      "cwe": "CWE-798",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 1,
+      "fn": 0,
+      "tn": 1,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.667,
+      "cwe_accuracy": 2.0
+    },
+    {
+      "cwe": "CWE-916",
+      "total": 3,
+      "vulnerable": 1,
+      "secure": 2,
+      "tp": 1,
+      "fp": 0,
+      "fn": 0,
+      "tn": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0
+    }
+  ],
+  "results": [
+    {
+      "id": "juliet_a1e9d663",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 12.77
+    },
+    {
+      "id": "juliet_536ee2d2",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 2.78
+    },
+    {
+      "id": "juliet_ea584ffa",
+      "cwe_id": "CWE-311",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.41
+    },
+    {
+      "id": "synthetic_13cf6330",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-326",
+      "confidence": "high",
+      "elapsed": 3.33
+    },
+    {
+      "id": "synthetic_46ca93a3",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "synthetic_26c30a2e",
+      "cwe_id": "CWE-326",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.36
+    },
+    {
+      "id": "juliet_8d52b7b8",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-327",
+      "confidence": "high",
+      "elapsed": 5.13
+    },
+    {
+      "id": "juliet_7e26ad4b",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.46
+    },
+    {
+      "id": "juliet_b5c75b17",
+      "cwe_id": "CWE-327",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.43
+    },
+    {
+      "id": "juliet_c1150ab1",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-328",
+      "confidence": "high",
+      "elapsed": 3.1
+    },
+    {
+      "id": "juliet_58f475a2",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.42
+    },
+    {
+      "id": "juliet_09da7dea",
+      "cwe_id": "CWE-328",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.42
+    },
+    {
+      "id": "juliet_8a12c0df",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-329",
+      "confidence": "high",
+      "elapsed": 4.1
+    },
+    {
+      "id": "juliet_0d30a665",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "synthetic_de21ca45",
+      "cwe_id": "CWE-329",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.42
+    },
+    {
+      "id": "juliet_775a06d6",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": true,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 3.52
+    },
+    {
+      "id": "juliet_8dcaef74",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_957da71e",
+      "cwe_id": "CWE-330",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.39
+    },
+    {
+      "id": "synthetic_79522821",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-347",
+      "confidence": "high",
+      "elapsed": 2.32
+    },
+    {
+      "id": "synthetic_1750934c",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-347",
+      "confidence": "high",
+      "elapsed": 3.39
+    },
+    {
+      "id": "synthetic_47e324a1",
+      "cwe_id": "CWE-347",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.37
+    },
+    {
+      "id": "juliet_753baa92",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 3.43
+    },
+    {
+      "id": "juliet_424d715f",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": true,
+      "predicted_cwe": "CWE-798",
+      "confidence": "high",
+      "elapsed": 5.82
+    },
+    {
+      "id": "juliet_e3b2550a",
+      "cwe_id": "CWE-798",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.45
+    },
+    {
+      "id": "synthetic_a7c30146",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": true,
+      "predicted": true,
+      "predicted_cwe": "CWE-916",
+      "confidence": "high",
+      "elapsed": 3.99
+    },
+    {
+      "id": "synthetic_cdf0a26d",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.36
+    },
+    {
+      "id": "synthetic_8150abef",
+      "cwe_id": "CWE-916",
+      "is_vulnerable": false,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 0.4
+    }
+  ]
+}

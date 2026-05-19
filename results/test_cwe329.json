@@ -1,0 +1,189 @@
+[
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the ciphertext.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]); // Generate a random IV",
+    "line_hint": 40,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_04.java",
+    "start_line": 37,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the data.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]); // Generate a random IV",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_11.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. The IV should be randomly generated.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_13.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode encryption, which is insecure. An attacker can predict the IV and potentially decrypt the ciphertext.",
+    "fix_code": "int blockSize = cipher.getBlockSize();\nbyte[] initializationVector = new byte[blockSize];\nSecureRandom secureRandom = new SecureRandom();\nsecureRandom.nextBytes(initializationVector);\nIvParameterSpec ivParameterSpec = new IvParameterSpec(initializationVector);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_12.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. The IV should be randomly generated.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]);",
+    "line_hint": 48,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_08.java",
+    "start_line": 44,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. The IV should be randomly generated.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_15.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. The IV should be randomly generated.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]);",
+    "line_hint": 40,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_06.java",
+    "start_line": 36,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. The IV should be randomly generated.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_14.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the data.",
+    "fix_code": "byte[] initializationVector = new byte[16];\nSecureRandom random = new SecureRandom();\nrandom.nextBytes(initializationVector);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_03.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the data.",
+    "fix_code": "Generate a random IV each time before encryption.\n\nbyte[] initializationVector = new byte[16];\nSecureRandom secureRandom = new SecureRandom();\nsecureRandom.nextBytes(initializationVector);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_02.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the ciphertext.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]); // Generate a random IV",
+    "line_hint": 38,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_07.java",
+    "start_line": 36,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the ciphertext.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]); // Generate a random IV",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_16.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. The IV should be randomly generated.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_17.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the data.",
+    "fix_code": "Generate a random IV each time before encryption.\n\nbyte[] initializationVector = new byte[16];\nSecureRandom secureRandom = new SecureRandom();\nsecureRandom.nextBytes(initializationVector);",
+    "line_hint": 40,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_05.java",
+    "start_line": 37,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the ciphertext.",
+    "fix_code": "Generate a random IV each time before encryption.\n\nbyte[] initializationVector = new byte[16];\nSecureRandom secureRandom = new SecureRandom();\nsecureRandom.nextBytes(initializationVector);",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_01.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the data.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]); // Generate a random IV",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_09.java",
+    "start_line": 30,
+    "method": "bad"
+  },
+  {
+    "cwe_id": "CWE-329",
+    "severity": "CRITICAL",
+    "confidence": "high",
+    "explanation": "The code uses a hardcoded initialization vector (IV) for AES CBC mode, which is insecure. An attacker can predict the IV and decrypt the ciphertext.",
+    "fix_code": "IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[16]); // Generate a random IV",
+    "line_hint": 34,
+    "file": "dataset/raw/juliet/CWE329_Not_Using_Random_IV_with_CBC_Mode/CWE329_Not_Using_Random_IV_with_CBC_Mode__basic_10.java",
+    "start_line": 30,
+    "method": "bad"
+  }
+]
