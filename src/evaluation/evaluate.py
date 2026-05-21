@@ -13,7 +13,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from src.analyzer.llm_engine import analyze_snippet, set_model, set_hybrid, get_model
 from src.parser.code_parser import CodeSnippet
 
-VALIDATION_PATH = Path(__file__).parent.parent.parent / "dataset" / "splits" / "validation.jsonl"
+SPLITS_DIR      = Path(__file__).parent.parent.parent / "dataset" / "splits"
+VALIDATION_PATH = SPLITS_DIR / "validation.jsonl"
+TEST_PATH       = SPLITS_DIR / "test.jsonl"
 RESULTS_DIR     = Path(__file__).parent.parent.parent / "results"
 
 VALID_CWES = [
@@ -35,9 +37,9 @@ class EvalResult:
     error:          Optional[str] = None
 
 
-def load_validation_set(sample_per_cwe: Optional[int] = None) -> List[dict]:
+def load_split(split_path: Path, sample_per_cwe: Optional[int] = None) -> List[dict]:
     records = []
-    with open(VALIDATION_PATH, encoding="utf-8") as f:
+    with open(split_path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
@@ -87,7 +89,6 @@ def evaluate_record(record: dict) -> EvalResult:
     try:
         findings = analyze_snippet(snippet)
     except RuntimeError as e:
-        # Timeout or connection error — treat as no findings, log the error
         findings = []
         error    = str(e)
 
@@ -129,8 +130,7 @@ def compute_metrics(results: List[EvalResult], cwe: str) -> dict:
 
     correct_cwe_count = sum(1 for r in cwe_results if r.predicted_vuln and r.correct_cwe)
     cwe_accuracy      = correct_cwe_count / tp if tp > 0 else 0.0
-
-    errors = sum(1 for r in cwe_results if r.error)
+    errors            = sum(1 for r in cwe_results if r.error)
 
     return {
         "cwe":          cwe,
@@ -167,10 +167,10 @@ def print_metrics_table(all_metrics: List[dict], model_name: str = ""):
         total_fn  += m["fn"]; total_tn += m["tn"]
         total_err += err
 
-    total     = total_tp + total_fp + total_fn + total_tn
-    overall_p = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0
-    overall_r = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0
-    overall_f1= 2 * overall_p * overall_r / (overall_p + overall_r) if (overall_p + overall_r) > 0 else 0
+    total      = total_tp + total_fp + total_fn + total_tn
+    overall_p  = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0
+    overall_r  = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0
+    overall_f1 = 2 * overall_p * overall_r / (overall_p + overall_r) if (overall_p + overall_r) > 0 else 0
     print(f"{'-'*75}")
     print(f"{'OVERALL':<12} {total:>6} {total_tp:>4} {total_fp:>4} "
           f"{total_fn:>4} {total_tn:>4} {overall_p:>6.3f} "
@@ -180,22 +180,30 @@ def print_metrics_table(all_metrics: List[dict], model_name: str = ""):
 
 
 def run_evaluation(sample_per_cwe: Optional[int] = None,
-                   output_file: Optional[str] = None,
-                   model: Optional[str] = None,
-                   hybrid: bool = False):
+                   output_file:    Optional[str]  = None,
+                   model:          Optional[str]  = None,
+                   hybrid:         bool            = False,
+                   split:          str             = "validation"):
 
     if hybrid:
         set_hybrid(True)
     elif model:
         set_model(model)
 
+    # Select dataset path
+    if split == "test":
+        split_path = TEST_PATH
+        print("\n⚠️  WARNING: Using LOCKED TEST SET. Run this only for final benchmarking.")
+    else:
+        split_path = VALIDATION_PATH
+
     active = get_model()
     mode   = f"sampled ({sample_per_cwe} per CWE)" if sample_per_cwe else "full"
     print(f"\nCryptoGuard Evaluation — {mode} — model: {active}")
-    print(f"Validation set: {VALIDATION_PATH}")
+    print(f"Split: {split} — {split_path}")
 
-    print(f"\nLoading validation set...")
-    records = load_validation_set(sample_per_cwe)
+    print(f"\nLoading {split} set...")
+    records = load_split(split_path, sample_per_cwe)
     print(f"Total records to evaluate: {len(records)}")
 
     est_min = len(records) * 17 / 60
@@ -243,10 +251,11 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
     RESULTS_DIR.mkdir(exist_ok=True)
     model_tag = active.replace(":", "_").replace(".", "_")
     tag       = f"sample{sample_per_cwe}" if sample_per_cwe else "full"
-    out       = output_file or str(RESULTS_DIR / f"eval_{model_tag}_{tag}.json")
+    out       = output_file or str(RESULTS_DIR / f"eval_{model_tag}_{split}_{tag}.json")
 
     output_data = {
         "mode":    mode,
+        "split":   split,
         "model":   active,
         "total":   len(records),
         "metrics": [m for m in all_metrics if m],
@@ -276,17 +285,22 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="Evaluate CryptoGuard on validation set")
-    parser.add_argument("--sample", "-s", type=int, default=None,
+    parser = argparse.ArgumentParser(description="Evaluate CryptoGuard on validation or test set")
+    parser.add_argument("--sample", "-s", type=int,  default=None,
                         help="Number of examples per CWE (default: all)")
-    parser.add_argument("--output", "-o", type=str, default=None,
+    parser.add_argument("--output", "-o", type=str,  default=None,
                         help="Output JSON file path")
-    parser.add_argument("--model",  "-m", type=str, default=None,
+    parser.add_argument("--model",  "-m", type=str,  default=None,
                         help="Ollama model name (default: qwen2.5-coder:7b)")
-    parser.add_argument("--hybrid", action="store_true", default=False,
+    parser.add_argument("--hybrid",       action="store_true", default=False,
                         help="Enable hybrid mode: Qwen for most CWEs, Phi3 for CWE-330 and CWE-311")
+    parser.add_argument("--split",        type=str,  default="validation",
+                        choices=["validation", "test"],
+                        help="Dataset split to use (default: validation). "
+                             "Use 'test' only for final Phase 5 benchmarking.")
     args = parser.parse_args()
     run_evaluation(sample_per_cwe=args.sample,
                    output_file=args.output,
                    model=args.model,
-                   hybrid=args.hybrid)
+                   hybrid=args.hybrid,
+                   split=args.split)
