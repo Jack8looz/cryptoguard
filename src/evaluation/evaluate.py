@@ -197,9 +197,10 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
     else:
         split_path = VALIDATION_PATH
 
-    active = get_model()
-    mode   = f"sampled ({sample_per_cwe} per CWE)" if sample_per_cwe else "full"
-    print(f"\nCryptoGuard Evaluation — {mode} — model: {active}")
+    active    = get_model()
+    label     = "hybrid (Qwen+Phi3)" if hybrid else active
+    mode      = f"sampled ({sample_per_cwe} per CWE)" if sample_per_cwe else "full"
+    print(f"\nCryptoGuard Evaluation — {mode} — model: {label}")
     print(f"Split: {split} — {split_path}")
 
     print(f"\nLoading {split} set...")
@@ -246,17 +247,17 @@ def run_evaluation(sample_per_cwe: Optional[int] = None,
                   f"Errors: {errors} ---\n")
 
     all_metrics = [compute_metrics(results, cwe) for cwe in VALID_CWES]
-    print_metrics_table([m for m in all_metrics if m], model_name=active)
+    print_metrics_table([m for m in all_metrics if m], model_name=label)
 
     RESULTS_DIR.mkdir(exist_ok=True)
-    model_tag = active.replace(":", "_").replace(".", "_")
+    model_tag = "hybrid" if hybrid else active.replace(":", "_").replace(".", "_")
     tag       = f"sample{sample_per_cwe}" if sample_per_cwe else "full"
     out       = output_file or str(RESULTS_DIR / f"eval_{model_tag}_{split}_{tag}.json")
 
     output_data = {
         "mode":    mode,
         "split":   split,
-        "model":   active,
+        "model":   label,
         "total":   len(records),
         "metrics": [m for m in all_metrics if m],
         "results": [
