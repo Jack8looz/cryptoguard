@@ -25,7 +25,7 @@ CRYPTO_KEYWORDS = [
     "JWT", "JwtParser", "Algorithm", "parseClaimsJws", "parseClaimsJwt",
     "SharedPreferences", "AES", "DES", "RSA", "ECB", "CBC", "GCM",
     "MD5", "SHA-1", "SHA1", "SHA-256", "SHA256", "HMAC",
-    "DriverManager", "getConnection",
+    "DriverManager", "getConnection", "Math.random",
     "KerberosKey", "KerberosPrincipal", "KerberosTicket",
 ]
 
