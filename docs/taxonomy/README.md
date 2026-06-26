@@ -177,7 +177,6 @@ code review, and prompt engineering.
 | `const val API_SECRET = "sk_..."` in Kotlin | CWE-798 | CRITICAL |
 | `private static final String PIN_KEY = "..."` | CWE-798 | CRITICAL |
 | `new KerberosKey(principal, "hardcoded".getBytes(), 17)` | CWE-798 | CRITICAL |
-| `new PasswordAuthentication(user, "hardcoded_password")` | CWE-798 | CRITICAL |
 | `MessageDigest.getInstance("SHA-256").digest(password...)` | CWE-916 | CRITICAL |
 | `new PBEKeySpec(password, salt, 1000, 256)` | CWE-916 | HIGH |
 | `new IvParameterSpec(new byte[16])` | CWE-329 | HIGH |

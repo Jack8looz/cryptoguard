@@ -14,7 +14,7 @@ CRYPTO_IMPORTS = [
     "org.bouncycastle", "android.security.keystore",
     "java.security.spec", "javax.crypto.spec",
     "io.jsonwebtoken", "com.auth0.jwt", "java.sql",
-    "javax.security.auth.kerberos", "com.sun.mail.util",
+    "javax.security.auth.kerberos",
 ]
 
 CRYPTO_KEYWORDS = [
@@ -25,9 +25,8 @@ CRYPTO_KEYWORDS = [
     "JWT", "JwtParser", "Algorithm", "parseClaimsJws", "parseClaimsJwt",
     "SharedPreferences", "AES", "DES", "RSA", "ECB", "CBC", "GCM",
     "MD5", "SHA-1", "SHA1", "SHA-256", "SHA256", "HMAC",
-    "DriverManager", "getConnection", "Connection", "PreparedStatement",
-    "Statement", "ResultSet", "java.sql", "KerberosKey", "KerberosPrincipal", "KerberosTicket",
-    "javax.security.auth.kerberos", "PasswordAuthentication",
+    "DriverManager", "getConnection",
+    "KerberosKey", "KerberosPrincipal", "KerberosTicket",
 ]
 
 @dataclass

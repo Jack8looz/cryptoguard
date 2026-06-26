@@ -200,7 +200,7 @@ def _build_system_prompt_compact() -> str:
     return """You are a security expert. Detect cryptographic vulnerabilities in Java/Kotlin code.
 Rules: DES/3DES/RC4/AES-ECB -> CWE-327 CRITICAL. Hardcoded key/password literal -> CWE-798 CRITICAL. new Random() for security -> CWE-330 HIGH. Hardcoded IV in CBC -> CWE-329 HIGH. RSA<2048/AES<128 -> CWE-326 HIGH. SHA-1/MD5/SHA-256 on password without salt -> CWE-328 HIGH. Fast hash for password storage -> CWE-916 HIGH. parseClaimsJwt() -> CWE-347 HIGH. DriverManager.getConnection() with external password -> CWE-311 HIGH.
 Safe: KeyGenerator, SecureRandom, Android KeyStore, AES/GCM, bcrypt, PBKDF2, parseClaimsJws().
-Do NOT flag: good1/good2/goodG2B/goodG2B1/goodG2B2/goodB2G methods. Comment says "FIX:" -> secure. Variable init to "" then overwritten by readLine() -> NOT hardcoded. Hardcoded password in getConnection() -> CWE-798 not CWE-311. KerberosKey with data from readLine() or user input -> NOT hardcoded. KerberosKey with hardcoded string literal -> CWE-798. PasswordAuthentication with hardcoded string literal -> CWE-798.
+Do NOT flag: good1/good2/goodG2B/goodG2B1/goodG2B2/goodB2G methods. Comment says "FIX:" -> secure. Variable init to "" then overwritten by readLine() -> NOT hardcoded. Hardcoded password in getConnection() -> CWE-798 not CWE-311. KerberosKey with data from readLine() or user input -> NOT hardcoded. KerberosKey with hardcoded string literal -> CWE-798.
 Respond ONLY with JSON array: [{"cwe_id":"CWE-XXX","severity":"CRITICAL|HIGH|WARNING","confidence":"high|medium|low","explanation":"...","fix_code":"...","line_hint":1}]
 If no vulnerability: []"""
 
