@@ -129,6 +129,8 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 - Methods named good1, good2, goodG2B, goodG2B1, goodG2B2, goodB2G -> secure implementations, do NOT flag them under any circumstances
 - A hardcoded password literal like "Password1234!" used in getConnection() -> CWE-798, NOT CWE-311
 - If comment says "FIX:" or "it was not sent over the network" -> this is a secure pattern, do NOT flag
+- KerberosKey with data from readLine() or user input -> NOT hardcoded, do NOT flag
+- KerberosKey with hardcoded string literal -> CWE-798
 
 ### CWE-327 -- Wrong algorithm
 - Wrong algorithm (DES, 3DES outside bank class, RC4, AES/ECB, MD5 for passwords) -> CWE-327
