@@ -63,6 +63,12 @@ false positive rate. CWE-347 is the most impressive demo case in the project.
 | CWE-347 | Improper verification of cryptographic signature | CRITICAL | [CWE-347.md](CWE-347.md) |
 | CWE-311 | Missing encryption of sensitive data | CRITICAL | [CWE-311.md](CWE-311.md) |
 
+### PCI SSF coverage — added to close Control Objective 6.2.d gap
+
+| CWE | Name | Severity | File |
+|---|---|---|---|
+| CWE-295 | Improper certificate validation | CRITICAL | [CWE-295.md](CWE-295.md) |
+
 ---
 
 ## Company-specific context

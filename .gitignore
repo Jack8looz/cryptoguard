@@ -19,3 +19,4 @@ results/spotbugs_run.log
 # Temp
 *.tgz
 *.zip
+*.egg-info/
