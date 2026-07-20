@@ -363,7 +363,7 @@ async def stream_scan(scan_id: str):
 
 @app.get("/api/scans")
 async def list_scans():
-    return db_list_scans(limit=20)
+    return db_list_scans(limit=100)
 
 
 @app.post("/api/results")
