@@ -24,14 +24,14 @@
       "total": 24,
       "vulnerable": 6,
       "secure": 18,
-      "tp": 2,
+      "tp": 3,
       "fp": 8,
-      "fn": 4,
+      "fn": 3,
       "tn": 10,
-      "precision": 0.2,
-      "recall": 0.333,
-      "f1": 0.25,
-      "cwe_accuracy": 2.5,
+      "precision": 0.273,
+      "recall": 0.5,
+      "f1": 0.353,
+      "cwe_accuracy": 2.333,
       "errors": 0
     },
     {
@@ -40,13 +40,13 @@
       "vulnerable": 1,
       "secure": 2,
       "tp": 1,
-      "fp": 1,
+      "fp": 0,
       "fn": 0,
-      "tn": 1,
-      "precision": 0.5,
+      "tn": 2,
+      "precision": 1.0,
       "recall": 1.0,
-      "f1": 0.667,
-      "cwe_accuracy": 2.0,
+      "f1": 1.0,
+      "cwe_accuracy": 1.0,
       "errors": 0
     },
     {
@@ -91,7 +91,7 @@
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "cwe_accuracy": 0.786,
+      "cwe_accuracy": 1.0,
       "errors": 0
     },
     {
@@ -130,13 +130,13 @@
       "vulnerable": 2,
       "secure": 1,
       "tp": 2,
-      "fp": 0,
+      "fp": 1,
       "fn": 0,
-      "tn": 1,
-      "precision": 1.0,
+      "tn": 0,
+      "precision": 0.667,
       "recall": 1.0,
-      "f1": 1.0,
-      "cwe_accuracy": 1.0,
+      "f1": 0.8,
+      "cwe_accuracy": 1.5,
       "errors": 0
     },
     {
@@ -145,13 +145,13 @@
       "vulnerable": 18,
       "secure": 58,
       "tp": 18,
-      "fp": 18,
+      "fp": 17,
       "fn": 0,
-      "tn": 40,
-      "precision": 0.5,
+      "tn": 41,
+      "precision": 0.514,
       "recall": 1.0,
-      "f1": 0.667,
-      "cwe_accuracy": 2.0,
+      "f1": 0.679,
+      "cwe_accuracy": 1.944,
       "errors": 0
     },
     {
@@ -166,7 +166,7 @@
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "cwe_accuracy": 0.0,
+      "cwe_accuracy": 1.0,
       "errors": 0
     }
   ],
@@ -178,7 +178,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 13.98,
+      "elapsed": 2.64,
       "error": null
     },
     {
@@ -188,7 +188,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.12,
+      "elapsed": 2.13,
       "error": null
     },
     {
@@ -198,7 +198,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.11,
+      "elapsed": 2.18,
       "error": null
     },
     {
@@ -208,7 +208,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.13,
+      "elapsed": 2.28,
       "error": null
     },
     {
@@ -218,7 +218,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.28,
+      "elapsed": 2.32,
       "error": null
     },
     {
@@ -228,7 +228,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-295",
       "confidence": "high",
-      "elapsed": 4.34,
+      "elapsed": 4.39,
       "error": null
     },
     {
@@ -238,7 +238,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.26,
+      "elapsed": 2.35,
       "error": null
     },
     {
@@ -248,7 +248,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 4.68,
+      "elapsed": 5.07,
       "error": null
     },
     {
@@ -258,7 +258,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.29,
+      "elapsed": 2.39,
       "error": null
     },
     {
@@ -268,7 +268,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 4.97,
+      "elapsed": 5.04,
       "error": null
     },
     {
@@ -278,7 +278,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.32,
+      "elapsed": 2.44,
       "error": null
     },
     {
@@ -288,7 +288,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.24,
+      "elapsed": 2.22,
       "error": null
     },
     {
@@ -298,7 +298,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.37,
+      "elapsed": 2.45,
       "error": null
     },
     {
@@ -308,7 +308,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.31,
+      "elapsed": 2.47,
       "error": null
     },
     {
@@ -328,7 +328,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-330",
       "confidence": "high",
-      "elapsed": 12.84,
+      "elapsed": 12.53,
       "error": null
     },
     {
@@ -338,7 +338,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 11.29,
+      "elapsed": 12.64,
       "error": null
     },
     {
@@ -348,7 +348,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.38,
+      "elapsed": 5.37,
       "error": null
     },
     {
@@ -358,7 +358,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.26,
+      "elapsed": 2.34,
       "error": null
     },
     {
@@ -368,7 +368,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-330",
       "confidence": "high",
-      "elapsed": 9.44,
+      "elapsed": 9.87,
       "error": null
     },
     {
@@ -378,17 +378,17 @@
       "predicted": true,
       "predicted_cwe": "CWE-327",
       "confidence": "high",
-      "elapsed": 14.4,
+      "elapsed": 14.44,
       "error": null
     },
     {
       "id": "juliet_fcd83edb",
       "cwe_id": "CWE-798",
       "is_vulnerable": false,
-      "predicted": true,
-      "predicted_cwe": "CWE-798",
-      "confidence": "high",
-      "elapsed": 11.8,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 11.71,
       "error": null
     },
     {
@@ -398,7 +398,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 12.21,
+      "elapsed": 13.6,
       "error": null
     },
     {
@@ -408,7 +408,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.43,
+      "elapsed": 2.48,
       "error": null
     },
     {
@@ -418,7 +418,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.45,
+      "elapsed": 2.39,
       "error": null
     },
     {
@@ -428,7 +428,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.28,
+      "elapsed": 2.29,
       "error": null
     },
     {
@@ -438,7 +438,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.46,
+      "elapsed": 2.49,
       "error": null
     },
     {
@@ -448,7 +448,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-329",
       "confidence": "high",
-      "elapsed": 5.38,
+      "elapsed": 5.54,
       "error": null
     },
     {
@@ -468,7 +468,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.53,
+      "elapsed": 2.54,
       "error": null
     },
     {
@@ -478,7 +478,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-326",
       "confidence": "high",
-      "elapsed": 5.59,
+      "elapsed": 5.87,
       "error": null
     },
     {
@@ -488,7 +488,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.45,
+      "elapsed": 2.58,
       "error": null
     },
     {
@@ -498,7 +498,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-329",
       "confidence": "high",
-      "elapsed": 5.77,
+      "elapsed": 5.89,
       "error": null
     },
     {
@@ -508,7 +508,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 5.57,
+      "elapsed": 5.54,
       "error": null
     },
     {
@@ -518,7 +518,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 4.5,
+      "elapsed": 4.96,
       "error": null
     },
     {
@@ -528,7 +528,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-347",
       "confidence": "high",
-      "elapsed": 5.23,
+      "elapsed": 7.28,
       "error": null
     },
     {
@@ -548,7 +548,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.55,
+      "elapsed": 2.6,
       "error": null
     },
     {
@@ -558,7 +558,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.44,
+      "elapsed": 2.53,
       "error": null
     },
     {
@@ -568,17 +568,17 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 12.96,
+      "elapsed": 13.27,
       "error": null
     },
     {
       "id": "juliet_d7f942e3",
       "cwe_id": "CWE-311",
       "is_vulnerable": true,
-      "predicted": false,
-      "predicted_cwe": null,
-      "confidence": null,
-      "elapsed": 90.52,
+      "predicted": true,
+      "predicted_cwe": "CWE-312",
+      "confidence": "high",
+      "elapsed": 91.49,
       "error": null
     },
     {
@@ -588,7 +588,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 9.68,
+      "elapsed": 10.96,
       "error": null
     },
     {
@@ -598,7 +598,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.51,
+      "elapsed": 2.6,
       "error": null
     },
     {
@@ -608,7 +608,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 20.88,
+      "elapsed": 23.57,
       "error": null
     },
     {
@@ -618,7 +618,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 14.44,
+      "elapsed": 22.87,
       "error": null
     },
     {
@@ -628,7 +628,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 9.66,
+      "elapsed": 13.62,
       "error": null
     },
     {
@@ -638,7 +638,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.42,
+      "elapsed": 6.01,
       "error": null
     },
     {
@@ -648,7 +648,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 11.24,
+      "elapsed": 12.38,
       "error": null
     },
     {
@@ -658,7 +658,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 73.64,
+      "elapsed": 78.19,
       "error": null
     },
     {
@@ -668,7 +668,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.78,
+      "elapsed": 8.01,
       "error": null
     },
     {
@@ -678,7 +678,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.42,
+      "elapsed": 2.43,
       "error": null
     },
     {
@@ -688,7 +688,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.48,
+      "elapsed": 2.52,
       "error": null
     },
     {
@@ -698,7 +698,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.52,
+      "elapsed": 2.54,
       "error": null
     },
     {
@@ -708,7 +708,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.03,
+      "elapsed": 5.05,
       "error": null
     },
     {
@@ -718,7 +718,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 10.45,
+      "elapsed": 10.44,
       "error": null
     },
     {
@@ -728,7 +728,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.49,
+      "elapsed": 8.36,
       "error": null
     },
     {
@@ -738,7 +738,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.44,
+      "elapsed": 2.5,
       "error": null
     },
     {
@@ -748,7 +748,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 17.81,
+      "elapsed": 17.75,
       "error": null
     },
     {
@@ -758,7 +758,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.12,
+      "elapsed": 9.28,
       "error": null
     },
     {
@@ -768,7 +768,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.38,
+      "elapsed": 2.36,
       "error": null
     },
     {
@@ -778,7 +778,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-330",
       "confidence": "high",
-      "elapsed": 10.18,
+      "elapsed": 9.81,
       "error": null
     },
     {
@@ -788,17 +788,17 @@
       "predicted": true,
       "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 31.92,
+      "elapsed": 40.5,
       "error": null
     },
     {
       "id": "synthetic_37ce5be6",
       "cwe_id": "CWE-312",
       "is_vulnerable": false,
-      "predicted": true,
-      "predicted_cwe": "CWE-312",
-      "confidence": "high",
-      "elapsed": 8.77,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 10.57,
       "error": null
     },
     {
@@ -808,7 +808,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 9.95,
+      "elapsed": 11.81,
       "error": null
     },
     {
@@ -818,7 +818,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 8.23,
+      "elapsed": 10.84,
       "error": null
     },
     {
@@ -826,9 +826,9 @@
       "cwe_id": "CWE-328",
       "is_vulnerable": true,
       "predicted": true,
-      "predicted_cwe": "CWE-327",
+      "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 5.3,
+      "elapsed": 5.25,
       "error": null
     },
     {
@@ -838,7 +838,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 6.04,
+      "elapsed": 7.86,
       "error": null
     },
     {
@@ -846,19 +846,19 @@
       "cwe_id": "CWE-311",
       "is_vulnerable": false,
       "predicted": true,
-      "predicted_cwe": "CWE-798",
+      "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 6.32,
+      "elapsed": 5.31,
       "error": null
     },
     {
       "id": "juliet_6d9363c7",
       "cwe_id": "CWE-311",
       "is_vulnerable": true,
-      "predicted": false,
-      "predicted_cwe": null,
-      "confidence": null,
-      "elapsed": 5.45,
+      "predicted": true,
+      "predicted_cwe": "CWE-312",
+      "confidence": "high",
+      "elapsed": 5.22,
       "error": null
     },
     {
@@ -868,7 +868,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.66,
+      "elapsed": 2.61,
       "error": null
     },
     {
@@ -878,7 +878,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.69,
+      "elapsed": 2.53,
       "error": null
     },
     {
@@ -888,7 +888,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.62,
+      "elapsed": 2.46,
       "error": null
     },
     {
@@ -898,7 +898,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 10.91,
+      "elapsed": 10.68,
       "error": null
     },
     {
@@ -908,7 +908,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 9.27,
+      "elapsed": 11.43,
       "error": null
     },
     {
@@ -918,7 +918,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.5,
+      "elapsed": 6.7,
       "error": null
     },
     {
@@ -928,7 +928,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-327",
       "confidence": "high",
-      "elapsed": 5.81,
+      "elapsed": 8.51,
       "error": null
     },
     {
@@ -938,7 +938,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 10.1,
+      "elapsed": 14.06,
       "error": null
     },
     {
@@ -948,7 +948,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 10.16,
+      "elapsed": 11.18,
       "error": null
     },
     {
@@ -958,7 +958,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-329",
       "confidence": "high",
-      "elapsed": 5.75,
+      "elapsed": 5.83,
       "error": null
     },
     {
@@ -968,7 +968,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.59,
+      "elapsed": 2.45,
       "error": null
     },
     {
@@ -978,7 +978,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 9.75,
+      "elapsed": 13.69,
       "error": null
     },
     {
@@ -988,7 +988,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 8.71,
+      "elapsed": 12.09,
       "error": null
     },
     {
@@ -998,7 +998,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 5.34,
+      "elapsed": 5.09,
       "error": null
     },
     {
@@ -1008,7 +1008,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-329",
       "confidence": "high",
-      "elapsed": 5.8,
+      "elapsed": 5.89,
       "error": null
     },
     {
@@ -1018,7 +1018,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.46,
+      "elapsed": 2.47,
       "error": null
     },
     {
@@ -1028,7 +1028,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.56,
+      "elapsed": 2.61,
       "error": null
     },
     {
@@ -1038,7 +1038,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.52,
+      "elapsed": 2.6,
       "error": null
     },
     {
@@ -1048,7 +1048,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.25,
+      "elapsed": 5.3,
       "error": null
     },
     {
@@ -1058,17 +1058,17 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.5,
+      "elapsed": 2.61,
       "error": null
     },
     {
       "id": "juliet_21889894",
       "cwe_id": "CWE-311",
       "is_vulnerable": true,
-      "predicted": true,
-      "predicted_cwe": "CWE-312",
-      "confidence": "high",
-      "elapsed": 11.8,
+      "predicted": false,
+      "predicted_cwe": null,
+      "confidence": null,
+      "elapsed": 13.28,
       "error": null
     },
     {
@@ -1078,7 +1078,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-312",
       "confidence": "high",
-      "elapsed": 23.35,
+      "elapsed": 26.39,
       "error": null
     },
     {
@@ -1088,7 +1088,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 8.03,
+      "elapsed": 9.47,
       "error": null
     },
     {
@@ -1098,7 +1098,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.54,
+      "elapsed": 2.57,
       "error": null
     },
     {
@@ -1108,7 +1108,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.05,
+      "elapsed": 5.45,
       "error": null
     },
     {
@@ -1118,7 +1118,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 6.0,
+      "elapsed": 13.08,
       "error": null
     },
     {
@@ -1128,7 +1128,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.52,
+      "elapsed": 2.56,
       "error": null
     },
     {
@@ -1138,7 +1138,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.65,
+      "elapsed": 2.6,
       "error": null
     },
     {
@@ -1148,7 +1148,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.57,
+      "elapsed": 2.55,
       "error": null
     },
     {
@@ -1158,7 +1158,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-312",
       "confidence": "high",
-      "elapsed": 14.59,
+      "elapsed": 12.85,
       "error": null
     },
     {
@@ -1168,7 +1168,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 12.46,
+      "elapsed": 15.46,
       "error": null
     },
     {
@@ -1178,7 +1178,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 4.94,
+      "elapsed": 5.38,
       "error": null
     },
     {
@@ -1188,7 +1188,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.61,
+      "elapsed": 2.48,
       "error": null
     },
     {
@@ -1198,7 +1198,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.63,
+      "elapsed": 2.52,
       "error": null
     },
     {
@@ -1208,7 +1208,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.57,
+      "elapsed": 2.58,
       "error": null
     },
     {
@@ -1216,9 +1216,9 @@
       "cwe_id": "CWE-311",
       "is_vulnerable": false,
       "predicted": true,
-      "predicted_cwe": "CWE-798",
+      "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 6.22,
+      "elapsed": 5.36,
       "error": null
     },
     {
@@ -1228,7 +1228,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.45,
+      "elapsed": 2.6,
       "error": null
     },
     {
@@ -1238,7 +1238,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.68,
+      "elapsed": 2.69,
       "error": null
     },
     {
@@ -1248,7 +1248,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.63,
+      "elapsed": 2.73,
       "error": null
     },
     {
@@ -1258,7 +1258,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 6.91,
+      "elapsed": 7.01,
       "error": null
     },
     {
@@ -1268,7 +1268,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.58,
+      "elapsed": 2.41,
       "error": null
     },
     {
@@ -1278,7 +1278,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.68,
+      "elapsed": 2.53,
       "error": null
     },
     {
@@ -1288,7 +1288,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.68,
+      "elapsed": 2.66,
       "error": null
     },
     {
@@ -1298,7 +1298,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.3,
+      "elapsed": 6.32,
       "error": null
     },
     {
@@ -1308,7 +1308,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 11.47,
+      "elapsed": 14.52,
       "error": null
     },
     {
@@ -1318,7 +1318,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 9.41,
+      "elapsed": 12.22,
       "error": null
     },
     {
@@ -1328,7 +1328,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 30.77,
+      "elapsed": 30.75,
       "error": null
     },
     {
@@ -1338,7 +1338,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.86,
+      "elapsed": 7.97,
       "error": null
     },
     {
@@ -1358,7 +1358,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.48,
+      "elapsed": 2.5,
       "error": null
     },
     {
@@ -1366,9 +1366,9 @@
       "cwe_id": "CWE-328",
       "is_vulnerable": true,
       "predicted": true,
-      "predicted_cwe": "CWE-327",
+      "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 5.05,
+      "elapsed": 5.5,
       "error": null
     },
     {
@@ -1378,7 +1378,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.45,
+      "elapsed": 3.05,
       "error": null
     },
     {
@@ -1388,7 +1388,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-312",
       "confidence": "high",
-      "elapsed": 5.79,
+      "elapsed": 5.57,
       "error": null
     },
     {
@@ -1398,7 +1398,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.66,
+      "elapsed": 2.67,
       "error": null
     },
     {
@@ -1408,7 +1408,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.43,
+      "elapsed": 2.36,
       "error": null
     },
     {
@@ -1418,7 +1418,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.63,
+      "elapsed": 2.69,
       "error": null
     },
     {
@@ -1428,7 +1428,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 5.28,
+      "elapsed": 5.4,
       "error": null
     },
     {
@@ -1438,7 +1438,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 10.01,
+      "elapsed": 11.2,
       "error": null
     },
     {
@@ -1448,7 +1448,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.68,
+      "elapsed": 8.28,
       "error": null
     },
     {
@@ -1458,7 +1458,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-327",
       "confidence": "high",
-      "elapsed": 5.93,
+      "elapsed": 5.87,
       "error": null
     },
     {
@@ -1468,7 +1468,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.06,
+      "elapsed": 5.15,
       "error": null
     },
     {
@@ -1478,7 +1478,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 12.69,
+      "elapsed": 12.42,
       "error": null
     },
     {
@@ -1488,7 +1488,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 7.0,
+      "elapsed": 8.06,
       "error": null
     },
     {
@@ -1498,7 +1498,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.37,
+      "elapsed": 2.3,
       "error": null
     },
     {
@@ -1508,7 +1508,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.48,
+      "elapsed": 2.32,
       "error": null
     },
     {
@@ -1518,7 +1518,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.59,
+      "elapsed": 2.5,
       "error": null
     },
     {
@@ -1528,7 +1528,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.61,
+      "elapsed": 6.97,
       "error": null
     },
     {
@@ -1538,7 +1538,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.04,
+      "elapsed": 5.17,
       "error": null
     },
     {
@@ -1548,7 +1548,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 8.42,
+      "elapsed": 6.75,
       "error": null
     },
     {
@@ -1558,7 +1558,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.54,
+      "elapsed": 2.56,
       "error": null
     },
     {
@@ -1568,7 +1568,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.49,
+      "elapsed": 2.53,
       "error": null
     },
     {
@@ -1578,7 +1578,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 6.65,
+      "elapsed": 7.0,
       "error": null
     },
     {
@@ -1588,7 +1588,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.56,
+      "elapsed": 2.46,
       "error": null
     },
     {
@@ -1598,7 +1598,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.59,
+      "elapsed": 2.45,
       "error": null
     },
     {
@@ -1606,19 +1606,19 @@
       "cwe_id": "CWE-916",
       "is_vulnerable": true,
       "predicted": true,
-      "predicted_cwe": "CWE-327",
+      "predicted_cwe": "CWE-916",
       "confidence": "high",
-      "elapsed": 5.7,
+      "elapsed": 8.3,
       "error": null
     },
     {
       "id": "synthetic_d8c0fac8",
       "cwe_id": "CWE-347",
       "is_vulnerable": false,
-      "predicted": false,
-      "predicted_cwe": null,
-      "confidence": null,
-      "elapsed": 2.68,
+      "predicted": true,
+      "predicted_cwe": "CWE-347",
+      "confidence": "high",
+      "elapsed": 5.83,
       "error": null
     },
     {
@@ -1628,7 +1628,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-347",
       "confidence": "high",
-      "elapsed": 5.18,
+      "elapsed": 7.52,
       "error": null
     },
     {
@@ -1638,7 +1638,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.39,
+      "elapsed": 5.97,
       "error": null
     },
     {
@@ -1648,7 +1648,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.7,
+      "elapsed": 2.67,
       "error": null
     },
     {
@@ -1658,7 +1658,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-330",
       "confidence": "high",
-      "elapsed": 10.07,
+      "elapsed": 10.35,
       "error": null
     },
     {
@@ -1668,7 +1668,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.72,
+      "elapsed": 8.37,
       "error": null
     },
     {
@@ -1678,7 +1678,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.49,
+      "elapsed": 2.57,
       "error": null
     },
     {
@@ -1688,7 +1688,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 6.2,
+      "elapsed": 6.27,
       "error": null
     },
     {
@@ -1698,7 +1698,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.53,
+      "elapsed": 2.66,
       "error": null
     },
     {
@@ -1708,7 +1708,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.45,
+      "elapsed": 2.52,
       "error": null
     },
     {
@@ -1718,7 +1718,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 9.82,
+      "elapsed": 9.91,
       "error": null
     },
     {
@@ -1728,7 +1728,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 8.42,
+      "elapsed": 8.41,
       "error": null
     },
     {
@@ -1738,7 +1738,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.9,
+      "elapsed": 6.25,
       "error": null
     },
     {
@@ -1748,7 +1748,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.05,
+      "elapsed": 4.97,
       "error": null
     },
     {
@@ -1758,7 +1758,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.54,
+      "elapsed": 6.74,
       "error": null
     },
     {
@@ -1768,7 +1768,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.54,
+      "elapsed": 2.56,
       "error": null
     },
     {
@@ -1778,7 +1778,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 11.24,
+      "elapsed": 11.61,
       "error": null
     },
     {
@@ -1788,7 +1788,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 10.75,
+      "elapsed": 13.36,
       "error": null
     },
     {
@@ -1798,7 +1798,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.6,
+      "elapsed": 2.59,
       "error": null
     },
     {
@@ -1808,7 +1808,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.52,
+      "elapsed": 2.56,
       "error": null
     },
     {
@@ -1818,7 +1818,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.65,
+      "elapsed": 2.6,
       "error": null
     },
     {
@@ -1828,7 +1828,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 5.01,
+      "elapsed": 5.97,
       "error": null
     },
     {
@@ -1838,7 +1838,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 10.7,
+      "elapsed": 11.86,
       "error": null
     },
     {
@@ -1848,7 +1848,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-330",
       "confidence": "high",
-      "elapsed": 14.17,
+      "elapsed": 14.82,
       "error": null
     },
     {
@@ -1856,9 +1856,9 @@
       "cwe_id": "CWE-916",
       "is_vulnerable": true,
       "predicted": true,
-      "predicted_cwe": "CWE-328",
+      "predicted_cwe": "CWE-916",
       "confidence": "high",
-      "elapsed": 11.47,
+      "elapsed": 12.51,
       "error": null
     },
     {
@@ -1868,7 +1868,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 10.13,
+      "elapsed": 10.7,
       "error": null
     },
     {
@@ -1878,7 +1878,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 6.43,
+      "elapsed": 8.3,
       "error": null
     },
     {
@@ -1888,7 +1888,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 6.66,
+      "elapsed": 7.1,
       "error": null
     },
     {
@@ -1898,7 +1898,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 11.64,
+      "elapsed": 16.18,
       "error": null
     },
     {
@@ -1908,7 +1908,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 11.99,
+      "elapsed": 11.59,
       "error": null
     },
     {
@@ -1918,7 +1918,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.48,
+      "elapsed": 2.54,
       "error": null
     },
     {
@@ -1928,7 +1928,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-311",
       "confidence": "high",
-      "elapsed": 10.0,
+      "elapsed": 10.36,
       "error": null
     },
     {
@@ -1938,7 +1938,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-329",
       "confidence": "high",
-      "elapsed": 9.68,
+      "elapsed": 16.13,
       "error": null
     },
     {
@@ -1956,9 +1956,9 @@
       "cwe_id": "CWE-328",
       "is_vulnerable": true,
       "predicted": true,
-      "predicted_cwe": "CWE-327",
+      "predicted_cwe": "CWE-328",
       "confidence": "high",
-      "elapsed": 5.37,
+      "elapsed": 5.41,
       "error": null
     },
     {
@@ -1968,7 +1968,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.64,
+      "elapsed": 5.44,
       "error": null
     },
     {
@@ -1978,7 +1978,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.56,
+      "elapsed": 2.47,
       "error": null
     },
     {
@@ -1988,7 +1988,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 8.35,
+      "elapsed": 5.75,
       "error": null
     },
     {
@@ -1998,7 +1998,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.7,
+      "elapsed": 6.33,
       "error": null
     },
     {
@@ -2008,7 +2008,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 2.59,
+      "elapsed": 2.55,
       "error": null
     },
     {
@@ -2018,7 +2018,7 @@
       "predicted": true,
       "predicted_cwe": "CWE-798",
       "confidence": "high",
-      "elapsed": 5.2,
+      "elapsed": 6.43,
       "error": null
     },
     {
@@ -2028,7 +2028,7 @@
       "predicted": false,
       "predicted_cwe": null,
       "confidence": null,
-      "elapsed": 10.28,
+      "elapsed": 11.17,
       "error": null
     }
   ]
