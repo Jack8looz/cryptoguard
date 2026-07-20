@@ -20,7 +20,7 @@ RESULTS_DIR     = Path(__file__).parent.parent.parent / "results"
 
 VALID_CWES = [
     "CWE-295", "CWE-311", "CWE-312", "CWE-326", "CWE-327", "CWE-328",
-    "CWE-329", "CWE-330", "CWE-347", "CWE-798", "CWE-916"
+    "CWE-329", "CWE-330", "CWE-347", "CWE-494", "CWE-798", "CWE-916"
 ]
 
 

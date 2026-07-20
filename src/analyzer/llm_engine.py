@@ -10,7 +10,7 @@ TAXONOMY_DIR        = Path(__file__).parent.parent.parent / "docs" / "taxonomy"
 
 VALID_CWES = {
     "CWE-295", "CWE-311", "CWE-312", "CWE-326", "CWE-327", "CWE-328",
-    "CWE-329", "CWE-330", "CWE-347", "CWE-798", "CWE-916"
+    "CWE-329", "CWE-330", "CWE-347", "CWE-494", "CWE-798", "CWE-916"
 }
 VALID_SEVERITIES  = {"CRITICAL", "HIGH", "WARNING", "NONE"}
 VALID_CONFIDENCES = {"high", "medium", "low"}
@@ -178,6 +178,15 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 - Default TrustManagerFactory/HostnameVerifier obtained from the platform and unmodified -> NOT a vulnerability
 - Trust-all pattern gated behind BuildConfig.DEBUG with no path to production -> CWE-295, WARNING not CRITICAL
 
+### CWE-494 -- Download of code without integrity check
+- Firmware update, plugin, .dex/.jar file, or executable payload loaded/executed with no Signature.verify() or checksum comparison beforehand -> CWE-494, HIGH
+- Downloaded prompt file / UI config file used (parsed, displayed, stored for later trusted use) with no checksum/signature check on the payload -> CWE-494, HIGH
+- Dependency or package fetched from a remote source and loaded with no verification step -> CWE-494, HIGH
+- A "checksum" computed from the same untrusted file and only logged, never compared against an independently-known-good value -> still CWE-494, this is not real verification
+- Signature.verify() or MessageDigest comparison against a value NOT derived from the same untrusted file (e.g. a signed manifest, a vendor public key check) present before the file is used -> NOT a vulnerability
+- Standard Android PackageInstaller/Play Store APK install -> NOT a vulnerability, the platform enforces signing; only flag if code bypasses this via DexClassLoader on a raw unverified file
+- Non-executable, non-trusted-config downloads (e.g. a receipt PDF for display only) -> NOT a vulnerability
+
 ### CWE-312 -- Cleartext storage, SAD persistence (CVV/PIN/track data only)
 - CVV/CVC2/CVV2/CAV2/CID, PIN or PIN block, or full track/magnetic-stripe data written to SharedPreferences, a file, a database (ContentValues/SQLite/Room), or a log call -> CWE-312, always CRITICAL, confidence high
 - This applies EVEN IF the value is encrypted or hashed before the write -- encryption/hashing does NOT exempt SAD fields from this rule, unlike every other CWE in this taxonomy
@@ -200,6 +209,7 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 11. If a comment says "FIX:" anywhere in the method -> this is a secure implementation, treat it as not vulnerable
 12. A TrustManager/HostnameVerifier is only CWE-295 if it ACCEPTS everything with no rejection path -- if it contains real comparison logic that can throw/return false (e.g. certificate pinning), it is secure, do NOT flag it
 13. CWE-312 applies ONLY to CVV/CVC2/PIN/PIN-block/full-track-data reaching a persistent sink -- if the same sink instead persists a PAN or other general sensitive value, that is CWE-311, not CWE-312. Never mark a CWE-312 finding as fixed by encryption -- the fix is removing the persistence call, not encrypting the value
+14. CWE-494 requires an actual absence of verification -- if a Signature.verify() call or a checksum comparison against an independently-sourced expected hash appears anywhere in the method before the file/dependency is used, do NOT flag. A checksum computed FROM the same untrusted file and merely logged (not compared against a separate trusted value) does NOT count as verification -- still flag CWE-494
 
 ## Output format
 Respond ONLY with a valid JSON array. No explanation, no markdown, no preamble, no postamble.

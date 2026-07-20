@@ -1356,6 +1356,190 @@ CWE312 = [
 
 records.extend(CWE312)
 
+# ===========================================================================
+# CWE-494 — Download of code without integrity check
+# ===========================================================================
+
+CWE494 = [
+
+    # --- VULNERABLE ---
+    entry("CWE-494","HIGH",1,True,"Firmware update flashed with no signature verification",
+"""public void applyFirmwareUpdate(File updateFile) throws Exception {
+    // FLAW: no Signature.verify() or checksum comparison before applying the update
+    bootloader.flash(updateFile);
+}"""),
+
+    entry("CWE-494","HIGH",2,True,"Downloaded prompt file loaded without checksum verification",
+"""public void refreshPromptConfig(String url) throws IOException {
+    byte[] promptData = httpClient.get(url);
+    // FLAW: content is parsed and displayed with no checksum/signature check
+    promptRenderer.load(promptData);
+}"""),
+
+    entry("CWE-494","HIGH",3,True,"Payment plugin dex file loaded dynamically with no verification",
+"""public void loadPaymentPlugin(String dexPath) throws Exception {
+    // FLAW: DexClassLoader executes arbitrary code from this file with no signature check
+    DexClassLoader loader = new DexClassLoader(dexPath, cacheDir, null, getClassLoader());
+    Class<?> pluginClass = loader.loadClass("com.plugin.PaymentPlugin");
+}"""),
+
+    entry("CWE-494","HIGH",4,True,"Checksum computed from the same untrusted file — not real verification",
+"""public void applyUpdate(byte[] updateBytes) throws Exception {
+    // FLAW: this checksum is derived from the file itself, not an independently known-good value
+    String selfChecksum = sha256(updateBytes);
+    log.info("Update checksum: " + selfChecksum);
+    bootloader.flash(updateBytes);
+}"""),
+
+    entry("CWE-494","HIGH",5,True,"Remote dependency jar downloaded and loaded with no checksum",
+"""public void loadRemoteDependency(String url) throws Exception {
+    byte[] jarBytes = httpClient.download(url);
+    File tempFile = new File(cacheDir, "dep.jar");
+    Files.write(tempFile.toPath(), jarBytes);
+    // FLAW: no signature or checksum check before loading
+    DexClassLoader loader = new DexClassLoader(tempFile.getPath(), cacheDir.getPath(), null, getClassLoader());
+}"""),
+
+    entry("CWE-494","HIGH",6,True,"Kotlin firmware download applied directly to bootloader",
+"""fun downloadAndApplyFirmware(url: String) {
+    val firmwareBytes = httpClient.download(url)
+    // FLAW: no signature verification step before flashing
+    bootloader.flash(firmwareBytes)
+}"""),
+
+    entry("CWE-494","HIGH",7,True,"Kotlin prompt file downloaded and saved without integrity check",
+"""fun updatePromptFile(url: String) {
+    val data = httpClient.download(url)
+    // FLAW: no checksum/signature check on data before persisting and later trusting it
+    promptStore.save(data)
+}"""),
+
+    entry("CWE-494","HIGH",8,True,"Kotlin dynamic plugin loading with no signature check",
+"""fun loadCheckoutPlugin(dexPath: String) {
+    // FLAW: DexClassLoader loads and executes the plugin with no prior verification
+    val loader = DexClassLoader(dexPath, cacheDir.path, null, javaClass.classLoader)
+    val pluginClass = loader.loadClass("com.plugin.CheckoutPlugin")
+}"""),
+
+    entry("CWE-494","HIGH",9,True,"Update package installed via raw DexClassLoader, bypassing platform signing",
+"""public void sideloadUpdatePackage(String packagePath) throws Exception {
+    // FLAW: bypasses PackageInstaller's platform-enforced signature check entirely
+    DexClassLoader loader = new DexClassLoader(packagePath, cacheDir, null, getClassLoader());
+    loader.loadClass("com.terminal.UpdateEntryPoint");
+}"""),
+
+    entry("CWE-494","HIGH",10,True,"Checksum check present but always passes — comparison against itself",
+"""public void applySecurityPatch(byte[] patchBytes) throws Exception {
+    String checksum = sha256(patchBytes);
+    // FLAW: comparing the computed checksum to itself is not a verification of anything
+    if (checksum.equals(sha256(patchBytes))) {
+        bootloader.flash(patchBytes);
+    }
+}"""),
+
+    # --- SECURE ---
+    entry("CWE-494","HIGH",1,False,"Firmware update verified with Signature.verify() before flashing",
+"""public void applyFirmwareUpdate(File updateFile, PublicKey vendorKey, byte[] detachedSignature) throws Exception {
+    byte[] fileBytes = Files.readAllBytes(updateFile.toPath());
+    Signature sig = Signature.getInstance("SHA256withRSA");
+    sig.initVerify(vendorKey);
+    sig.update(fileBytes);
+    // FIX: signature verified against the vendor's public key before use
+    if (!sig.verify(detachedSignature)) {
+        throw new SecurityException("Firmware signature verification failed");
+    }
+    bootloader.flash(updateFile);
+}"""),
+
+    entry("CWE-494","HIGH",2,False,"Prompt file checked against an independently-sourced checksum",
+"""public void refreshPromptConfig(String url, String expectedSha256) throws IOException {
+    byte[] promptData = httpClient.get(url);
+    String actualHash = sha256(promptData);
+    // FIX: expectedSha256 comes from a separately signed manifest, not this file
+    if (!actualHash.equals(expectedSha256)) {
+        throw new SecurityException("Prompt file integrity check failed");
+    }
+    promptRenderer.load(promptData);
+}"""),
+
+    entry("CWE-494","HIGH",3,False,"Standard PackageInstaller APK install — platform enforces signing",
+"""public void installUpdate(Uri apkUri, IntentSender intentSender) throws IOException {
+    PackageInstaller installer = pm.getPackageInstaller();
+    // FIX: platform enforces APK signature verification during install
+    PackageInstaller.Session session = installer.openSession(sessionId);
+    session.commit(intentSender);
+}"""),
+
+    entry("CWE-494","HIGH",4,False,"Receipt PDF downloaded for display only — not trusted config or executable",
+"""public void downloadReceipt(String url) throws IOException {
+    byte[] pdfBytes = httpClient.get(url);
+    // FIX: display-only content, never executed or treated as trusted configuration
+    receiptViewer.display(pdfBytes);
+}"""),
+
+    entry("CWE-494","HIGH",5,False,"Dependency jar signature verified before dynamic loading",
+"""public void loadRemoteDependency(String url, PublicKey vendorKey, byte[] signature) throws Exception {
+    byte[] jarBytes = httpClient.download(url);
+    Signature sig = Signature.getInstance("SHA256withRSA");
+    sig.initVerify(vendorKey);
+    sig.update(jarBytes);
+    // FIX: verified against vendor public key before the file is written or loaded
+    if (!sig.verify(signature)) {
+        throw new SecurityException("Dependency signature verification failed");
+    }
+    File tempFile = new File(cacheDir, "dep.jar");
+    Files.write(tempFile.toPath(), jarBytes);
+}"""),
+
+    entry("CWE-494","HIGH",6,False,"Kotlin firmware download verified against manifest checksum before flashing",
+"""fun downloadAndApplyFirmware(url: String, signedManifest: Manifest) {
+    val firmwareBytes = httpClient.download(url)
+    val expectedHash = signedManifest.getVerifiedHashFor(url)
+    // FIX: expectedHash comes from a manifest that was itself signature-checked
+    check(sha256(firmwareBytes) == expectedHash) { "Firmware checksum mismatch" }
+    bootloader.flash(firmwareBytes)
+}"""),
+
+    entry("CWE-494","HIGH",7,False,"Kotlin prompt file verified with vendor signature before saving",
+"""fun updatePromptFile(url: String, vendorKey: PublicKey, signature: ByteArray) {
+    val data = httpClient.download(url)
+    val sig = Signature.getInstance("SHA256withRSA")
+    sig.initVerify(vendorKey)
+    sig.update(data)
+    // FIX: verified before the downloaded content is persisted and later trusted
+    check(sig.verify(signature)) { "Prompt file signature verification failed" }
+    promptStore.save(data)
+}"""),
+
+    entry("CWE-494","HIGH",8,False,"Kotlin plugin loaded only through the platform installer",
+"""fun installCheckoutPlugin(apkUri: Uri, intentSender: IntentSender) {
+    // FIX: uses PackageInstaller instead of a raw DexClassLoader — platform enforces signing
+    val installer = packageManager.packageInstaller
+    val session = installer.openSession(sessionId)
+    session.commit(intentSender)
+}"""),
+
+    entry("CWE-494","HIGH",9,False,"Security patch checksum compared against a value from a trusted key server",
+"""public void applySecurityPatch(byte[] patchBytes, String trustedChecksum) throws Exception {
+    String actualChecksum = sha256(patchBytes);
+    // FIX: trustedChecksum was fetched from a separate, authenticated key server endpoint
+    if (!actualChecksum.equals(trustedChecksum)) {
+        throw new SecurityException("Security patch checksum mismatch");
+    }
+    bootloader.flash(patchBytes);
+}"""),
+
+    entry("CWE-494","HIGH",10,False,"Non-executable transaction log export, no trust implications",
+"""public void exportTransactionLog(String url) throws IOException {
+    byte[] logBytes = httpClient.get(url);
+    // FIX: export is written to a local file for the merchant to review, never executed or parsed as config
+    Files.write(exportDir.resolve("transactions.csv"), logBytes);
+}"""),
+
+]
+
+records.extend(CWE494)
+
 # Write output
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     for r in records:
