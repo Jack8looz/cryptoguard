@@ -163,6 +163,10 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 
 ### CWE-916 -- Insufficient password hashing
 - Fast algorithm (SHA-256, MD5) for password storage -> CWE-916
+- PBEKeySpec(password, salt, iterations, keyLength) with iterations below 310000 -> CWE-916, HIGH, NOT CWE-328 (CWE-328 is for missing/predictable salt, not iteration count)
+- BCrypt.gensalt(cost) with cost below 10 -> CWE-916, HIGH
+- SCrypt with N parameter below 16384 -> CWE-916, HIGH
+- PBEKeySpec iterations >= 310000, or BCrypt.gensalt(cost) with cost >= 10, or SCrypt N >= 16384, or Argon2 with any explicit parameters -> NOT a vulnerability, the correct KDF with a sufficient work factor
 
 ### CWE-295 -- Improper certificate validation
 - Empty or no-op checkServerTrusted()/checkClientTrusted() body -> CWE-295, always CRITICAL
@@ -192,7 +196,7 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 7. new Random() in any security context is ALWAYS CWE-330 -- flag it, no exceptions
 8. DriverManager.getConnection() with password from external source -> CWE-311. If password is a hardcoded literal or comment says FIX -> do NOT flag CWE-311
 9. Focus on the SINK -- where does the sensitive data end up? That determines the CWE
-10. For password hashing issues: missing salt -> CWE-328, fast algorithm -> CWE-916, wrong algorithm -> CWE-327
+10. For password hashing issues: missing salt -> CWE-328, fast algorithm -> CWE-916, wrong algorithm -> CWE-327, correct KDF (PBKDF2/bcrypt/scrypt) with too-low iteration/cost parameter -> CWE-916 not CWE-328
 11. If a comment says "FIX:" anywhere in the method -> this is a secure implementation, treat it as not vulnerable
 12. A TrustManager/HostnameVerifier is only CWE-295 if it ACCEPTS everything with no rejection path -- if it contains real comparison logic that can throw/return false (e.g. certificate pinning), it is secure, do NOT flag it
 13. CWE-312 applies ONLY to CVV/CVC2/PIN/PIN-block/full-track-data reaching a persistent sink -- if the same sink instead persists a PAN or other general sensitive value, that is CWE-311, not CWE-312. Never mark a CWE-312 finding as fixed by encryption -- the fix is removing the persistence call, not encrypting the value
