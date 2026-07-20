@@ -9,8 +9,9 @@
 
 ## Overview
 
-This taxonomy defines the 9 cryptographic vulnerability categories that
-CryptoGuard is designed to detect. Each entry is documented in a dedicated
+This taxonomy defines the cryptographic vulnerability categories that
+CryptoGuard is designed to detect — 9 core categories plus PCI SSF-driven
+additions (CWE-295, CWE-312). Each entry is documented in a dedicated
 file in this directory.
 
 The taxonomy is the foundation of three project components:
@@ -63,11 +64,12 @@ false positive rate. CWE-347 is the most impressive demo case in the project.
 | CWE-347 | Improper verification of cryptographic signature | CRITICAL | [CWE-347.md](CWE-347.md) |
 | CWE-311 | Missing encryption of sensitive data | CRITICAL | [CWE-311.md](CWE-311.md) |
 
-### PCI SSF coverage — added to close Control Objective 6.2.d gap
+### PCI SSF coverage — added to close gaps outside Control Objective 7
 
-| CWE | Name | Severity | File |
-|---|---|---|---|
-| CWE-295 | Improper certificate validation | CRITICAL | [CWE-295.md](CWE-295.md) |
+| CWE | Name | PCI SSF Requirement | Severity | File |
+|---|---|---|---|---|
+| CWE-295 | Improper certificate validation | 6.2.d (disabled cert/TLS validation) | CRITICAL | [CWE-295.md](CWE-295.md) |
+| CWE-312 | Cleartext storage — SAD persistence | Module A.1 (CVV/PIN/track data storage, absolute prohibition) | CRITICAL | [CWE-312.md](CWE-312.md) |
 
 ---
 
@@ -225,7 +227,9 @@ vulnerabilities defined by absence rather than presence.
 ```
 docs/taxonomy/
 ├── README.md          ← this file — index and overview
+├── CWE-295.md         ← improper certificate validation
 ├── CWE-311.md         ← missing encryption of sensitive data
+├── CWE-312.md         ← cleartext storage — SAD persistence (CVV/PIN/track data)
 ├── CWE-326.md         ← inadequate encryption strength
 ├── CWE-327.md         ← broken or risky cryptographic algorithm
 ├── CWE-328.md         ← weak hash — missing or inadequate salt
