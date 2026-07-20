@@ -896,6 +896,301 @@ class PaymentCipher {
 
 records.extend(CWE329_SUPPLEMENT)
 
+# ===========================================================================
+# CWE-295 — Improper certificate validation
+# ===========================================================================
+
+CWE295 = [
+
+    # --- VULNERABLE ---
+    entry("CWE-295","CRITICAL",1,True,"Classic trust-all TrustManager — checkServerTrusted does nothing",
+"""public void configureInsecureClient() throws Exception {
+    TrustManager[] trustAllCerts = new TrustManager[] {
+        new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+            // FLAW: no validation, no exception thrown — any certificate is accepted
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+        }
+    };
+    SSLContext sc = SSLContext.getInstance("TLS");
+    sc.init(null, trustAllCerts, new SecureRandom());
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+}"""),
+
+    entry("CWE-295","CRITICAL",2,True,"HostnameVerifier unconditionally returns true",
+"""public void disableHostnameCheck() {
+    // FLAW: accepts any hostname regardless of the certificate's actual CN/SAN
+    HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    });
+}"""),
+
+    entry("CWE-295","CRITICAL",3,True,"Deprecated ALLOW_ALL_HOSTNAME_VERIFIER constant",
+"""public HttpsURLConnection openBackendConnection(URL url) throws Exception {
+    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+    // FLAW: ALLOW_ALL_HOSTNAME_VERIFIER disables hostname validation entirely
+    conn.setHostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+    return conn;
+}"""),
+
+    entry("CWE-295","CRITICAL",4,True,"WebView proceeds despite SSL certificate error",
+"""public void setupPaymentWebView(WebView webView) {
+    webView.setWebViewClient(new WebViewClient() {
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            // FLAW: proceeds despite the certificate error being reported
+            handler.proceed();
+        }
+    });
+}"""),
+
+    entry("CWE-295","CRITICAL",5,True,"OkHttp client with trust-all TrustManager and permissive hostname verifier",
+"""public OkHttpClient buildInsecureClient(X509TrustManager trustAllManager,
+                                         SSLSocketFactory sslSocketFactory) {
+    // FLAW: both certificate trust and hostname checks are disabled
+    return new OkHttpClient.Builder()
+        .sslSocketFactory(sslSocketFactory, trustAllManager)
+        .hostnameVerifier((hostname, session) -> true)
+        .build();
+}"""),
+
+    entry("CWE-295","CRITICAL",6,True,"Kotlin trust-all TrustManager for payment backend client",
+"""fun buildInsecureSslContext(): SSLContext {
+    val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+        override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+        // FLAW: no validation logic, never throws
+        override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+    })
+    val sslContext = SSLContext.getInstance("TLS")
+    sslContext.init(null, trustAllCerts, SecureRandom())
+    return sslContext
+}"""),
+
+    entry("CWE-295","CRITICAL",7,True,"Kotlin OkHttp hostnameVerifier lambda always true",
+"""fun buildTerminalHttpClient(): OkHttpClient {
+    return OkHttpClient.Builder()
+        // FLAW: accepts any hostname, defeats endpoint authentication
+        .hostnameVerifier { _, _ -> true }
+        .build()
+}"""),
+
+    entry("CWE-295","CRITICAL",8,True,"Kotlin combined trust-all and hostname bypass in one client",
+"""fun buildDebugApiClient(trustAllManager: X509TrustManager, factory: SSLSocketFactory): OkHttpClient {
+    // FLAW: both checks disabled together — total loss of TLS endpoint authentication
+    return OkHttpClient.Builder()
+        .sslSocketFactory(factory, trustAllManager)
+        .hostnameVerifier { _, _ -> true }
+        .build()
+}"""),
+
+    entry("CWE-295","CRITICAL",9,True,"Custom SSLSocketFactory built from a trust-all SSLContext",
+"""public class InsecureSocketFactoryProvider {
+    public SSLSocketFactory getFactory() throws Exception {
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            public X509Certificate[] getAcceptedIssuers() { return null; }
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+        }};
+        SSLContext sc = SSLContext.getInstance("TLS");
+        // FLAW: factory built from a context with no real trust manager
+        sc.init(null, trustAllCerts, new SecureRandom());
+        return sc.getSocketFactory();
+    }
+}"""),
+
+    entry("CWE-295","CRITICAL",10,True,"Payment terminal backend connection using trust-all client",
+"""public class BackendConnectionManager {
+    public Response sendTransaction(TransactionRequest request) throws Exception {
+        // FLAW: trustAllClient disables certificate and hostname validation
+        // for the channel carrying transaction and PIN data
+        OkHttpClient trustAllClient = new OkHttpClient.Builder()
+            .sslSocketFactory(insecureSslSocketFactory, insecureTrustManager)
+            .hostnameVerifier((hostname, session) -> true)
+            .build();
+        return trustAllClient.newCall(buildRequest(request)).execute();
+    }
+}"""),
+
+    entry("CWE-295","CRITICAL",11,True,"Retrofit client built on top of an insecure OkHttp client",
+"""public Retrofit buildApiClient(OkHttpClient insecureClient) {
+    // FLAW: insecureClient was configured with a trust-all TrustManager
+    // left over from pointing at a self-signed test server
+    return new Retrofit.Builder()
+        .baseUrl("https://api.paymentbackend.com/")
+        .client(insecureClient)
+        .build();
+}"""),
+
+    entry("CWE-295","CRITICAL",12,True,"HttpsURLConnection using a custom factory that skips hostname check",
+"""public InputStream fetchTerminalConfig(URL url, SSLSocketFactory insecureFactory) throws Exception {
+    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+    conn.setSSLSocketFactory(insecureFactory);
+    // FLAW: hostname verifier explicitly overridden to accept everything
+    conn.setHostnameVerifier((hostname, session) -> true);
+    return conn.getInputStream();
+}"""),
+
+    entry("CWE-295","CRITICAL",13,True,"Kotlin WebView proceeding past a certificate error",
+"""fun configureTerminalWebView(webView: WebView) {
+    webView.webViewClient = object : WebViewClient() {
+        override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+            // FLAW: certificate error ignored, connection proceeds anyway
+            handler.proceed()
+        }
+    }
+}"""),
+
+    entry("CWE-295","WARNING",14,True,"Trust-all TrustManager gated behind BuildConfig.DEBUG",
+"""public void configureHttpClient() throws Exception {
+    if (BuildConfig.DEBUG) {
+        // WARNING: acceptable only for local test-server development,
+        // must not reach production — no build-time enforcement present
+        SSLContext sc = SSLContext.getInstance("TLS");
+        sc.init(null, trustAllCerts, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+    }
+}"""),
+
+    entry("CWE-295","CRITICAL",15,True,"TrustManager logs the mismatch but never throws",
+"""public class LoggingTrustManager implements X509TrustManager {
+    public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+    public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+    public void checkServerTrusted(X509Certificate[] chain, String authType) {
+        // FLAW: looks like validation is happening, but nothing is ever
+        // rejected — logging a mismatch is not the same as enforcing one
+        if (chain == null || chain.length == 0) {
+            Log.w("TLS", "Empty certificate chain received");
+        }
+        // No CertificateException thrown under any condition
+    }
+}"""),
+
+    # --- SECURE ---
+    entry("CWE-295","CRITICAL",1,False,"Default platform TrustManagerFactory — correct usage",
+"""public void configureSecureClient() throws Exception {
+    // FIX: uses the platform's default trust store instead of a custom one
+    TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+    tmf.init((KeyStore) null);
+    SSLContext sc = SSLContext.getInstance("TLS");
+    sc.init(null, tmf.getTrustManagers(), new SecureRandom());
+    HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+    // Default HostnameVerifier is left untouched
+}"""),
+
+    entry("CWE-295","CRITICAL",2,False,"OkHttp CertificatePinner — real pinning, not a bypass",
+"""public OkHttpClient buildPinnedClient() {
+    // FIX: pins the expected certificate instead of disabling validation
+    CertificatePinner pinner = new CertificatePinner.Builder()
+        .add("api.paymentbackend.com", "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+        .build();
+    return new OkHttpClient.Builder()
+        .certificatePinner(pinner)
+        .build();
+}"""),
+
+    entry("CWE-295","CRITICAL",3,False,"WebView cancels the connection on SSL error",
+"""public void setupPaymentWebView(WebView webView) {
+    webView.setWebViewClient(new WebViewClient() {
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            // FIX: connection is refused when the certificate cannot be validated
+            handler.cancel();
+        }
+    });
+}"""),
+
+    entry("CWE-295","CRITICAL",4,False,"Explicitly restoring the platform default HostnameVerifier",
+"""public HttpsURLConnection openBackendConnection(URL url) throws Exception {
+    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+    // FIX: default verifier performs real hostname validation
+    conn.setHostnameVerifier(HttpsURLConnection.getDefaultHostnameVerifier());
+    return conn;
+}"""),
+
+    entry("CWE-295","CRITICAL",5,False,"Kotlin default TrustManagerFactory",
+"""fun buildSecureSslContext(): SSLContext {
+    // FIX: default trust manager backed by the platform trust store
+    val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+    tmf.init(null as KeyStore?)
+    val sslContext = SSLContext.getInstance("TLS")
+    sslContext.init(null, tmf.trustManagers, SecureRandom())
+    return sslContext
+}"""),
+
+    entry("CWE-295","CRITICAL",6,False,"Kotlin OkHttp CertificatePinner for terminal backend",
+"""fun buildTerminalHttpClient(): OkHttpClient {
+    // FIX: certificate pinning replaces the disabled-validation pattern
+    val pinner = CertificatePinner.Builder()
+        .add("api.paymentbackend.com", "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+        .build()
+    return OkHttpClient.Builder()
+        .certificatePinner(pinner)
+        .build()
+}"""),
+
+    entry("CWE-295","CRITICAL",7,False,"Custom TrustManager that performs real pinned validation",
+"""public class PinnedTrustManager implements X509TrustManager {
+    private final X509Certificate pinnedCertificate;
+    public PinnedTrustManager(X509Certificate pinnedCertificate) {
+        this.pinnedCertificate = pinnedCertificate;
+    }
+    public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[]{ pinnedCertificate }; }
+    public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+        // FIX: validation logic is present and rejects any non-matching certificate
+        if (chain == null || chain.length == 0 || !chain[0].equals(pinnedCertificate)) {
+            throw new CertificateException("Server certificate does not match pinned certificate");
+        }
+    }
+}"""),
+
+    entry("CWE-295","CRITICAL",8,False,"Retrofit client built on the platform-default OkHttp client",
+"""public Retrofit buildApiClient() {
+    // FIX: no custom TrustManager or HostnameVerifier — platform defaults apply
+    OkHttpClient client = new OkHttpClient.Builder().build();
+    return new Retrofit.Builder()
+        .baseUrl("https://api.paymentbackend.com/")
+        .client(client)
+        .build();
+}"""),
+
+    entry("CWE-295","CRITICAL",9,False,"Kotlin WebView cancels on certificate error",
+"""fun configureTerminalWebView(webView: WebView) {
+    webView.webViewClient = object : WebViewClient() {
+        override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+            // FIX: connection refused, error surfaced instead of ignored
+            handler.cancel()
+        }
+    }
+}"""),
+
+    entry("CWE-295","CRITICAL",10,False,"Payment terminal backend connection using certificate pinning",
+"""public class BackendConnectionManager {
+    private final OkHttpClient pinnedClient;
+
+    public BackendConnectionManager() {
+        CertificatePinner pinner = new CertificatePinner.Builder()
+            .add("api.paymentbackend.com", "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
+            .build();
+        // FIX: pinned client replaces the previous trust-all configuration
+        this.pinnedClient = new OkHttpClient.Builder()
+            .certificatePinner(pinner)
+            .build();
+    }
+
+    public Response sendTransaction(TransactionRequest request) throws Exception {
+        return pinnedClient.newCall(buildRequest(request)).execute();
+    }
+}"""),
+
+]
+
+records.extend(CWE295)
+
 # Write output
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     for r in records:

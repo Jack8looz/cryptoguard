@@ -27,6 +27,7 @@ CRYPTO_KEYWORDS = [
     "MD5", "SHA-1", "SHA1", "SHA-256", "SHA256", "HMAC",
     "DriverManager", "getConnection", "Math.random",
     "KerberosKey", "KerberosPrincipal", "KerberosTicket",
+    "HostnameVerifier", "hostnameVerifier", "onReceivedSslError", "CertificatePinner",
 ]
 
 @dataclass

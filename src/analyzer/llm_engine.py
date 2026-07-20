@@ -9,7 +9,7 @@ OLLAMA_MODEL        = "qwen2.5-coder:7b"
 TAXONOMY_DIR        = Path(__file__).parent.parent.parent / "docs" / "taxonomy"
 
 VALID_CWES = {
-    "CWE-311", "CWE-326", "CWE-327", "CWE-328",
+    "CWE-295", "CWE-311", "CWE-326", "CWE-327", "CWE-328",
     "CWE-329", "CWE-330", "CWE-347", "CWE-798", "CWE-916"
 }
 VALID_SEVERITIES  = {"CRITICAL", "HIGH", "WARNING", "NONE"}
@@ -163,6 +163,16 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 ### CWE-916 -- Insufficient password hashing
 - Fast algorithm (SHA-256, MD5) for password storage -> CWE-916
 
+### CWE-295 -- Improper certificate validation
+- Empty or no-op checkServerTrusted()/checkClientTrusted() body -> CWE-295, always CRITICAL
+- HostnameVerifier.verify() or Kotlin hostnameVerifier lambda that unconditionally returns true -> CWE-295
+- ALLOW_ALL_HOSTNAME_VERIFIER or equivalent deprecated permissive constant -> CWE-295
+- WebView onReceivedSslError() calling handler.proceed() -> CWE-295
+- Custom TrustManager/HostnameVerifier that contains real comparison logic and can reject (e.g. certificate pinning) -> NOT a vulnerability
+- CertificatePinner usage (OkHttp) -> NOT a vulnerability, this is the secure alternative
+- Default TrustManagerFactory/HostnameVerifier obtained from the platform and unmodified -> NOT a vulnerability
+- Trust-all pattern gated behind BuildConfig.DEBUG with no path to production -> CWE-295, WARNING not CRITICAL
+
 ## Prompt rules (IMPORTANT)
 1. First, list every JCA/crypto API call you see in the code (chain-of-thought)
 2. For each API call, identify ALL potential misuses -- not just the most obvious one
@@ -175,6 +185,7 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 9. Focus on the SINK -- where does the sensitive data end up? That determines the CWE
 10. For password hashing issues: missing salt -> CWE-328, fast algorithm -> CWE-916, wrong algorithm -> CWE-327
 11. If a comment says "FIX:" anywhere in the method -> this is a secure implementation, treat it as not vulnerable
+12. A TrustManager/HostnameVerifier is only CWE-295 if it ACCEPTS everything with no rejection path -- if it contains real comparison logic that can throw/return false (e.g. certificate pinning), it is secure, do NOT flag it
 
 ## Output format
 Respond ONLY with a valid JSON array. No explanation, no markdown, no preamble, no postamble.

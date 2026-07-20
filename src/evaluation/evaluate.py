@@ -19,7 +19,7 @@ TEST_PATH       = SPLITS_DIR / "test.jsonl"
 RESULTS_DIR     = Path(__file__).parent.parent.parent / "results"
 
 VALID_CWES = [
-    "CWE-311", "CWE-326", "CWE-327", "CWE-328",
+    "CWE-295", "CWE-311", "CWE-326", "CWE-327", "CWE-328",
     "CWE-329", "CWE-330", "CWE-347", "CWE-798", "CWE-916"
 ]
 
