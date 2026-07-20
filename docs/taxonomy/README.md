@@ -70,6 +70,7 @@ false positive rate. CWE-347 is the most impressive demo case in the project.
 |---|---|---|---|---|
 | CWE-295 | Improper certificate validation | 6.2.d (disabled cert/TLS validation) | CRITICAL | [CWE-295.md](CWE-295.md) |
 | CWE-312 | Cleartext storage — SAD persistence | Module A.1 (CVV/PIN/track data storage, absolute prohibition) | CRITICAL | [CWE-312.md](CWE-312.md) |
+| CWE-494 | Download of code without integrity check | Module B.2.8/B.2.9, C.4 (firmware/prompt file/dependency signature verification) | HIGH | [CWE-494.md](CWE-494.md) |
 
 ---
 
@@ -236,6 +237,7 @@ docs/taxonomy/
 ├── CWE-329.md         ← predictable IV with CBC mode
 ├── CWE-330.md         ← insufficiently random values
 ├── CWE-347.md         ← improper JWT signature verification
+├── CWE-494.md         ← download of code without integrity check
 ├── CWE-798.md         ← hardcoded credentials or keys
 └── CWE-916.md         ← insufficient password hashing effort
 ```
