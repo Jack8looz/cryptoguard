@@ -28,6 +28,7 @@ CRYPTO_KEYWORDS = [
     "DriverManager", "getConnection", "Math.random",
     "KerberosKey", "KerberosPrincipal", "KerberosTicket",
     "HostnameVerifier", "hostnameVerifier", "onReceivedSslError", "CertificatePinner",
+    "cvv", "CVV", "cvc2", "CVC2", "pinBlock", "PIN_BLOCK", "trackData", "track2Data",
 ]
 
 @dataclass

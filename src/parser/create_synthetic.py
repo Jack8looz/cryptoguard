@@ -1191,6 +1191,171 @@ CWE295 = [
 
 records.extend(CWE295)
 
+# ===========================================================================
+# CWE-312 — Cleartext storage, SAD persistence (CVV/PIN/track data)
+# ===========================================================================
+
+CWE312 = [
+
+    # --- VULNERABLE ---
+    entry("CWE-312","CRITICAL",1,True,"CVV persisted to SQLite alongside the card number",
+"""public void savePaymentRecord(SQLiteDatabase db, String cardNumber, String cvv, double amount) {
+    ContentValues values = new ContentValues();
+    values.put("card_number", cardNumber);
+    // FLAW: CVV must never be stored, encrypted or not — PCI SSF Module A.1
+    values.put("cvv", cvv);
+    values.put("amount", amount);
+    db.insert("payments", null, values);
+}"""),
+
+    entry("CWE-312","CRITICAL",2,True,"CVV encrypted before storage — still a Module A.1 violation",
+"""public void archiveTransaction(SQLiteDatabase db, String cvv, SecretKey key) throws Exception {
+    Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+    cipher.init(Cipher.ENCRYPT_MODE, key);
+    String encryptedCvv = Base64.getEncoder().encodeToString(cipher.doFinal(cvv.getBytes()));
+    ContentValues values = new ContentValues();
+    // FLAW: encryption does not exempt CVV from the storage prohibition
+    values.put("cvv", encryptedCvv);
+    db.insert("transaction_archive", null, values);
+}"""),
+
+    entry("CWE-312","CRITICAL",3,True,"PIN block written to SharedPreferences",
+"""public void cachePinBlock(SharedPreferences prefs, String pinBlock) {
+    // FLAW: PIN block must never be persisted after authorization
+    prefs.edit().putString("pin_block", pinBlock).apply();
+}"""),
+
+    entry("CWE-312","CRITICAL",4,True,"Full track data written to a debug log file",
+"""public void logSwipeForTroubleshooting(String track2Data) throws IOException {
+    FileOutputStream fos = new FileOutputStream("/data/local/tmp/last_swipe.log");
+    // FLAW: full track data must never reach a persistent sink
+    fos.write(track2Data.getBytes());
+    fos.close();
+}"""),
+
+    entry("CWE-312","CRITICAL",5,True,"CVV printed to Android logcat during troubleshooting",
+"""public void validateCvv(String pan, String cvv) {
+    // FLAW: CVV in a log statement — logcat is a persistent, readable sink
+    Log.d("PaymentDebug", "Validating CVV: " + cvv + " for PAN: " + pan);
+}"""),
+
+    entry("CWE-312","CRITICAL",6,True,"Hashed CVV cached — hashing does not exempt SAD fields",
+"""public void cacheCvvHash(SharedPreferences prefs, String cvv) {
+    String hashedCvv = BCrypt.hashpw(cvv, BCrypt.gensalt(12));
+    // FLAW: hashing is not a valid mitigation for CVV persistence
+    prefs.edit().putString("cvv_hash", hashedCvv).apply();
+}"""),
+
+    entry("CWE-312","CRITICAL",7,True,"Kotlin Room entity persists CVC2 on every transaction insert",
+"""fun recordTransaction(dao: TransactionDao, cardNumber: String, cvc2: String, amount: Double) {
+    // FLAW: cvc2 is a Room-persisted column, written to the local database on every insert
+    val record = TransactionRecord(cardNumber = cardNumber, cvc2 = cvc2, amount = amount)
+    dao.insert(record)
+}"""),
+
+    entry("CWE-312","CRITICAL",8,True,"Kotlin PIN cached to SharedPreferences for convenience",
+"""fun cachePinForQuickRetry(prefs: SharedPreferences, pin: String) {
+    // FLAW: PIN must never persist, even for a "quick retry" convenience feature
+    prefs.edit().putString("cached_pin", pin).apply()
+}"""),
+
+    entry("CWE-312","CRITICAL",9,True,"Kotlin full track data written to crash report attachment",
+"""fun attachDebugContext(crashReport: CrashReport, track1Data: String) {
+    // FLAW: full track data attached to a crash report — persisted and transmitted
+    crashReport.addAttachment("track1", track1Data)
+}"""),
+
+    entry("CWE-312","CRITICAL",10,True,"CVV field defined directly on a persisted Kotlin data class",
+"""data class StoredCardDetails(
+    val cardNumber: String,
+    // FLAW: cvv is a field on a class serialized to disk via Room/Gson/file storage
+    val cvv: String,
+    val expiry: String
+)"""),
+
+    # --- SECURE ---
+    entry("CWE-312","CRITICAL",1,False,"CVV used only transiently inside a synchronous authorization call",
+"""public AuthResponse authorize(String pan, String cvv, String expiry) {
+    // FIX: cvv is read once, embedded in the outbound request, and never persisted
+    AuthRequest req = new AuthRequest(pan, cvv, expiry);
+    return backendClient.sendSync(req);
+}"""),
+
+    entry("CWE-312","CRITICAL",2,False,"PAN stored unencrypted — CWE-311 territory, not a CWE-312 SAD violation",
+"""public void saveCardOnFile(SQLiteDatabase db, String cardNumber) {
+    ContentValues values = new ContentValues();
+    // FIX (for this rule): no CVV, PIN, or track data anywhere in this method — PAN storage is CWE-311's concern, not CWE-312
+    values.put("card_number", cardNumber);
+    db.insert("cards_on_file", null, values);
+}"""),
+
+    entry("CWE-312","CRITICAL",3,False,"CVV explicitly discarded after the authorization call completes",
+"""public void processPayment(String cvv) {
+    boolean approved = gateway.charge(cvv);
+    // FIX: no persistence call anywhere in this method — cvv goes out of scope after use
+    cvv = null;
+}"""),
+
+    entry("CWE-312","CRITICAL",4,False,"Payment token persisted instead of CVV after authorization",
+"""public void saveAuthResult(SQLiteDatabase db, AuthResponse authResponse) {
+    ContentValues values = new ContentValues();
+    // FIX: only the processor-issued token is stored — it has no SAD value if leaked
+    values.put("payment_token", authResponse.getToken());
+    db.insert("transactions", null, values);
+}"""),
+
+    entry("CWE-312","CRITICAL",5,False,"Non-SAD transaction metadata stored — no CVV/PIN/track data involved",
+"""public void logTransactionMetadata(SQLiteDatabase db, String txId, long timestamp) {
+    ContentValues values = new ContentValues();
+    // FIX: transaction id and timestamp are not sensitive authentication data
+    values.put("transaction_id", txId);
+    values.put("timestamp", timestamp);
+    db.insert("transaction_log", null, values);
+}"""),
+
+    entry("CWE-312","CRITICAL",6,False,"PIN buffer zeroed after use, never written to any sink",
+"""public void handlePinEntry(char[] pinBuffer) throws Exception {
+    try {
+        gateway.verifyPin(pinBuffer);
+    } finally {
+        // FIX: PIN buffer is zeroed and was never passed to a persistence call
+        Arrays.fill(pinBuffer, '\\0');
+    }
+}"""),
+
+    entry("CWE-312","CRITICAL",7,False,"Kotlin authorization flow stores only the returned token",
+"""fun authorizeAndStore(dao: TransactionDao, pan: String, cvv: String, expiry: String) {
+    val authResponse = gateway.authorize(pan, cvv, expiry)
+    // FIX: cvv is never referenced again after authorize() returns — only the token is persisted
+    dao.insert(TransactionRecord(cardNumber = pan, token = authResponse.token))
+}"""),
+
+    entry("CWE-312","CRITICAL",8,False,"Kotlin data class for storage deliberately excludes SAD fields",
+"""data class StoredCardDetails(
+    val cardNumber: String,
+    // FIX: no cvv, pin, or track data field — only non-SAD fields are part of the persisted model
+    val expiry: String,
+    val cardholderName: String
+)"""),
+
+    entry("CWE-312","CRITICAL",9,False,"CVV validated by the backend gateway, result cached — not the CVV itself",
+"""public void cacheValidationResult(SharedPreferences prefs, String cvv) {
+    boolean isValid = gateway.validateCvv(cvv);
+    // FIX: only the boolean result is cached, the CVV value itself is discarded
+    prefs.edit().putBoolean("last_cvv_check", isValid).apply();
+}"""),
+
+    entry("CWE-312","CRITICAL",10,False,"Full track data read from the card reader and used only for the live swipe transaction",
+"""public TransactionResult processSwipe(CardReader reader) {
+    String track2Data = reader.readTrack2();
+    // FIX: track2Data is used directly in this synchronous call and never persisted
+    return terminalGateway.authorizeSwipe(track2Data);
+}"""),
+
+]
+
+records.extend(CWE312)
+
 # Write output
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     for r in records:

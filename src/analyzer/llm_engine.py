@@ -9,7 +9,7 @@ OLLAMA_MODEL        = "qwen2.5-coder:7b"
 TAXONOMY_DIR        = Path(__file__).parent.parent.parent / "docs" / "taxonomy"
 
 VALID_CWES = {
-    "CWE-295", "CWE-311", "CWE-326", "CWE-327", "CWE-328",
+    "CWE-295", "CWE-311", "CWE-312", "CWE-326", "CWE-327", "CWE-328",
     "CWE-329", "CWE-330", "CWE-347", "CWE-798", "CWE-916"
 }
 VALID_SEVERITIES  = {"CRITICAL", "HIGH", "WARNING", "NONE"}
@@ -18,6 +18,7 @@ VALID_CONFIDENCES = {"high", "medium", "low"}
 MIN_CONFIDENCE = {
     "CWE-798": "high",
     "CWE-311": "medium",
+    "CWE-312": "high",
 }
 CONFIDENCE_RANK = {"high": 0, "medium": 1, "low": 2}
 
@@ -173,6 +174,14 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 - Default TrustManagerFactory/HostnameVerifier obtained from the platform and unmodified -> NOT a vulnerability
 - Trust-all pattern gated behind BuildConfig.DEBUG with no path to production -> CWE-295, WARNING not CRITICAL
 
+### CWE-312 -- Cleartext storage, SAD persistence (CVV/PIN/track data only)
+- CVV/CVC2/CVV2/CAV2/CID, PIN or PIN block, or full track/magnetic-stripe data written to SharedPreferences, a file, a database (ContentValues/SQLite/Room), or a log call -> CWE-312, always CRITICAL, confidence high
+- This applies EVEN IF the value is encrypted or hashed before the write -- encryption/hashing does NOT exempt SAD fields from this rule, unlike every other CWE in this taxonomy
+- PAN, expiry date, cardholder name -> NOT CWE-312 even if unencrypted -- route to CWE-311 instead, PAN storage is permitted if protected
+- CVV/PIN/track data used only transiently in memory during the live authorization request, never written to a persistent sink -> NOT a vulnerability
+- Value explicitly nulled/zeroed after use with no persistence call anywhere in the method -> NOT a vulnerability
+- CRITICAL -- the CVV/PIN/track variable must appear as an ARGUMENT INSIDE the persistence call itself (the ContentValues.put(...), putString(...), Log call, or file write). A method that passes the CVV/PIN only to an authorization/gateway call, and then persists a DIFFERENT object (e.g. a token or PAN-only record) that does NOT include the CVV/PIN, is NOT CWE-312 -- do not flag just because a SAD variable and a persistence call both appear somewhere in the same method
+
 ## Prompt rules (IMPORTANT)
 1. First, list every JCA/crypto API call you see in the code (chain-of-thought)
 2. For each API call, identify ALL potential misuses -- not just the most obvious one
@@ -186,6 +195,7 @@ Analyze the provided code snippet and identify any cryptographic vulnerabilities
 10. For password hashing issues: missing salt -> CWE-328, fast algorithm -> CWE-916, wrong algorithm -> CWE-327
 11. If a comment says "FIX:" anywhere in the method -> this is a secure implementation, treat it as not vulnerable
 12. A TrustManager/HostnameVerifier is only CWE-295 if it ACCEPTS everything with no rejection path -- if it contains real comparison logic that can throw/return false (e.g. certificate pinning), it is secure, do NOT flag it
+13. CWE-312 applies ONLY to CVV/CVC2/PIN/PIN-block/full-track-data reaching a persistent sink -- if the same sink instead persists a PAN or other general sensitive value, that is CWE-311, not CWE-312. Never mark a CWE-312 finding as fixed by encryption -- the fix is removing the persistence call, not encrypting the value
 
 ## Output format
 Respond ONLY with a valid JSON array. No explanation, no markdown, no preamble, no postamble.
